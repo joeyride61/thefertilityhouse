@@ -351,6 +351,36 @@ footer .logo span { color: #fff; }
 .gift b { font-weight: 500; color: var(--coral-deep); }
 @media (max-width: 1000px) { .socks-grid { grid-template-columns: 1fr; gap: 34px; } }
 
+
+/* mobile menu */
+.menu-btn { display: none; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; place-items: center; flex: none; }
+.menu-btn span { display: block; width: 18px; height: 1.6px; background: currentColor; position: relative; }
+.menu-btn span::before, .menu-btn span::after { content: ""; position: absolute; left: 0; width: 18px; height: 1.6px; background: currentColor; }
+.menu-btn span::before { top: -6px; } .menu-btn span::after { top: 6px; }
+@media (max-width: 1000px) { .menu-btn { display: grid; } }
+.mnav { position: fixed; inset: 0; z-index: 200; background: var(--paper); display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 16px) max(22px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 22px) max(22px, env(safe-area-inset-left, 0px)); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; overflow-y: auto; }
+.mnav.on { opacity: 1; visibility: visible; }
+.mnav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; min-height: 46px; }
+.mnav-top b { font: 400 28px/1 var(--script); color: var(--accent-deep); }
+.mnav-x { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 22px; line-height: 1; cursor: pointer; color: var(--ink); }
+.mnav nav { display: grid; margin: 6px 0 24px; }
+.mnav nav a { font: 500 34px/1.1 var(--display); text-decoration: none; color: var(--ink); padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transform: translateY(14px); opacity: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s; }
+.mnav nav a::after { content: "→"; font: 300 20px var(--ui); color: var(--accent-deep); }
+.mnav.on nav a { transform: none; opacity: 1; }
+.mnav.on nav a:nth-child(2) { transition-delay: .04s; } .mnav.on nav a:nth-child(3) { transition-delay: .08s; } .mnav.on nav a:nth-child(4) { transition-delay: .12s; } .mnav.on nav a:nth-child(5) { transition-delay: .16s; } .mnav.on nav a:nth-child(6) { transition-delay: .2s; } .mnav.on nav a:nth-child(7) { transition-delay: .24s; } .mnav.on nav a:nth-child(8) { transition-delay: .28s; }
+.other-site { display: flex; align-items: center; gap: 14px; text-decoration: none; border-radius: 18px; padding: 16px 18px; background: var(--other-bg); color: var(--other-fg); margin-bottom: 18px; }
+.other-site img { width: 52px; height: 52px; border-radius: 12px; flex: none; }
+.other-site small { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.other-site b { display: block; font: 500 26px/1.1 var(--display); }
+.other-site i { margin-left: auto; font-style: normal; font-size: 22px; }
+.mnav .reach { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 16px; margin-top: auto; padding-top: 10px; }
+.mnav .reach a { color: var(--ink); }
+.mnav .mbtn { margin-bottom: 14px; justify-content: center; width: 100%; }
+
+.mnav { --accent-deep: var(--coral-deep); --script: "Parisienne", cursive; --other-bg: var(--blush); --other-fg: var(--ink); }
+.nav { gap: 12px 30px; }
+@media (max-width: 620px) { .logo span { font-size: 19px; white-space: nowrap; } .logo svg { width: 24px; } }
+
 /* reveal */
 .rv { transition: opacity .9s ease, transform .9s ease; }
 .js .rv.pre { opacity: 0; transform: translateY(28px); }
@@ -417,8 +447,26 @@ footer .logo span { color: #fff; }
     </div>
     <button class="cart-btn" data-cart-open aria-label="Open your plan">Plan <span class="n" data-cart-count data-zero>0</span></button>
     <button class="btn" data-contact>Start a consult</button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><span></span></button>
   </nav>
 </header>
+
+<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="mnav-top"><b>The Wellness House</b><button class="mnav-x" type="button" aria-label="Close menu">×</button></div>
+  <a class="other-site" href="/"><img src="/apple-touch-icon.png" alt=""><span><small>Where it started</small><b>The Fertility House</b></span><i aria-hidden="true">→</i></a>
+  <nav aria-label="Mobile">
+    <a href="#programs">Programs</a>
+    <a href="#pens">Pens</a>
+    <a href="#science">The science</a>
+    <a href="#mixing">Mixing guide</a>
+    <a href="#bundles">Bundles</a>
+    <a href="#app">Doseday app</a>
+    <a href="#socks">Transfer Day Socks</a>
+  </nav>
+  <button class="btn mbtn" type="button" data-contact>Start a consult</button>
+  <div class="reach"><a href="/doseday/">Open Doseday</a><a href="/admin/">Practice admin</a></div>
+</div>
+
 
 <main id="top">
   <section class="hero">
@@ -769,6 +817,17 @@ footer .logo span { color: #fff; }
 <script src="cart.js"></script>
 <script>
 document.documentElement.classList.add('js');
+
+/* mobile menu */
+(() => {
+  const m = document.getElementById('mnav'), open = document.getElementById('menuBtn'); let last;
+  const set = (on) => { m.classList.toggle('on', on); m.setAttribute('aria-hidden', !on); open.setAttribute('aria-expanded', on); document.body.style.overflow = on ? 'hidden' : '';
+    if (on) { last = document.activeElement; m.querySelector('.mnav-x').focus(); } else if (last) last.focus(); };
+  open.addEventListener('click', () => set(true));
+  m.addEventListener('click', (e) => { if (e.target.closest('.mnav-x') || e.target.closest('a') || e.target.closest('[data-contact]')) set(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && m.classList.contains('on')) set(false); });
+})();
+
 const P = [
   { id:'sema', cat:'weight', name:'Semaglutide', kind:'GLP-1 · weekly', img:'sema', price:249, ev:'Strong', desc:'Weekly GLP-1 to quiet appetite and support steady, sustained weight loss.',
     what:'A GLP-1 receptor agonist, the same active ingredient as Wegovy® and Ozempic®. It slows stomach emptying and acts on appetite centers in the brain so you feel full sooner.',
