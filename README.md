@@ -1,15 +1,15 @@
 # The Fertility House + The Wellness House
 
-Demo site for The Fertility House, its Wellness House peptide shop, the practice CRM and the Stackr dose-tracker app. Hosted on Netlify; every push to `main` deploys.
+Demo site for The Fertility House, its Wellness House peptide shop, the practice CRM and the Doseday dose-tracker app. Hosted on Netlify; every push to `main` deploys.
 
 | Path | What it is |
 |---|---|
 | `public/` | Static site (published directory) |
 | `public/wellness/` | Wellness House shop, cart (`cart.js`) and checkout |
 | `public/admin/` | Practice CRM: orders, members, products and pricing |
-| `public/stackr/` | Stackr PWA (installable on iPhone) |
-| `netlify/functions/` | API: storefront + checkout, admin, Stackr |
-| `netlify/lib/` | Shared pricing, auth and Stackr demo data |
+| `public/doseday/` | Doseday PWA (installable on iPhone) |
+| `netlify/functions/` | API: storefront + checkout, admin, Doseday |
+| `netlify/lib/` | Shared pricing, auth and Doseday demo data |
 | `netlify/database/migrations/` | Netlify Database schema and sample data |
 
 ## Settings (Netlify environment variables)
@@ -21,4 +21,4 @@ Demo site for The Fertility House, its Wellness House peptide shop, the practice
 
 Stacking discount: each item in a plan takes 10% off for every additional item, capped at 30% (`netlify/lib/shared.mjs`).
 
-All members, orders and the Stackr user Will Hainlen are fictional sample data.
+All members, orders and the Doseday user Will Hainlen are fictional sample data.

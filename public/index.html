@@ -2,153 +2,598 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Fertility House</title>
-<meta name="description" content="Jamie Hainlen, MSN, FNP-C — medical record reviews for surrogacy agencies and gestational carriers.">
+<meta name="description" content="Medical record reviews for surrogacy agencies and gestational carriers by Jamie Hainlen, MSN, FNP-C. One embryo, one baby at a time.">
+<meta property="og:title" content="The Fertility House">
+<meta property="og:description" content="Medical record reviews for surrogacy agencies and gestational carriers by Jamie Hainlen, MSN, FNP-C.">
+<meta property="og:image" content="/images/hero-beach.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Parisienne&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;1,300;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+/* Layout: cinematic single page; pinned scroll stories for Jamie's journey, the review document and the two houses */
+:root {
+  --paper: #fbf6f3;
+  --blush: #f3ddd5;
+  --blush-2: #eac8bd;
+  --rose: #c9796a;
+  --rose-deep: #7a3b33;
+  --ink: #2a2321;
+  --ink-2: #6a5c58;
+  --line: rgba(42,35,33,.12);
+  --white: #ffffff;
+  --display: "Cormorant Garamond", Georgia, serif;
+  --ui: "Jost", system-ui, sans-serif;
+  --script: "Parisienne", cursive;
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  --gut-r: max(20px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 17px/1.65 var(--ui); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; margin: 0; letter-spacing: -.015em; text-wrap: balance; }
+.wrap { max-width: 1280px; margin: 0 auto; padding-left: var(--gut); padding-right: var(--gut-r); }
+.eyebrow { font: 500 12px/1 var(--ui); letter-spacing: .24em; text-transform: uppercase; color: var(--rose-deep); }
+.script { font-family: var(--script); font-weight: 400; color: var(--rose-deep); letter-spacing: 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); font: 400 15px var(--ui); letter-spacing: .04em; text-decoration: none; cursor: pointer; transition: background .25s, color .25s, border-color .25s, transform .25s; }
+.btn:hover { background: var(--rose-deep); border-color: var(--rose-deep); transform: translateY(-2px); }
+.btn.light { background: transparent; color: var(--ink); }
+.btn.light:hover { background: var(--ink); color: var(--paper); }
+.btn.on-dark { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.btn .arr { transition: transform .25s; }
+.btn:hover .arr { transform: translateX(4px); }
+:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+
+/* ---------- header ---------- */
+.hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); transition: background .4s, box-shadow .4s, color .4s; color: var(--ink); }
+.hdr.solid { background: rgba(251,246,243,.9); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
+.hdr .wrap { display: flex; align-items: center; gap: 28px; height: 76px; }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
+.mark svg { width: 30px; height: 30px; color: var(--rose-deep); }
+.mark span { font: 400 30px/1 var(--script); }
+.links { display: flex; gap: 26px; }
+.links a { font-size: 14px; letter-spacing: .04em; text-decoration: none; opacity: .8; }
+.links a:hover { opacity: 1; }
+.pill { font-size: 13px; padding: 9px 16px; border-radius: 999px; border: 1px solid currentColor; text-decoration: none; white-space: nowrap; }
+.pill:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; min-height: 640px; max-height: 1100px; overflow: hidden; background: var(--blush); }
+.hero-img { position: absolute; inset: 0; }
+.hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 30%; transform-origin: 60% 40%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(251,246,243,.94) 0%, rgba(251,246,243,.78) 36%, rgba(251,246,243,0) 66%); }
+.hero-copy { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-top: 60px; }
+.hero-copy > * { max-width: 660px; }
+.hero h1 { font-size: clamp(54px, 8.2vw, 124px); font-weight: 400; }
+.hero h1 .ln { display: block; overflow: hidden; padding-bottom: .06em; }
+.hero h1 .ln > span { display: inline-block; }
+.hero h1 em { font-style: italic; color: var(--rose-deep); }
+.hero .sub { font-size: 19px; color: var(--ink-2); max-width: 30em; margin: 26px 0 34px; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.scroll-cue { position: absolute; z-index: 2; left: 50%; bottom: 28px; transform: translateX(-50%); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2); display: grid; justify-items: center; gap: 10px; }
+.scroll-cue i { width: 1px; height: 46px; background: linear-gradient(var(--ink), transparent); animation: cue 2s ease-in-out infinite; transform-origin: top; }
+@keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ---------- marquee ---------- */
+.marquee { background: var(--ink); color: var(--paper); overflow: hidden; padding: 22px 0; }
+.track { display: flex; width: max-content; animation: slide 38s linear infinite; }
+.track span { font: italic 400 28px var(--display); padding: 0 28px; white-space: nowrap; display: flex; align-items: center; gap: 56px; }
+.track span::after { content: "✦"; font-style: normal; font-size: 14px; color: var(--rose); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ---------- intro ---------- */
+.intro { padding: 150px 0 120px; }
+.intro p.big { font: 400 clamp(32px, 4.2vw, 58px)/1.18 var(--display); margin: 22px 0 0; max-width: 20em; letter-spacing: -.01em; }
+.intro p.big .w { opacity: .14; transition: opacity .2s; }
+.intro p.big em { font-style: italic; color: var(--rose-deep); }
+
+/* ---------- journey (horizontal pin) ---------- */
+.journey { background: var(--blush); overflow: hidden; }
+.journey-pin { height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+.journey-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 42px; }
+.journey-head h2 { font-size: clamp(40px, 5.4vw, 78px); max-width: 12em; }
+.journey-head p { max-width: 24em; color: var(--ink-2); margin: 0; }
+.rail { display: flex; gap: 22px; padding-left: var(--gut); padding-right: 30vw; width: max-content; will-change: transform; }
+.step { width: 330px; height: 400px; flex: none; background: var(--paper); border-radius: 6px; padding: 30px 28px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.step .n { font: 400 120px/0.9 var(--display); color: var(--rose-deep); letter-spacing: -.04em; }
+.step .n small { font-size: 34px; margin-left: 4px; letter-spacing: 0; }
+.step h3 { font-size: 30px; margin-bottom: 8px; }
+.step p { margin: 0; font-size: 15px; color: var(--ink-2); }
+.step.dark { background: var(--ink); color: var(--paper); }
+.step.dark .n { color: #e7a998; }
+.step.dark p { color: #cfc2bd; }
+.step.photo { padding: 0; width: 300px; }
+.step.photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.step.final { width: 460px; background: var(--rose-deep); color: #fff; }
+.step.final .n { color: #fff; font-family: var(--script); font-size: 96px; }
+.step.final p { color: #f6dcd5; font-size: 17px; }
+.progress { height: 2px; background: rgba(42,35,33,.12); margin: 40px var(--gut-r) 0 var(--gut); position: relative; }
+.progress i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--rose-deep); }
+
+/* ---------- paths ---------- */
+.paths { padding: 140px 0; }
+.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; flex-wrap: wrap; margin-bottom: 54px; }
+.sec-head h2 { font-size: clamp(44px, 5.6vw, 84px); margin-top: 14px; }
+.sec-head p { max-width: 26em; color: var(--ink-2); margin: 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.path { border-radius: 6px; padding: 44px 40px; display: flex; flex-direction: column; min-height: 640px; position: relative; overflow: hidden; }
+.path.agency { background: var(--white); border: 1px solid var(--line); }
+.path.carrier { background: var(--ink); color: var(--paper); }
+.path .tag { display: inline-flex; align-self: flex-start; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; border: 1px solid currentColor; opacity: .8; }
+.path h3 { font-size: clamp(38px, 3.6vw, 54px); margin: 22px 0 14px; }
+.path h3 em { font-family: var(--script); font-style: normal; color: var(--rose); font-weight: 400; }
+.path > p { margin: 0 0 26px; opacity: .8; max-width: 30em; }
+.path ol { list-style: none; padding: 0; margin: 0 0 30px; counter-reset: s; display: grid; gap: 0; }
+.path li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; padding: 18px 0; border-top: 1px solid var(--line); }
+.path.carrier li { border-color: rgba(255,255,255,.14); }
+.path li::before { content: counter(s, decimal-leading-zero); font: italic 400 24px var(--display); color: var(--rose); }
+.path li b { font-weight: 500; display: block; }
+.path li span { font-size: 15px; opacity: .75; }
+.path .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.path .price { font: 400 46px var(--display); }
+.path .price small { font: 300 14px var(--ui); opacity: .7; margin-left: 6px; }
+.path .contact-lines { font-size: 15px; opacity: .85; }
+.path .contact-lines a { text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.3); }
+
+/* ---------- review document (pinned) ---------- */
+.review { background: var(--paper); padding: 40px 0 0; }
+.review-pin { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+.review-copy h2 { font-size: clamp(42px, 5vw, 72px); margin: 16px 0 20px; }
+.review-copy p { color: var(--ink-2); max-width: 28em; }
+.review-copy ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 10px; }
+.review-copy li { display: flex; gap: 12px; align-items: center; font-size: 15px; }
+.review-copy li::before { content: ""; width: 22px; height: 1px; background: var(--rose-deep); }
+.doc { background: var(--white); border-radius: 6px; box-shadow: 0 40px 80px -40px rgba(122,59,51,.35), 0 0 0 1px var(--line); padding: 40px 40px 34px; font-size: 14px; position: relative; max-width: 520px; justify-self: center; width: 100%; }
+.doc-top { display: flex; justify-content: space-between; align-items: start; border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 18px; }
+.doc-top b { font: 500 24px/1.1 var(--display); display: block; }
+.doc-top small { color: var(--ink-2); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.doc-top svg { width: 34px; color: var(--rose-deep); }
+.doc .row { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); opacity: .28; transition: opacity .5s; }
+.doc .row.on { opacity: 1; }
+.doc .row .ck { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 12px; color: transparent; transition: all .4s; }
+.doc .row.on .ck { background: #5f8a5a; border-color: #5f8a5a; color: #fff; }
+.doc .row span { font-size: 14px; }
+.doc .row em { font-style: normal; font-size: 12px; color: var(--ink-2); }
+.doc .lines { margin-top: 18px; display: grid; gap: 8px; }
+.doc .lines i { display: block; height: 8px; border-radius: 4px; background: #f1e7e3; transform-origin: left; }
+.doc .sig { display: flex; justify-content: space-between; align-items: end; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
+.doc .sig .name { font: 400 34px/1 var(--script); color: var(--rose-deep); }
+.doc .sig small { display: block; font-size: 11px; color: var(--ink-2); margin-top: 4px; }
+.doc .stamp { position: absolute; right: 26px; top: 108px; border: 2px solid #5f8a5a; color: #5f8a5a; border-radius: 6px; padding: 6px 12px; font: 600 13px var(--ui); letter-spacing: .14em; transform: rotate(-8deg) scale(.6); opacity: 0; transition: all .5s cubic-bezier(.3,1.6,.5,1); }
+.doc .stamp.on { opacity: 1; transform: rotate(-8deg) scale(1); }
+
+/* ---------- two houses ---------- */
+.houses { background: var(--ink); color: var(--paper); padding: 150px 0 140px; overflow: hidden; }
+.houses .eyebrow { color: #e7a998; }
+.houses .sec-head p { color: #cfc2bd; }
+.houses .sec-head h2 em { font-family: var(--script); font-style: normal; color: #e7a998; font-weight: 400; }
+.line-wrap { position: relative; margin: 20px 0 50px; }
+.line-wrap svg { width: 100%; height: 40px; display: block; overflow: visible; }
+.stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.stage { border-top: 1px solid rgba(255,255,255,.18); padding-top: 26px; }
+.stage .when { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #e7a998; }
+.stage h3 { font-size: 44px; margin: 12px 0 12px; }
+.stage p { color: #cfc2bd; font-size: 16px; margin: 0 0 18px; }
+.stage .who { display: inline-flex; font-size: 13px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); }
+.stage .who.fh { background: #e7a998; color: var(--ink); border-color: #e7a998; }
+.almost { margin-top: 90px; display: grid; grid-template-columns: 420px 1fr; gap: 60px; align-items: center; }
+.almost .ph { border-radius: 6px; overflow: hidden; aspect-ratio: 4 / 5; }
+.almost .ph img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.almost h3 { font-size: clamp(44px, 5vw, 74px); margin: 14px 0 18px; }
+.almost h3 em { font-family: var(--script); font-style: normal; color: #e7a998; font-weight: 400; }
+.almost p { color: #cfc2bd; max-width: 32em; margin: 0 0 16px; }
+.almost .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 28px 0 32px; }
+.almost .facts div { border: 1px solid rgba(255,255,255,.14); border-radius: 6px; padding: 16px; }
+.almost .facts b { display: block; font: 400 34px/1 var(--display); color: #fff; margin-bottom: 6px; }
+.almost .facts span { font-size: 13px; color: #cfc2bd; }
+
+/* ---------- socks ---------- */
+.socks { padding: 150px 0; background: var(--blush); overflow: hidden; }
+.socks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+.socks-imgs { position: relative; height: 640px; }
+.socks-imgs .a { position: absolute; left: 0; top: 0; width: 72%; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden; }
+.socks-imgs .b { position: absolute; right: 0; bottom: 0; width: 52%; aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(42,35,33,.5); border: 6px solid var(--paper); }
+.socks-imgs img { width: 100%; height: 100%; object-fit: cover; }
+.socks h2 { font-size: clamp(46px, 5.4vw, 82px); margin: 14px 0 22px; }
+.socks h2 em { font-family: var(--script); font-style: normal; color: var(--rose-deep); font-weight: 400; }
+.socks p { color: var(--ink-2); max-width: 30em; }
+
+/* ---------- testimonial ---------- */
+.quote { padding: 160px 0; text-align: center; }
+.quote blockquote { margin: 26px auto 30px; max-width: 26em; font: 400 clamp(30px, 3.6vw, 50px)/1.25 var(--display); letter-spacing: -.01em; }
+.quote blockquote .w { opacity: .14; }
+.quote cite { font-style: normal; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+
+/* ---------- contact ---------- */
+.contact { background: var(--white); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; min-height: 760px; }
+.contact-ph { position: relative; overflow: hidden; }
+.contact-ph img { position: absolute; inset: -10% 0; width: 100%; height: 120%; object-fit: cover; }
+.contact-body { padding: 90px max(40px, var(--gut-r)) 90px 70px; }
+.contact-body h2 { font-size: clamp(48px, 5.6vw, 84px); margin: 14px 0 12px; }
+.contact-body h2 em { font-family: var(--script); font-style: normal; color: var(--rose-deep); font-weight: 400; }
+.direct { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0 0 34px; font-size: 16px; }
+.direct a { text-decoration: none; border-bottom: 1px solid var(--blush-2); }
+.who-tabs { display: inline-flex; background: var(--paper); border-radius: 999px; padding: 4px; margin-bottom: 22px; }
+.who-tabs button { border: 0; background: none; padding: 10px 18px; border-radius: 999px; font: 400 14px var(--ui); color: var(--ink-2); cursor: pointer; }
+.who-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.full { grid-column: 1 / -1; }
+label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; letter-spacing: .02em; }
+input, textarea { width: 100%; font: 300 16px var(--ui); color: var(--ink); background: var(--paper); border: 1px solid transparent; border-bottom: 1px solid var(--line); border-radius: 4px; padding: 13px 14px; }
+input:focus, textarea:focus { outline: none; border-color: var(--rose); background: #fff; }
+textarea { min-height: 110px; resize: vertical; }
+form .btn { justify-content: center; }
+.thanks { grid-column: 1 / -1; padding: 30px 0; }
+.thanks h3 { font-size: 44px; margin-bottom: 8px; }
+
+/* ---------- footer ---------- */
+footer { background: var(--ink); color: #cfc2bd; padding: 80px 0 40px; font-size: 14px; }
+.fgrid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; }
+footer .mark span { color: #fff; font-size: 40px; }
+footer .mark svg { color: #e7a998; }
+footer h5 { font: 500 11px var(--ui); letter-spacing: .2em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
+footer a { display: block; text-decoration: none; margin-bottom: 8px; }
+footer a:hover { color: #fff; }
+.fine { border-top: 1px solid rgba(255,255,255,.1); margin-top: 60px; padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #988b86; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1000px) {
+  .links { display: none; }
+  .two, .review-pin, .stages, .almost, .socks-grid, .contact-grid, .fgrid { grid-template-columns: 1fr; }
+  .path { min-height: 0; padding: 34px 26px; }
+  .journey-pin { height: auto; padding: 100px 0 60px; }
+  .journey-head { flex-direction: column; align-items: start; }
+  .rail { width: auto; flex-direction: column; padding-right: var(--gut-r); }
+  .step, .step.photo, .step.final { width: 100%; height: auto; min-height: 260px; }
+  .step.photo { height: 420px; }
+  .progress { display: none; }
+  .review-pin { min-height: 0; padding: 100px 0; gap: 50px; }
+  .almost { gap: 34px; }
+  .almost .ph { aspect-ratio: 4 / 3; }
+  .socks-imgs { height: 480px; }
+  .contact-ph { height: 340px; }
+  .contact-body { padding: 60px var(--gut-r) 70px var(--gut); }
+  .hero::after { background: linear-gradient(180deg, rgba(251,246,243,.5) 0%, rgba(251,246,243,.92) 55%, rgba(251,246,243,.98) 100%); }
+  .hero { height: auto; min-height: 100svh; max-height: none; }
+  .hero-copy { justify-content: flex-end; padding-top: calc(env(safe-area-inset-top, 0px) + 130px); padding-bottom: 64px; min-height: 100svh; }
+  .scroll-cue { display: none; }
+  .intro { padding: 100px 0 80px; }
+  .paths, .houses, .socks, .quote { padding: 100px 0; }
+}
+@media (max-width: 620px) {
+  .hdr .pill { display: none; }
+  .hero h1 { font-size: 54px; }
+  .almost .facts { grid-template-columns: 1fr; }
+  form { grid-template-columns: 1fr; }
+  .doc { padding: 26px 20px; }
+  .doc .stamp { right: 14px; top: 92px; }
+  .track span { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .intro p.big .w, .quote blockquote .w { opacity: 1 !important; }
+  .doc .row { opacity: 1; }
+}
+</style>
 </head>
 <body>
 
-<header class="site-header">
-  <nav class="nav">
-    <a href="#home" class="active">Home</a>
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#contact">Contact</a>
-    <a href="wellness/">Wellness</a>
-    <a href="https://jmhainlen.wixsite.com/fertility/online-store/Services-Offered-p501846420">Purchase Services</a>
-  </nav>
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="The Fertility House home">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86S29 72 29 58c0-7 5-12 11-12 4 0 8 2 10 6 2-4 6-6 10-6 6 0 11 5 11 12 0 14-21 28-21 28Z" fill="currentColor" stroke="none"/></svg>
+      <span>The Fertility House</span>
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#story">Jamie's story</a>
+      <a href="#services">Services</a>
+      <a href="#review">The review</a>
+      <a href="#two-houses">Two houses</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="pill" href="/wellness/">The Wellness House →</a>
+  </div>
 </header>
 
-<main>
-  <div class="wrap">
-    <section class="hero" id="home">
-      <img src="images/hero-beach.jpg" alt="Pregnant woman in a white hat on the beach">
-      <div class="hero-inner">
-        <h1>The Fertility House</h1>
-        <svg class="logo-house" viewBox="0 0 100 104" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
-          <path d="M4 48 50 4l46 44"/><path d="M12 40v62h76V40"/>
-          <path d="M50 88S27 72 27 58c0-8 6-13 12-13 5 0 9 3 11 7 2-4 6-7 11-7 6 0 12 5 12 13 0 14-23 30-23 30Z" fill="currentColor" stroke="none"/>
-        </svg>
-        <div class="tagline">One embryo, one baby at a time</div>
+<main id="top">
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-img"><img id="heroImg" src="images/hero-beach.webp" alt="A pregnant woman in a white hat standing on a sunlit beach, hands on her belly"></div>
+    <div class="wrap hero-copy">
+      <div class="eyebrow" data-hero>Surrogacy medical record reviews</div>
+      <h1 style="margin-top:22px"><span class="ln"><span data-hero>One embryo.</span></span><span class="ln"><span data-hero>One baby.</span></span><span class="ln"><span data-hero><em>At a time.</em></span></span></h1>
+      <p class="sub" data-hero>Jamie Hainlen, MSN, FNP-C, reviews gestational carriers' medical records for agencies and clinics, and helps carriers find the right family.</p>
+      <div class="ctas" data-hero>
+        <a class="btn" href="#agency">I'm an agency <span class="arr">→</span></a>
+        <a class="btn light" href="#carrier">I want to be a carrier</a>
       </div>
-    </section>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">Scroll<i></i></div>
+  </section>
 
-    <section class="about" id="about">
-      <div class="about-copy">
-        <h2 class="script-h">About Me</h2>
-        <h3>Who am I?</h3>
-        <p>My name is Jamie Hainlen, MSN, FNP-C. I am a Board certified Family Nurse Practitioner. I hold a Bachelor's Degree in Business from Northern Arizona University and a Master’s Degree in Nursing from California Baptist University. I have over 9 years of experience and training in Reproductive Endocrinology and have trained with some of the very best top physicians in the OC area.</p>
-        <p>I have counseled with doctors, lawyers, and psychiatrists while overseeing hundreds of third-party cases (including both surrogates/gestational carriers and egg donors).</p>
+  <div class="marquee" aria-hidden="true"><div class="track">
+    <span>9+ years in reproductive endocrinology</span><span>Hundreds of third-party cases</span><span>1–2 week turnaround</span><span>Free for gestational carriers</span><span>Board-certified FNP</span>
+    <span>9+ years in reproductive endocrinology</span><span>Hundreds of third-party cases</span><span>1–2 week turnaround</span><span>Free for gestational carriers</span><span>Board-certified FNP</span>
+  </div></div>
 
-        <h3>The service for the agency</h3>
-        <p>Through years of education and experience, I developed an effective system for screening the medical records of surrogates and gestational carriers. After carefully reviewing your gestational carrier’s records, I will provide you with a <em>Medical Record Review and Summary Statement</em> you can share with the fertility clinic of your choice. You can also use this <em>Summary Statement</em> as an adjunct to the candidate's file for future intended parents. This will aid in a more thorough vetting of candidates with the idea that you will have a faster approval of your candidate with the fertility clinic; likewise it will offer you peace of mind that the candidate you are presenting is an ideal candidate for surrogacy.</p>
+  <!-- Intro -->
+  <section class="intro" id="story">
+    <div class="wrap">
+      <div class="eyebrow">Why The Fertility House exists</div>
+      <p class="big" data-words>Infertility is confusing, frustrating and unfair. Injections, consultations, glimmers of hope and heartbreaking disappointments. <em>I know.</em> I've been through all of it.</p>
+    </div>
+  </section>
 
-        <h3>The service for the gestational carrier</h3>
-        <p>Are you a surrogate and looking for a family to work with? Well, you have come to the right place! For free, I will personally review your medical records and create a <em>Medical Record Review and Summary Statement</em>. I will represent you by connecting you to a top agency. I will also coach you along the way and provide all the support you need through your surrogacy journey.</p>
-
-        <h3>Why do this?</h3>
-        <p>Infertility is confusing, frustrating, and unfair. Injections, consultations, glimmers of hope, heartbreaking disappointments … I know. I’ve been through it all.</p>
-        <p>My husband and I struggled through years of infertility, unsuccessful egg donation retrieval, four rounds of IUI, two rounds of IVF, two failed embryo transfers, and two miscarriages. Finally, our little rainbow baby success story made us the parents we had always dreamt about becoming. I have experienced all of the pain and all of the joy from both personal and professional viewpoints.</p>
-        <p>My journey led to my passion to use what I’ve learned … to help families who want to have a baby.</p>
-        <p>Whether you are an agency needing medical records reviewed or an individual prospective gestational carrier, I’m so happy you are here and have found me! I’d love to connect and help you in this journey — one embryo one baby at a time, creating families and making dreams come true!</p>
+  <!-- Journey: horizontal pinned scroll -->
+  <section class="journey" aria-labelledby="journeyTitle">
+    <div class="journey-pin" id="journeyPin">
+      <div class="wrap journey-head">
+        <h2 id="journeyTitle">Before I was a provider, I was the patient.</h2>
+        <p>Years of infertility made Jamie the nurse practitioner she is: someone who reads every chart like it's her own story.</p>
       </div>
-      <div class="about-photo">
-        <img src="images/jamie.jpg" alt="Jamie Hainlen, MSN, FNP-C">
+      <div class="rail" id="rail">
+        <div class="step"><div class="n">Years</div><div><h3>Of trying</h3><p>Month after month of hope and waiting with her husband.</p></div></div>
+        <div class="step"><div class="n">1</div><div><h3>Egg donor retrieval</h3><p>An unsuccessful egg donation retrieval.</p></div></div>
+        <div class="step"><div class="n">4</div><div><h3>Rounds of IUI</h3><p>Four intrauterine inseminations.</p></div></div>
+        <div class="step dark"><div class="n">2</div><div><h3>Rounds of IVF</h3><p>Two full IVF cycles: injections, monitoring, retrievals.</p></div></div>
+        <div class="step photo"><img src="images/jamie.webp" alt="Jamie Hainlen in a white coat, smiling"></div>
+        <div class="step"><div class="n">2</div><div><h3>Failed transfers</h3><p>Two embryo transfers that didn't take.</p></div></div>
+        <div class="step dark"><div class="n">2</div><div><h3>Miscarriages</h3><p>Two losses she carries with her into every case she reviews.</p></div></div>
+        <div class="step final"><div class="n">Rainbow baby</div><div><h3 style="font-size:34px">And then, a family.</h3><p>"I've felt all of the pain and all of the joy, from both sides. My journey became my passion: helping families who want to have a baby."</p></div></div>
       </div>
-    </section>
+      <div class="progress" aria-hidden="true"><i id="railProg"></i></div>
+    </div>
+  </section>
 
-    <section class="agency" id="services">
-      <h2 class="script-h">Menu of Services for the Agency</h2>
-      <div class="steps">
-        <div class="step">
-          <svg viewBox="0 0 100 84" aria-hidden="true">
-            <circle cx="34" cy="50" r="30" fill="#e9a48f"/>
-            <circle cx="44" cy="34" r="30" fill="#e0758f" opacity=".9"/>
-            <circle cx="62" cy="52" r="30" fill="#4caf6e"/>
-            <text x="62" y="62" text-anchor="middle" font-size="32" font-family="Arial" fill="#1e3a2a">$</text>
-          </svg>
-          <h4>Pay for Review Services</h4>
-          <p>Comprehensive, detailed medical record review (1–2 week turnaround time)</p>
+  <!-- Two paths -->
+  <section class="paths" id="services">
+    <div class="wrap">
+      <div class="sec-head" data-rise>
+        <div><div class="eyebrow">Services</div><h2>Two ways in.</h2></div>
+        <p>Whether you're an agency vetting a candidate or a woman hoping to carry for a family, it starts with a careful read of the medical record.</p>
+      </div>
+      <div class="two">
+        <article class="path agency" id="agency" data-rise>
+          <span class="tag">For agencies</span>
+          <h3>A faster yes from the <em>clinic</em>.</h3>
+          <p>A system Jamie built over years of screening surrogates and gestational carriers. Share the summary with any fertility clinic, or add it to the candidate's file for intended parents.</p>
+          <ol>
+            <li><div><b>Purchase the review</b><span>Comprehensive and detailed, with a 1–2 week turnaround. Rush available.</span></div></li>
+            <li><div><b>Send the records</b><span>Email every applicable record to jamie@thefertilityhouse.com.</span></div></li>
+            <li><div><b>Receive the summary</b><span>A signed Medical Record Review and Summary Statement for your carrier.</span></div></li>
+          </ol>
+          <div class="foot"><a class="btn" href="https://jmhainlen.wixsite.com/fertility/online-store/Services-Offered-p501846420">Purchase a review <span class="arr">→</span></a><a href="#review" style="font-size:14px">See what's in it</a></div>
+        </article>
+        <article class="path carrier" id="carrier" data-rise>
+          <span class="tag">For gestational carriers</span>
+          <h3>Looking for your <em>family</em>?</h3>
+          <p>You've come to the right place. Jamie reviews your records for free, writes your Summary Statement, and represents you to a top agency. Then she coaches you through every step of the journey.</p>
+          <ol>
+            <li><div><b>Reach out</b><span>Call, text or email. It's a conversation, not an application.</span></div></li>
+            <li><div><b>Free record review</b><span>Your own Medical Record Review and Summary Statement.</span></div></li>
+            <li><div><b>Matched and supported</b><span>Introduced to a top agency, with Jamie in your corner the whole way.</span></div></li>
+          </ol>
+          <div class="foot"><div><div class="price">Free<small>for carriers</small></div><div class="contact-lines"><a href="tel:5624818946">562-481-8946</a> · <a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a></div></div><a class="btn on-dark" href="#contact">Let's connect <span class="arr">→</span></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Review document: pinned, writes itself -->
+  <section class="review" id="review">
+    <div class="wrap review-pin" id="reviewPin">
+      <div class="review-copy">
+        <div class="eyebrow">The deliverable</div>
+        <h2>The Medical Record Review and Summary Statement.</h2>
+        <p>Every pregnancy, every record, read line by line. Then a clear, signed summary that agencies, clinics and intended parents can trust, confirmed with a one-time phone consult with the carrier.</p>
+        <ul><li>Valid for one year from signing</li><li>Addendums available for new medical changes</li><li>Kept confidential and released only with signed permission</li></ul>
+      </div>
+      <div class="doc" aria-label="Example Summary Statement">
+        <div class="doc-top"><div><small>Medical Record Review</small><b>Summary Statement</b><small>Candidate · GC-2026-0418</small></div>
+          <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86S29 72 29 58c0-7 5-12 11-12 4 0 8 2 10 6 2-4 6-6 10-6 6 0 11 5 11 12 0 14-21 28-21 28Z" fill="currentColor" stroke="none"/></svg></div>
+        <div class="stamp" id="stamp">REVIEWED</div>
+        <div class="row" data-row><span class="ck">✓</span><span>Obstetric history</span><em>3 pregnancies</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>Prenatal records</span><em>Complete</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>Labor and delivery</span><em>3 vaginal</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>Postpartum course</span><em>Uncomplicated</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>BMI, vitals and labs</span><em>Within range</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>Medications and history</span><em>Reviewed</em></div>
+        <div class="row" data-row><span class="ck">✓</span><span>Phone consult with candidate</span><em>Confirmed</em></div>
+        <div class="lines" aria-hidden="true"><i style="width:100%"></i><i style="width:92%"></i><i style="width:96%"></i><i style="width:64%"></i></div>
+        <div class="sig"><div><div class="name">Jamie Hainlen</div><small>Jamie Hainlen, MSN, FNP-C</small></div><small style="text-align:right">Example document<br>for illustration</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two houses -->
+  <section class="houses" id="two-houses">
+    <div class="wrap">
+      <div class="sec-head" data-rise>
+        <div><div class="eyebrow">Two houses, one journey</div><h2>Before, during <em>and after.</em></h2></div>
+        <p>A family doesn't start at the transfer or end at the birth. The Fertility House handles the medical review. The Wellness House gets bodies ready for it, and helps them recover after.</p>
+      </div>
+      <div class="line-wrap" aria-hidden="true"><svg viewBox="0 0 1000 40" preserveAspectRatio="none"><path id="journeyLine" d="M0 20 C 160 0, 340 40, 500 20 S 840 0, 1000 20" fill="none" stroke="#e7a998" stroke-width="2"/></svg></div>
+      <div class="stages">
+        <div class="stage" data-stage><div class="when">Before</div><h3>Get ready</h3><p>Weight, blood sugar and hormones shape whether a body is ready to carry. Many agencies and clinics set a BMI limit for carriers, and women with PCOS often need regular cycles first.</p><span class="who">The Wellness House</span></div>
+        <div class="stage" data-stage><div class="when">During</div><h3>Get approved</h3><p>Every pregnancy record reviewed line by line, and a signed Summary Statement that agencies and clinics rely on.</p><span class="who fh">The Fertility House</span></div>
+        <div class="stage" data-stage><div class="when">After</div><h3>Get back to you</h3><p>Sleep loss, recovery, and a body that just did something extraordinary. Wellness programs pick up when the time is right.</p><span class="who">The Wellness House</span></div>
+      </div>
+      <div class="almost">
+        <div class="ph" data-rise><img src="images/jamie.webp" alt="Jamie Hainlen, MSN, FNP-C"></div>
+        <div data-rise>
+          <div class="eyebrow">Why both, at the same time</div>
+          <h3>Almost a <em>carrier?</em></h3>
+          <p>Some of the best surrogate candidates are turned away for one number: BMI. Instead of a no, Jamie can offer a plan. Work with The Wellness House to reach your agency's target, then come back for your free record review.</p>
+          <p>Same nurse practitioner, same standard of care, on both sides.</p>
+          <div class="facts">
+            <div><b>1 nurse</b><span>who reviews carrier records and writes your wellness plan</span></div>
+            <div><b>2 months</b><span>GLP-1s stop at least 2 months before pregnancy, so the timeline is built in</span></div>
+            <div><b>$0</b><span>record review for carriers, always</span></div>
+          </div>
+          <a class="btn on-dark" href="/wellness/">Visit The Wellness House <span class="arr">→</span></a>
         </div>
-        <div class="step">
-          <svg viewBox="0 0 84 84" fill="none" stroke="#777" stroke-width="3" aria-hidden="true">
-            <circle cx="42" cy="42" r="38"/>
-            <path d="M34 20h16v14h14v16H50v14H34V50H20V34h14Z"/>
-          </svg>
-          <h4>Provide Records for Review</h4>
-          <p>Email all applicable medical records for a comprehensive medical record review of your gestational carrier to <a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a></p>
-        </div>
-        <div class="step">
-          <svg viewBox="0 0 110 60" fill="none" stroke="#777" stroke-width="3" stroke-linejoin="round" aria-hidden="true">
-            <path d="M8 22h40M14 22c-4 10-2 30 12 32 14-2 16-22 12-32M20 14l8-6 8 6"/>
-            <path d="M54 54V20c0-8 10-14 18-10l8 4 14 4-12 6c8 6 14 14 14 30Z"/>
-          </svg>
-          <h4>Delivery of the Medical Record Review Summary</h4>
-          <p>After all medical records have been reviewed you will receive the <em>Medical Record Review and Summary Statement</em> for your gestational carrier.</p>
-        </div>
       </div>
-      <a class="btn" href="https://jmhainlen.wixsite.com/fertility/online-store/Services-Offered-p501846420">Click Here to Purchase Services</a>
-    </section>
+    </div>
+  </section>
 
-    <section class="carrier">
-      <h2 class="script-h">Menu of Services for You<br>The Gestational Carrier</h2>
-      <svg viewBox="0 0 84 80" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true">
-        <path d="M30 6C14 6 6 18 6 34h24Z"/>
-        <path d="M6 34h58c0 12-8 24-29 24S6 46 6 34Z"/>
-        <path d="M64 34c0-8 4-12 12-12"/>
-        <circle cx="18" cy="70" r="7"/><circle cx="52" cy="70" r="7"/>
-        <path d="M24 58l-4 6M46 58l4 6"/>
-      </svg>
-      <p>Comprehensive medical record<br>review and representation for free!</p>
-      <p>Let's connect!<br>Call, text or email me<br>
-        <a href="tel:5624818946">562-481-8946</a><br>
-        <a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a></p>
-    </section>
+  <!-- Socks signature -->
+  <section class="socks" id="socks">
+    <div class="wrap socks-grid">
+      <div class="socks-imgs">
+        <div class="a" data-par="-40"><img src="wellness/img/socks-lifestyle.webp" alt="A woman relaxing with coffee, wearing pink grip socks with sperm and egg shaped grips on the soles"></div>
+        <div class="b" data-par="40"><img src="wellness/img/socks-product.webp" alt="Pink grip sock and its sole, covered in raised sperm and egg shapes"></div>
+      </div>
+      <div data-rise>
+        <div class="eyebrow">Our signature</div>
+        <h2>Transfer Day <em>Socks</em></h2>
+        <p>Lucky socks are an IVF tradition. Every carrier Jamie works with gets a pair for transfer day: soft blush cotton, light compression, and grips on the sole shaped like little sperm and eggs.</p>
+        <p>Every Wellness House member gets a pair too. It's how you know you're in Jamie's care.</p>
+      </div>
+    </div>
+  </section>
 
-    <section class="testimonials" id="testimonials">
-      <h2 class="script-h">Testimonials</h2>
-      <blockquote class="quote">“Jamie was super efficient in reviewing my medical records which helped expedite the surrogacy process. Without her help the process would have lagged for another couple months. Thankfully a beautiful healthy baby boy was transferred shortly after her review and born in November. Couldn’t be more thankful for Jamie and all of her efficiency.”</blockquote>
-      <div class="cite">Lauren H. (Gestational Carrier)<br>South Lake Tahoe, CA</div>
-      <div class="dot"></div>
-    </section>
-  </div>
+  <!-- Testimonial -->
+  <section class="quote">
+    <div class="wrap">
+      <div class="eyebrow">From a gestational carrier</div>
+      <blockquote data-words>Jamie was super efficient in reviewing my medical records, which helped expedite the surrogacy process. Without her help it would have lagged another couple of months. A beautiful, healthy baby boy was transferred shortly after her review, and born in November.</blockquote>
+      <cite>Lauren H. · South Lake Tahoe, CA</cite>
+    </div>
+  </section>
 
+  <!-- Contact -->
   <section class="contact" id="contact">
-    <div class="contact-photo"><img src="images/contact.jpg" alt="Newborn baby's feet in a white blanket"></div>
-    <div class="contact-body">
-      <h2 class="script-h">Get in Touch</h2>
-      <div class="contact-info">
-        <a href="tel:5624818946">(562) 481-8946</a><br>
-        <a href="mailto:jamie@thefertilityhouse.com?subject=Saw%20your%20website%20-%20had%20a%20question">jamie@thefertilityhouse.com</a>
+    <div class="contact-grid">
+      <div class="contact-ph"><img data-par="-60" src="images/contact.webp" alt="A newborn's feet wrapped in a soft white blanket"></div>
+      <div class="contact-body">
+        <div class="eyebrow">Get in touch</div>
+        <h2>Let's <em>connect.</em></h2>
+        <div class="direct"><a href="tel:5624818946">(562) 481-8946</a><a href="mailto:jamie@thefertilityhouse.com?subject=Saw%20your%20website%20-%20had%20a%20question">jamie@thefertilityhouse.com</a></div>
+        <div class="who-tabs" role="group" aria-label="I am"><button type="button" data-who="agency" aria-pressed="true">I'm an agency</button><button type="button" data-who="carrier" aria-pressed="false">I'm a carrier</button></div>
+        <form id="cform" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot">
+          <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="type" id="ftype" value="agency">
+          <p hidden><label>Leave blank <input name="bot"></label></p>
+          <div><label for="f1">Carrier's first name</label><input id="f1" name="first_name" autocomplete="off"></div>
+          <div><label for="f2">Carrier's last name</label><input id="f2" name="last_name" autocomplete="off"></div>
+          <div class="full"><label for="f3">Email *</label><input id="f3" name="email" type="email" required autocomplete="email"></div>
+          <div data-agency><label for="f4">Agency name</label><input id="f4" name="agency_name" autocomplete="organization"></div>
+          <div data-agency><label for="f5">Agency representative</label><input id="f5" name="agency_rep" autocomplete="name"></div>
+          <div class="full"><label for="f6">Phone</label><input id="f6" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="full"><label for="f7">Message</label><textarea id="f7" name="message"></textarea></div>
+          <div class="full"><button class="btn" type="submit" style="width:100%">Send to Jamie <span class="arr">→</span></button></div>
+        </form>
       </div>
-      <form name="contact" method="POST" data-netlify="true">
-        <div><label for="fn">First Name of Gestational Carrier</label><input id="fn" name="first_name"></div>
-        <div><label for="ln">Last Name of Gestational Carrier</label><input id="ln" name="last_name"></div>
-        <div class="full"><label for="em">Agency OR Gestational Carrier Email *</label><input id="em" name="email" type="email" required></div>
-        <div class="full"><label for="an">Agency Name</label><input id="an" name="agency_name"></div>
-        <div class="full"><label for="ar">Agency Representative</label><input id="ar" name="agency_rep"></div>
-        <div class="full"><label for="ph">Agency OR Gestational Carrier Phone Number</label><input id="ph" name="phone" type="tel"></div>
-        <div class="full"><label for="msg">Message</label><textarea id="msg" name="message"></textarea></div>
-        <button class="send" type="submit">Send</button>
-      </form>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="social">
-    <a href="#" aria-label="Instagram">IG</a>
-    <a href="#" aria-label="Facebook">f</a>
-    <a href="http://www.linkedin.com/in/jmhfnp" aria-label="LinkedIn">in</a>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><a class="mark" href="#top"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86S29 72 29 58c0-7 5-12 11-12 4 0 8 2 10 6 2-4 6-6 10-6 6 0 11 5 11 12 0 14-21 28-21 28Z" fill="currentColor" stroke="none"/></svg><span>The Fertility House</span></a>
+        <p style="max-width:26em;margin-top:14px">A nursing corporation providing third-party medical record reviews for surrogacy. One embryo, one baby at a time.</p></div>
+      <div><h5>Explore</h5><a href="#story">Jamie's story</a><a href="#services">Services</a><a href="#review">The review</a><a href="#two-houses">Two houses</a></div>
+      <div><h5>Connect</h5><a href="tel:5624818946">(562) 481-8946</a><a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a><a href="http://www.linkedin.com/in/jmhfnp">LinkedIn</a><a href="/wellness/">The Wellness House</a></div>
+    </div>
+    <div class="fine"><span>© 2026 The Fertility House. All rights reserved.</span><a href="disclaimer.html" style="display:inline;margin:0">Legal disclaimer</a></div>
   </div>
-  The Fertility House Copyright 2022 – All Rights Reserved.<br>
-  <a class="legal" href="disclaimer.html">Legal Disclaimer</a>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* header */
+const hdr = document.getElementById('hdr');
+const onScroll = () => hdr.classList.toggle('solid', scrollY > 40);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+/* split text into words for scroll-scrubbed reveals */
+document.querySelectorAll('[data-words]').forEach((el) => {
+  const walk = (node) => [...node.childNodes].forEach((n) => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((t) => { if (!t.trim()) frag.appendChild(document.createTextNode(t)); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = t; frag.appendChild(s); } });
+      n.replaceWith(frag);
+    } else walk(n);
+  });
+  walk(el);
+});
+
+/* contact: agency vs carrier */
+document.querySelectorAll('[data-who]').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-who]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  const agency = b.dataset.who === 'agency';
+  document.getElementById('ftype').value = b.dataset.who;
+  document.querySelectorAll('[data-agency]').forEach((x) => x.hidden = !agency);
+  document.querySelector('label[for=f1]').textContent = agency ? "Carrier's first name" : 'First name';
+  document.querySelector('label[for=f2]').textContent = agency ? "Carrier's last name" : 'Last name';
+}));
+document.getElementById('cform').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  try { await fetch('/', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(f)).toString() }); } catch (err) {}
+  f.innerHTML = '<div class="thanks"><h3>Thank you.</h3><p style="color:var(--ink-2)">Jamie will be in touch within one business day.</p></div>';
+});
+
+/* motion */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (window.gsap && window.ScrollTrigger && !reduce) {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // hero entrance + slow zoom-out on scroll
+  gsap.from('[data-hero]', { yPercent: 110, opacity: 0, duration: 1.2, ease: 'power4.out', stagger: .09, delay: .15 });
+  gsap.fromTo('#heroImg', { scale: 1.18 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero-copy', { yPercent: -18, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // word-by-word reveals
+  document.querySelectorAll('[data-words]').forEach((el) => {
+    gsap.to(el.querySelectorAll('.w'), { opacity: 1, stagger: .05, ease: 'none', scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 45%', scrub: true } });
+  });
+
+  // rise-in blocks
+  gsap.utils.toArray('[data-rise]').forEach((el) => gsap.from(el, { y: 60, opacity: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 86%' } }));
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 1001px)', () => {
+    // journey: pin and scroll the rail sideways
+    const rail = document.getElementById('rail');
+    const dist = () => rail.scrollWidth - innerWidth * .7;
+    gsap.to(rail, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '#journeyPin', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: .6, invalidateOnRefresh: true,
+      onUpdate: (self) => { document.getElementById('railProg').style.width = (self.progress * 100) + '%'; } } });
+    gsap.from('.step', { y: 40, opacity: 0, stagger: .06, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '#journeyPin', start: 'top 70%' } });
+
+    // review: pin the document and check rows off as you scroll
+    const rows = gsap.utils.toArray('[data-row]');
+    ScrollTrigger.create({ trigger: '#reviewPin', start: 'top top', end: '+=1100', pin: true, scrub: true,
+      onUpdate: (self) => { const n = Math.floor(self.progress * (rows.length + 1.5)); rows.forEach((r, i) => r.classList.toggle('on', i < n)); document.getElementById('stamp').classList.toggle('on', n > rows.length); } });
+    gsap.from('.doc .lines i', { scaleX: 0, stagger: .1, ease: 'none', scrollTrigger: { trigger: '#reviewPin', start: 'top top', end: '+=1100', scrub: true } });
+  });
+  mm.add('(max-width: 1000px)', () => {
+    gsap.utils.toArray('.step').forEach((el) => gsap.from(el, { y: 50, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+    const rows = gsap.utils.toArray('[data-row]');
+    ScrollTrigger.create({ trigger: '.doc', start: 'top 75%', end: 'bottom 40%', scrub: true,
+      onUpdate: (self) => { const n = Math.floor(self.progress * (rows.length + 1.5)); rows.forEach((r, i) => r.classList.toggle('on', i < n)); document.getElementById('stamp').classList.toggle('on', n > rows.length); } });
+  });
+
+  // two houses: draw the line, light the stages
+  const path = document.getElementById('journeyLine'); const len = path.getTotalLength();
+  gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+  gsap.to(path, { strokeDashoffset: 0, ease: 'none', scrollTrigger: { trigger: '.stages', start: 'top 85%', end: 'bottom 55%', scrub: true } });
+  gsap.from('[data-stage]', { y: 50, opacity: 0, stagger: .18, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.stages', start: 'top 80%' } });
+
+  // parallax
+  gsap.utils.toArray('[data-par]').forEach((el) => gsap.to(el, { y: +el.dataset.par, ease: 'none', scrollTrigger: { trigger: el.closest('section'), start: 'top bottom', end: 'bottom top', scrub: true } }));
+} else {
+  document.querySelectorAll('.w').forEach((w) => w.style.opacity = 1);
+  document.querySelectorAll('[data-row]').forEach((r) => r.classList.add('on'));
+  document.getElementById('stamp').classList.add('on');
+}
+</script>
 </body>
 </html>

@@ -9,3 +9,8 @@
   for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex"
+
+[[redirects]]
+  from = "/stackr/*"
+  to = "/doseday/:splat"
+  status = 301

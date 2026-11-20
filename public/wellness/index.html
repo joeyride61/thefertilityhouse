@@ -330,6 +330,24 @@ footer .logo span { color: #fff; }
 @media (max-width: 1000px) { .app-grid { grid-template-columns: 1fr; } .phones { height: 560px; max-width: 520px; } }
 @media (max-width: 620px) { .phones { height: 470px; } .phone { width: 210px; height: 440px; border-radius: 34px; } .phone.a { left: 0; } .phone.b { left: auto; right: 0; } .scr { font-size: 9px; } }
 
+
+/* socks signature */
+.socks { background: var(--blush); }
+.socks-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+.socks-grid > * { min-width: 0; }
+.sock-main { border-radius: 4px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--blush-2); }
+.sock-main img { width: 100%; height: 100%; object-fit: cover; }
+.sock-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.sock-thumbs button { padding: 0; border: 2px solid transparent; border-radius: 4px; overflow: hidden; aspect-ratio: 4 / 3; cursor: pointer; background: none; }
+.sock-thumbs button[aria-pressed="true"] { border-color: var(--ink); }
+.sock-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.socks h2 { font-size: clamp(40px, 5vw, 66px); margin: 14px 0 16px; }
+.socks h2 em { font-family: var(--script); font-style: normal; color: var(--coral-deep); font-weight: 400; }
+.socks p { color: var(--ink-2); font-size: 17px; margin: 0 0 16px; }
+.gift { display: inline-flex; align-items: center; gap: 10px; background: var(--paper); border-radius: 999px; padding: 10px 18px; font-size: 15px; margin: 6px 0 22px; }
+.gift b { font-weight: 500; color: var(--coral-deep); }
+@media (max-width: 1000px) { .socks-grid { grid-template-columns: 1fr; gap: 34px; } }
+
 /* reveal */
 .rv { transition: opacity .9s ease, transform .9s ease; }
 .js .rv.pre { opacity: 0; transform: translateY(28px); }
@@ -390,7 +408,8 @@ footer .logo span { color: #fff; }
       <a href="#science">Science</a>
       <a href="#mixing">Mixing guide</a>
       <a href="#bundles">Bundles</a>
-      <a href="#app">Stackr app</a>
+      <a href="#socks">Socks</a>
+      <a href="#app">Doseday app</a>
       <a href="../">The Fertility House</a>
     </div>
     <button class="cart-btn" data-cart-open aria-label="Open your plan">Plan <span class="n" data-cart-count data-zero>0</span></button>
@@ -416,7 +435,7 @@ footer .logo span { color: #fff; }
       <div class="stats rv">
         <div><b>9+ yrs</b><span>in reproductive endocrinology</span></div>
         <div><b>100s</b><span>of third-party cases reviewed</span></div>
-        <div><b>Free</b><span>dose-tracker app with every order</span></div>
+        <div><b>Free</b><span>Doseday app and Transfer Day Socks with every first order</span></div>
         <div><b>2–8°C</b><span>cold-chain shipping on every order</span></div>
       </div>
     </div>
@@ -443,9 +462,11 @@ footer .logo span { color: #fff; }
           <div class="num">ii. The connection</div>
           <h2>Metabolic health is fertility health.</h2>
           <p>Weight, insulin resistance and inflammation shape cycles, egg quality and pregnancy outcomes. The same tools that help with weight loss also help women prepare their bodies, on purpose and on a timeline.</p>
+          <p>It's also why the two houses belong together. Surrogate candidates are often turned away for one number, BMI. Here, that "no" can become a plan.</p>
           <div class="fact-row">
             <div class="fact"><b>5–10%</b><span>body-weight loss can restore ovulation in many women with PCOS.</span><small>ASRM / international PCOS guideline</small></div>
             <div class="fact"><b>2 months</b><span>Semaglutide's label says to stop at least 2 months before a planned pregnancy.</span><small>Wegovy prescribing information</small></div>
+            <div class="fact" style="grid-column:1/-1"><b>One nurse</b><span>The same NP who reviews carriers' records for agencies writes your wellness plan, so getting ready and getting approved happen under one roof.</span><small>The Fertility House + The Wellness House</small></div>
           </div>
         </article>
         <article class="chapter" data-ch="2">
@@ -582,13 +603,36 @@ footer .logo span { color: #fff; }
   </section>
 
 
+
+  <!-- Socks signature -->
+  <section id="socks" class="socks">
+    <div class="container socks-grid">
+      <div class="rv">
+        <div class="sock-main"><img id="sockMain" src="img/socks-lifestyle.webp" alt="Woman relaxing on a sofa in pink grip socks with sperm and egg shaped grips on the soles"></div>
+        <div class="sock-thumbs" role="group" aria-label="Sock photos">
+          <button type="button" data-sock="socks-lifestyle" aria-pressed="true"><img src="img/socks-lifestyle.webp" alt="Lifestyle photo"></button>
+          <button type="button" data-sock="socks-product" aria-pressed="false"><img src="img/socks-product.webp" alt="Sock and sole detail"></button>
+          <button type="button" data-sock="socks-couple" aria-pressed="false"><img src="img/socks-couple.webp" alt="Couple in matching socks"></button>
+        </div>
+      </div>
+      <div class="rv">
+        <div class="eyebrow">Our signature</div>
+        <h2>Transfer Day <em>Socks</em></h2>
+        <p>Lucky socks are an IVF tradition. At The Fertility House, every gestational carrier gets a pair for transfer day: soft blush cotton with grips on the sole shaped like little sperm and eggs.</p>
+        <p>They're how you know you're in Jamie's care, so every Wellness House member gets a pair too.</p>
+        <div class="gift"><b>Free</b> with your first order · one size, his and hers</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#programs">Start your plan</a><a class="btn light" href="../#two-houses">Why two houses?</a></div>
+      </div>
+    </div>
+  </section>
+
   <!-- App promo -->
   <section id="app" class="app">
     <div class="container app-grid">
       <div class="rv">
         <span class="free-pill">Free with any purchase</span>
-        <h2>Meet Stackr. <em>Your doses, in your pocket.</em></h2>
-        <p>Every Wellness House order comes with Stackr, our tracker app, at no extra cost. It knows your exact vial, so it does the math and the remembering for you.</p>
+        <h2>Meet Doseday. <em>Your doses, in your pocket.</em></h2>
+        <p>Every Wellness House order comes with Doseday, our tracker app, at no extra cost. It knows your exact vial, so it does the math and the remembering for you.</p>
         <ul class="feat">
           <li><div><b>Dose reminders</b><br>A nudge on injection day, with the units to draw already worked out.</div></li>
           <li><div><b>Calendar and log</b><br>See every dose, skipped day and injection site at a glance.</div></li>
@@ -596,7 +640,7 @@ footer .logo span { color: #fff; }
           <li><div><b>Progress</b><br>Track weight, energy and side effects, and share them with Jamie at check-ins.</div></li>
           <li><div><b>Works like an app</b><br>Add it to your phone's home screen. Your data stays private to your login.</div></li>
         </ul>
-        <a class="btn" href="/stackr/">Try the Stackr demo</a>
+        <a class="btn" href="/doseday/">Try the Doseday demo</a>
       </div>
       <div class="phones rv" aria-hidden="true">
         <div class="phone a"><div class="scr">
@@ -803,7 +847,7 @@ function openDrawer(id) {
     <div class="eyebrow">${p.kind}</div><h2 id="dName">${p.name}</h2><p class="d-sub">${p.desc}</p>
     <div class="d-img"><img src="img/${p.img}.webp" alt="${p.name} vial"></div>
     <div class="d-price"><b>$${p.price}</b><span>per month · consult, medication, supplies and check-ins included</span></div>
-    <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Stackr tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
+    <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Doseday tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
     <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-add="${p.id}">Add to plan</button><button class="btn light" data-contact data-interest="${p.name}">Ask Jamie a question</button></div>
     <h4>What it is</h4><p>${p.what}</p>
     <h4>Protocol</h4><dl class="spec">${p.spec.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
@@ -829,11 +873,17 @@ function renderBundles() { document.getElementById('bgrid').innerHTML = B.map(b 
   <div class="body"><span class="save">${pct}% off every item</span><h3>${b.name}</h3><p style="margin:0;font-size:15px;color:var(--ink-2)">${b.blurb}</p>
   <ul>${b.items.map(i => `<li>${byId[i].name}</li>`).join('')}</ul>
   <div class="row"><b>${WHCart.money(price)}</b><span>/mo</span><s>$${full}</s></div>
-  <span class="app-tag">+ Free Stackr app included</span>
+  <span class="app-tag">+ Free Doseday app included</span>
   <button class="btn" data-add-bundle="${b.items.join(',')}" data-label="${b.name}" style="margin-top:12px;justify-content:center">Add bundle to plan</button></div></article>`; }).join(''); }
 renderBundles();
 WHCart.on(() => { const active = tabs.querySelector('[aria-selected="true"]'); if (active) showTab(active.dataset.c); });
 
+
+/* sock gallery */
+document.querySelectorAll('[data-sock]').forEach((b) => b.addEventListener('click', () => {
+  document.getElementById('sockMain').src = 'img/' + b.dataset.sock + '.webp';
+  document.querySelectorAll('[data-sock]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+}));
 /* modal */
 const modal = document.getElementById('modal'), form = document.getElementById('cform');
 const INTERESTS = ['Semaglutide','Tirzepatide','GLP-1 pens','NAD+','Sermorelin','Tesamorelin','PT-141','Glutathione','Lipo-MIC + B12','Metabolic Reset','Lean Start','Glow & Restore','Her Vitality','Fertility prep','Not sure yet'];

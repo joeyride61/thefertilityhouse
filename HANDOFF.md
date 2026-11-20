@@ -16,7 +16,7 @@ Status as of Nov 20, 2026. Read this before continuing the project.
 | The Wellness House shop | https://fertility-house-demo.netlify.app/wellness/ |
 | Checkout | https://fertility-house-demo.netlify.app/wellness/checkout.html |
 | Admin CRM (no login in demo mode) | https://fertility-house-demo.netlify.app/admin/ |
-| Stackr app (phone-first, installable) | https://fertility-house-demo.netlify.app/stackr/ |
+| Doseday app (phone-first, installable) | https://fertility-house-demo.netlify.app/doseday/ |
 | Original Wix site | https://www.thefertilityhouse.com/ |
 
 ## Accounts and hosting
@@ -35,12 +35,12 @@ public/                      static site (Netlify publish dir)
   disclaimer.html            her legal disclaimer
   images/                    original photos from her Wix site
   wellness/index.html        Wellness House shop (scroll-pinned story + science, tabs, product drawer,
-                             pens, mixing guide + dose calculator, bundles, Stackr promo, FAQ, contact modal)
+                             pens, mixing guide + dose calculator, bundles, Doseday promo, FAQ, contact modal)
   wellness/cart.js           cart + stacking discount UI (localStorage)
   wellness/checkout.html     checkout; Stripe Payment Element when keys exist, demo mode otherwise
   wellness/img/              3D-rendered vials, pens, bundles, hero (webp)
   admin/index.html           CRM: dashboard, orders (approve/ship/cancel), members, products & pricing
-  stackr/                    Stackr PWA (index.html, manifest, sw.js, icons)
+  stackr/                    Doseday PWA (index.html, manifest, sw.js, icons)
 netlify/functions/
   storefront.mjs             /api/catalog, /api/checkout, /api/stripe/webhook
   admin.mjs                  /api/admin/*
@@ -48,7 +48,7 @@ netlify/functions/
 netlify/lib/
   shared.mjs                 DB client, stacking-discount pricing, admin session, Stripe keys
   stackr.mjs                 product defaults + Will Hainlen demo seed (relative to today)
-netlify/database/migrations/ schema, 26 sample members / 93 sample orders, Stackr tables
+netlify/database/migrations/ schema, 26 sample members / 93 sample orders, Doseday tables
 tools/vial-renders/          three.js scene that renders the vial/pen product photos (see below)
 tools/seed_sample_data.py    generator for the sample-data migration
 ```
@@ -59,10 +59,10 @@ tools/seed_sample_data.py    generator for the sample-data migration
 - **Payment flow:** card is authorized at checkout (Stripe `capture_method: manual`), charged when Jamie clicks **Approve** in the CRM, voided/refunded on decline/cancel.
 - **Order statuses:** pending_review → approved → shipped → delivered (or cancelled).
 - **Products and prices** live in the `products` table, editable in the CRM. Costs and market ranges are **estimates**; replace with real pharmacy quotes.
-- Catalog: semaglutide, tirzepatide, sema/tirz pens, Lipo-MIC + B12, NAD+, glutathione, sermorelin, tesamorelin, PT-141. **BPC-157 and TB-500 are intentionally not sold** (not FDA-approved). Users can still track them in Stackr.
+- Catalog: semaglutide, tirzepatide, sema/tirz pens, Lipo-MIC + B12, NAD+, glutathione, sermorelin, tesamorelin, PT-141. **BPC-157 and TB-500 are intentionally not sold** (not FDA-approved). Users can still track them in Doseday.
 - Regulatory note already flagged to Joe: compounded GLP-1 copies are restricted since the shortages ended; confirm with a pharmacy before selling for real.
 
-## Stackr (dose tracker app)
+## Doseday (dose tracker app)
 
 - Free with any purchase. Demo user is **Will Hainlen** (fictional): tirzepatide linked to two Wellness House orders, plus BPC-157 he added himself on Mon/Wed/Fri.
 - Key features: pick **exact injection weekdays** (Joe's main complaint about other apps is that they guess the days), units to draw on a U-100 syringe, injection-site rotation, 28-day mixed-vial warning, run-out forecast, "reorder by" date (6-day lead time), one-tap reorder of the next batch with the stacking discount, order tracking, "Add to my stack" after delivery, add any peptide.
@@ -87,7 +87,7 @@ Product names, doses and label colors are in `PRODUCTS` / `PENS` in `render.html
 1. **Fertility House redesign:** modern, clean version with the same vibe and content (current page is a faithful Wix copy). Joe wants it "very cool," not a template.
 2. **Grip socks product:** pink, light compression, rubber grip dots shaped like sperm and eggs on the sole. Joe has AI images of them (shared in chat only; ask him to upload the files). Needs a product page and research into custom grip-sock manufacturers.
 3. **Pricing summary:** a one-page market-rate vs. pharmacy-cost table (estimates are already in the CRM products page).
-4. **Later:** real logins (admin + per-user Stackr accounts), real Stripe keys, HIPAA review before any real patient data.
+4. **Later:** real logins (admin + per-user Doseday accounts), real Stripe keys, HIPAA review before any real patient data.
 
 ## Known leftovers
 

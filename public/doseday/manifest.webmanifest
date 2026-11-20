@@ -1,9 +1,9 @@
 {
-  "name": "Stackr",
-  "short_name": "Stackr",
+  "name": "Doseday",
+  "short_name": "Doseday",
   "description": "Your peptide dose tracker. Free with every Wellness House order.",
-  "start_url": "/stackr/",
-  "scope": "/stackr/",
+  "start_url": "/doseday/",
+  "scope": "/doseday/",
   "display": "standalone",
   "background_color": "#f7f2ef",
   "theme_color": "#2b2523",

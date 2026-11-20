@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stackr</title>
-<meta name="description" content="Stackr: your peptide dose tracker. Free with every Wellness House order.">
+<title>Doseday</title>
+<meta name="description" content="Doseday: your peptide dose tracker. Free with every Wellness House order.">
 <meta name="theme-color" content="#2b2523">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Stackr">
+<meta name="apple-mobile-web-app-title" content="Doseday">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
@@ -378,28 +378,28 @@ body { font-size: 17px; line-height: 1.4; touch-action: manipulation; }
 </head>
 <body>
 <div class="stage">
-  <section class="intro" aria-label="About Stackr">
-    <div class="logo"><svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Stackr</div>
+  <section class="intro" aria-label="About Doseday">
+    <div class="logo"><svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Doseday</div>
     <h1>Every dose, every refill, handled.</h1>
-    <p>Stackr is the free tracker that comes with every Wellness House order. This demo shows it through the eyes of Will Hainlen, a member on tirzepatide who also takes BPC-157 he bought elsewhere.</p>
+    <p>Doseday is the free tracker that comes with every Wellness House order. This demo shows it through the eyes of Will Hainlen, a member on tirzepatide who also takes BPC-157 he bought elsewhere.</p>
     <ol>
       <li><span><b>His orders link automatically.</b> Will's Wellness House tirzepatide shows up in his stack with dose, units to draw and supply.</span></li>
       <li><span><b>He adds anything else.</b> BPC-157 was added by hand, on the exact days he picked: Monday, Wednesday and Friday.</span></li>
-      <li><span><b>Stackr sees the run-out coming.</b> It knows he has one dose of tirzepatide left and tells him to reorder now, before there's a gap.</span></li>
+      <li><span><b>Doseday sees the run-out coming.</b> It knows he has one dose of tirzepatide left and tells him to reorder now, before there's a gap.</span></li>
       <li><span><b>One tap reorders the next batch.</b> The order lands in Jamie's CRM for review. When it's delivered, Will adds it to his stack and the countdown resets.</span></li>
     </ol>
     <div class="links"><a class="pill-link" href="/admin/#members">See Will in the CRM ↗</a><a class="pill-link" href="/wellness/">The Wellness House ↗</a></div>
-    <p style="font-size:13px;margin-top:22px">On a phone, open this page and choose <b>Add to Home Screen</b> to install Stackr like an app.</p>
+    <p style="font-size:13px;margin-top:22px">On a phone, open this page and choose <b>Add to Home Screen</b> to install Doseday like an app.</p>
   </section>
 
   <div class="device" id="device">
     <header class="topbar">
-      <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Stackr</div>
+      <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Doseday</div>
       <div class="top-right"><div class="demo"><span>Demo</span><button type="button" id="reset">Reset</button></div>
       <button class="avatar" type="button" aria-label="Viewing as Will Hainlen">WH</button></div>
     </header>
     <main class="scroll" id="view"><div class="loading">Loading your stack…</div></main>
-    <nav class="tabs" aria-label="Stackr">
+    <nav class="tabs" aria-label="Doseday">
       <button type="button" data-tab="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Today</button>
       <button type="button" data-tab="calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</button>
       <button type="button" data-tab="stack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="4" width="14" height="4" rx="2"/><rect x="5" y="10" width="14" height="4" rx="2"/><rect x="5" y="16" width="14" height="4" rx="2"/></svg>My stack</button>
