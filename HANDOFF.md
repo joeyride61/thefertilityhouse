@@ -23,7 +23,7 @@ Status as of Nov 20, 2026. Read this before continuing the project.
 
 - **GitHub:** `joeyride61/thefertilityhouse` (private), branch `main`.
 - **Netlify:** project `fertility-house-demo`, site ID `aa5db061-0fe9-48c5-92ac-dbaf64b50a23`, team "Doug Wetton Properties".
-- **GitHub → Netlify auto-deploy is NOT linked yet.** Joe was given terminal steps (`netlify login`, `netlify link --id <site id>`, `netlify init`, publish dir `public`). Until linked, deploy manually: `netlify deploy --prod` from the repo root, or the Netlify MCP `deploy-site` operation.
+- **GitHub → Netlify auto-deploy is linked.** Every push to `main` deploys to production.
 - **Netlify Database** (Postgres) is provisioned automatically from `netlify/database/migrations/` on deploy.
 - **Environment variables** (Netlify, production context, functions scope): `ADMIN_PASSWORD`, `ADMIN_SECRET`. The admin password was given to Joe in chat; don't commit it. `ADMIN_LOGIN=on` re-enables the admin login (off = open demo). Stripe keys are not set, so checkout runs in **test/demo mode**.
 
@@ -87,8 +87,7 @@ Product names, doses and label colors are in `PRODUCTS` / `PENS` in `render.html
 1. **Fertility House redesign:** modern, clean version with the same vibe and content (current page is a faithful Wix copy). Joe wants it "very cool," not a template.
 2. **Grip socks product:** pink, light compression, rubber grip dots shaped like sperm and eggs on the sole. Joe has AI images of them (shared in chat only; ask him to upload the files). Needs a product page and research into custom grip-sock manufacturers.
 3. **Pricing summary:** a one-page market-rate vs. pharmacy-cost table (estimates are already in the CRM products page).
-4. **Link GitHub to Netlify** for auto-deploys (see above).
-5. **Later:** real logins (admin + per-user Stackr accounts), real Stripe keys, HIPAA review before any real patient data.
+4. **Later:** real logins (admin + per-user Stackr accounts), real Stripe keys, HIPAA review before any real patient data.
 
 ## Known leftovers
 
