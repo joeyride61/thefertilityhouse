@@ -275,6 +275,52 @@ footer .logo span { color: #fff; }
 .thanks { grid-column: 1 / -1; text-align: center; padding: 40px 10px; }
 .thanks h3 { font-size: 40px; margin-bottom: 10px; }
 
+
+/* app promo */
+.app { background: var(--ink); color: #efe6e2; overflow: hidden; }
+.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+.app .eyebrow { color: #e3a89b; }
+.app h2 { font-size: clamp(40px, 5vw, 66px); color: #fff; margin: 14px 0 18px; }
+.app h2 em { font-family: var(--script); font-style: normal; color: #e3a89b; font-weight: 400; }
+.app p { color: #cfc4bf; max-width: 32em; }
+.feat { list-style: none; padding: 0; margin: 26px 0 30px; display: grid; gap: 14px; }
+.feat li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; font-size: 15px; color: #e6dcd8; }
+.feat li::before { content: ""; width: 34px; height: 34px; border-radius: 50%; background: rgba(227,168,155,.15) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e3a89b' stroke-width='2.4'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center/16px no-repeat; }
+.feat b { color: #fff; font-weight: 500; }
+.free-pill { display: inline-flex; gap: 8px; align-items: center; background: #e3a89b; color: var(--ink); font: 500 12px var(--ui); letter-spacing: .14em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; }
+.app .btn { background: #fff; color: var(--ink); border-color: #fff; }
+.app .btn:hover { background: #e3a89b; border-color: #e3a89b; }
+.phones { position: relative; height: 600px; }
+.phone { position: absolute; width: 270px; height: 560px; border-radius: 42px; background: #111; padding: 10px; box-shadow: 0 40px 80px -30px rgba(0,0,0,.7); }
+.phone.a { left: 8%; top: 10px; transform: rotate(-5deg); }
+.phone.b { left: 46%; top: 40px; transform: rotate(5deg); }
+.scr { width: 100%; height: 100%; border-radius: 33px; background: var(--paper); color: var(--ink); overflow: hidden; padding: 30px 16px 16px; font-size: 11px; position: relative; }
+.scr::before { content: ""; position: absolute; top: 8px; left: 50%; width: 80px; height: 20px; margin-left: -40px; background: #111; border-radius: 999px; }
+.scr h5 { font: 500 20px var(--display); margin: 6px 0 2px; }
+.scr .s { color: var(--ink-2); font-size: 10px; }
+.next { background: var(--blush); border-radius: 16px; padding: 14px; margin: 12px 0; }
+.next b { font: 500 26px var(--display); display: block; }
+.next .vl { display: flex; align-items: center; gap: 10px; }
+.next img { width: 46px; height: 56px; object-fit: cover; border-radius: 8px; }
+.next .go { margin-top: 10px; background: var(--ink); color: #fff; text-align: center; border-radius: 999px; padding: 8px; font-size: 11px; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-top: 10px; }
+.cal span { padding: 6px 0; border-radius: 8px; font-size: 10px; }
+.cal .h { color: var(--ink-2); font-size: 9px; }
+.cal .d { background: var(--coral); color: #fff; }
+.cal .t { outline: 1.5px solid var(--ink); }
+.cal .p { background: #ecd3cb; }
+.mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.mini div { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+.mini b { font: 500 22px var(--display); display: block; }
+.wchart { display: flex; align-items: flex-end; gap: 6px; height: 90px; margin: 12px 0 4px; }
+.wchart i { flex: 1; background: var(--blush-2); border-radius: 4px 4px 0 0; }
+.wchart i:last-child { background: var(--coral); }
+.log { margin-top: 10px; display: grid; gap: 6px; }
+.log div { display: flex; justify-content: space-between; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.app-tag { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--coral-deep); }
+@media (max-width: 1000px) { .app-grid { grid-template-columns: 1fr; } .phones { height: 560px; max-width: 520px; } }
+@media (max-width: 620px) { .phones { height: 470px; } .phone { width: 210px; height: 440px; border-radius: 34px; } .phone.a { left: 0; } .phone.b { left: auto; right: 0; } .scr { font-size: 9px; } }
+
 /* reveal */
 .rv { transition: opacity .9s ease, transform .9s ease; }
 .js .rv.pre { opacity: 0; transform: translateY(28px); }
@@ -335,6 +381,7 @@ footer .logo span { color: #fff; }
       <a href="#science">Science</a>
       <a href="#mixing">Mixing guide</a>
       <a href="#bundles">Bundles</a>
+      <a href="#app">Free app</a>
       <a href="../">The Fertility House</a>
     </div>
     <button class="btn" data-contact>Start a consult</button>
@@ -359,7 +406,7 @@ footer .logo span { color: #fff; }
       <div class="stats rv">
         <div><b>9+ yrs</b><span>in reproductive endocrinology</span></div>
         <div><b>100s</b><span>of third-party cases reviewed</span></div>
-        <div><b>$0</b><span>insurance paperwork. Cash, HSA or FSA</span></div>
+        <div><b>Free</b><span>dose-tracker app with every order</span></div>
         <div><b>2–8°C</b><span>cold-chain shipping on every order</span></div>
       </div>
     </div>
@@ -524,6 +571,47 @@ footer .logo span { color: #fff; }
     </div>
   </section>
 
+
+  <!-- App promo -->
+  <section id="app" class="app">
+    <div class="container app-grid">
+      <div class="rv">
+        <span class="free-pill">Free with any purchase</span>
+        <h2>Your doses, <em>in your pocket.</em></h2>
+        <p>Every Wellness House order comes with our tracker app at no extra cost. It knows your exact vial, so it does the math and the remembering for you.</p>
+        <ul class="feat">
+          <li><div><b>Dose reminders</b><br>A nudge on injection day, with the units to draw already worked out.</div></li>
+          <li><div><b>Calendar and log</b><br>See every dose, skipped day and injection site at a glance.</div></li>
+          <li><div><b>Mixing calculator</b><br>Reconstitution math for every vial in your plan.</div></li>
+          <li><div><b>Progress</b><br>Track weight, energy and side effects, and share them with Jamie at check-ins.</div></li>
+          <li><div><b>Works like an app</b><br>Add it to your phone's home screen. Your data stays private to your login.</div></li>
+        </ul>
+        <button class="btn" data-contact>Start a consult</button>
+      </div>
+      <div class="phones rv" aria-hidden="true">
+        <div class="phone a"><div class="scr">
+          <div class="s">Good morning, Sarah</div><h5>Today's dose</h5>
+          <div class="next"><div class="vl"><img src="img/tirz.webp" alt=""><div><span class="s">Tirzepatide · Week 6</span><b>5 mg</b><span class="s">Draw <strong>50 units</strong> · Left abdomen</span></div></div><div class="go">Mark as taken</div></div>
+          <div class="s">November</div>
+          <div class="cal"><span class="h">M</span><span class="h">T</span><span class="h">W</span><span class="h">T</span><span class="h">F</span><span class="h">S</span><span class="h">S</span><span class="">1</span><span class="d">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span><span class="">7</span><span class="">8</span><span class="d">9</span><span class="">10</span><span class="">11</span><span class="">12</span><span class="">13</span><span class="">14</span><span class="">15</span><span class="d">16</span><span class="">17</span><span class="">18</span><span class="">19</span><span class="">20</span><span class="">21</span><span class="">22</span><span class="t">23</span><span class="">24</span><span class="">25</span><span class="">26</span><span class="">27</span><span class="">28</span></div>
+          <div class="mini"><div><span class="s">Doses on time</span><b>100%</b></div><div><span class="s">Vial left</span><b>2.5 wks</b></div></div>
+        </div></div>
+        <div class="phone b"><div class="scr">
+          <div class="s">Progress</div><h5>Down 14.2 lb</h5><span class="s">Since Oct 1 · Goal 25 lb</span>
+          <div class="wchart"><i style="height:96%"></i><i style="height:90%"></i><i style="height:85%"></i><i style="height:78%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:58%"></i></div>
+          <div class="s">Weekly weigh-ins</div>
+          <div class="log">
+            <div><span>Nov 16 · Tirzepatide 5 mg</span><span>✓</span></div>
+            <div><span>Nov 16 · NAD+ 100 mg</span><span>✓</span></div>
+            <div><span>Nov 13 · NAD+ 100 mg</span><span>✓</span></div>
+            <div><span>Nov 9 · Tirzepatide 5 mg</span><span>✓</span></div>
+          </div>
+          <div class="mini"><div><span class="s">Energy</span><b>8/10</b></div><div><span class="s">Nausea</span><b>Mild</b></div></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
   <!-- Bundles -->
   <section id="bundles" class="bundles">
     <div class="container">
@@ -542,7 +630,7 @@ footer .logo span { color: #fff; }
       <div><b>01</b><h3>Tell us about you</h3><p>A 10-minute online intake: history, medications, goals and recent labs.</p></div>
       <div><b>02</b><h3>Jamie reviews</h3><p>A personal review and a call if anything needs clarifying. Prescribed only if it's right for you.</p></div>
       <div><b>03</b><h3>Licensed pharmacy</h3><p>Your medication is prepared for you by name at a licensed U.S. pharmacy.</p></div>
-      <div><b>04</b><h3>Cold to your door</h3><p>Insulated overnight shipping, then monthly check-ins and dose adjustments.</p></div>
+      <div><b>04</b><h3>Cold to your door</h3><p>Insulated overnight shipping, your free tracker app, then monthly check-ins.</p></div>
     </div>
   </section>
 
@@ -692,6 +780,7 @@ function openDrawer(id) {
     <div class="eyebrow">${p.kind}</div><h2 id="dName">${p.name}</h2><p class="d-sub">${p.desc}</p>
     <div class="d-img"><img src="img/${p.img}.webp" alt="${p.name} vial"></div>
     <div class="d-price"><b>$${p.price}</b><span>per month · consult, medication, supplies and check-ins included</span></div>
+    <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Wellness House tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
     <button class="btn" data-contact data-interest="${p.name}">Start a consult for ${p.name}</button>
     <h4>What it is</h4><p>${p.what}</p>
     <h4>Protocol</h4><dl class="spec">${p.spec.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
@@ -716,6 +805,7 @@ document.getElementById('bgrid').innerHTML = B.map(b => { const full = b.items.r
   <div class="body"><span class="save">Save $${full - b.price}/mo</span><h3>${b.name}</h3><p style="margin:0;font-size:15px;color:var(--ink-2)">${b.blurb}</p>
   <ul>${b.items.map(i => `<li>${byId[i].name}</li>`).join('')}</ul>
   <div class="row"><b>$${b.price}</b><span>/mo</span><s>$${full}</s></div>
+  <span class="app-tag">+ Free tracker app included</span>
   <button class="btn" data-contact data-interest="${b.name}" style="margin-top:12px;justify-content:center">Start with this bundle</button></div></article>`; }).join('');
 
 /* modal */
