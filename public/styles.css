@@ -85,7 +85,7 @@ textarea { min-height: 90px; resize: vertical; }
 /* Footer */
 footer { padding: 34px 16px 50px; text-align: center; font-size: 14px; }
 .social { display: flex; gap: 14px; justify-content: center; margin-bottom: 18px; }
-.social a { width: 36px; height: 36px; border-radius: 50%; background: var(--coral); color: var(--white); display: grid; place-items: center; text-decoration: none; font-family: var(--nav); font-size: 15px; }
+.social a { width: 44px; height: 44px; border-radius: 50%; background: var(--coral-dark); color: var(--white); display: grid; place-items: center; text-decoration: none; font-family: var(--nav); font-size: 15px; }
 footer a.legal { color: var(--coral-dark); }
 
 
@@ -135,3 +135,8 @@ footer a.legal { color: var(--coral-dark); }
   form { grid-template-columns: 1fr; }
   .hero { min-height: 520px; }
 }
+
+.skip { position: absolute; left: 12px; top: -100px; z-index: 300; background: #2b2523; color: #fff; padding: 12px 18px; border-radius: 10px; font: 500 16px Jost, system-ui, sans-serif; text-decoration: none; }
+.skip:focus { top: 12px; }
+body { font-weight: 400; }
+@media (max-width: 620px) { body { font-size: 18px; } .legal-page p { font-size: 17px; } }

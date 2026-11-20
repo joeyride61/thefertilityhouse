@@ -20,7 +20,7 @@
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 300 15px/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 15px/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1.1; }
 button { font: inherit; cursor: pointer; }
 .num { font-variant-numeric: tabular-nums; }
@@ -32,7 +32,7 @@ button { font: inherit; cursor: pointer; }
 .login h1 { font-size: 38px; margin: 14px 0 6px; }
 .login p { color: var(--ink-2); margin: 0 0 24px; }
 label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
-input, select, textarea { font: 300 15px var(--ui); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; width: 100%; }
+input, select, textarea { font: 400 15px var(--ui); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; width: 100%; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); outline-offset: 1px; border-color: transparent; }
 .btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 14px; }
 .btn:hover { background: var(--coral-deep); border-color: var(--coral-deep); }
@@ -152,7 +152,7 @@ tr.dirty .save-row { opacity: 1; }
 </head>
 <body>
 
-<div class="demo-bar" role="note" style="background:#2b2523;color:#efe6e2;text-align:center;font:400 12px/1.4 Jost,system-ui,sans-serif;letter-spacing:.06em;padding:7px 16px;">This site is for demo purposes only.</div>
+<aside class="demo-bar" aria-label="Demo notice" style="background:#2b2523;color:#efe6e2;text-align:center;font:400 12px/1.4 Jost,system-ui,sans-serif;letter-spacing:.06em;padding:7px 16px;">This site is for demo purposes only.</aside>
 <section class="login" id="login" hidden>
   <form id="loginForm">
     <div class="mark"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86C30 74 28 54 50 40c22 14 20 34 0 46Z" fill="currentColor" stroke="none"/></svg>The Wellness House</div>
@@ -180,7 +180,7 @@ tr.dirty .save-row { opacity: 1; }
 </div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="panel" id="panel" role="dialog" aria-modal="true" tabindex="-1"></aside>
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Details" tabindex="-1"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -250,7 +250,7 @@ async function dashboard() {
       </div>
     </div>
     <div class="card" style="margin-top:14px"><h2>Top programs <small>last 30 days</small></h2>
-      <div class="tbl-wrap" style="border:0"><table><thead><tr><th>Program</th><th class="r">Units</th><th class="r">Revenue</th><th class="r">Gross profit</th><th class="r">Margin</th></tr></thead><tbody>
+      <div class="tbl-wrap" tabindex="0" style="border:0"><table><thead><tr><th>Program</th><th class="r">Units</th><th class="r">Revenue</th><th class="r">Gross profit</th><th class="r">Margin</th></tr></thead><tbody>
       ${d.top.map((t) => { const m = t.revenue ? Math.round(t.profit / t.revenue * 100) : 0; return `<tr><td>${esc(t.name)}</td><td class="r num">${t.units}</td><td class="r num">${usd(t.revenue)}</td><td class="r num">${usd(t.profit)}</td><td class="r num">${m}%<span class="margin-bar"><i style="width:${m}%"></i></span></td></tr>`; }).join('')}
       </tbody></table></div></div>`;
 }
@@ -277,7 +277,7 @@ async function orders() {
   $('view').innerHTML = `<div class="head"><div><h1>Orders</h1><p>Approve to capture payment and send to the pharmacy.</p></div></div>
     <div class="tools"><div class="chips" id="oChips">${[['pending_review', 'Needs review'], ['approved', 'Ready to ship'], ['shipped', 'Shipped'], ['delivered', 'Delivered'], ['cancelled', 'Cancelled'], ['', 'All']].map(([v, t]) => `<button type="button" data-f="${v}" class="${v === oFilter ? 'on' : ''}">${t}</button>`).join('')}</div>
     <input id="oQ" type="search" placeholder="Search name, email, order #" value="${esc(oQuery)}" aria-label="Search orders"></div>
-    <div class="tbl-wrap" id="oTbl"><div class="loading">Loading…</div></div>`;
+    <div class="tbl-wrap" tabindex="0" id="oTbl"><div class="loading">Loading…</div></div>`;
   $('oChips').onclick = (e) => { if (e.target.dataset.f === undefined) return; oFilter = e.target.dataset.f; [...$('oChips').children].forEach((b) => b.classList.toggle('on', b === e.target)); loadOrders(); };
   $('oQ').oninput = () => { oQuery = $('oQ').value; clearTimeout(orders.t); orders.t = setTimeout(loadOrders, 250); };
   await loadOrders();
@@ -305,7 +305,7 @@ async function openOrder(id) {
     ${flags.length ? `<div class="alertbox" style="margin-top:16px"><b>Safety screen flagged:</b> ${flags.join('; ')}. Call before approving.</div>` : ''}
     <div class="actions" data-id="${o.id}">${acts}</div>
     <h3>Items</h3>
-    <div class="tbl-wrap"><table><thead><tr><th>Program</th><th class="r">Price</th><th class="r">Disc.</th><th class="r">Net</th><th class="r">Cost</th></tr></thead><tbody>
+    <div class="tbl-wrap" tabindex="0"><table><thead><tr><th>Program</th><th class="r">Price</th><th class="r">Disc.</th><th class="r">Net</th><th class="r">Cost</th></tr></thead><tbody>
       ${items.map((i) => `<tr><td>${esc(i.name)}${i.qty > 1 ? ' × ' + i.qty : ''}</td><td class="r num">${usd(i.unit_price_cents * i.qty)}</td><td class="r num">−${usd(i.discount_cents, 1)}</td><td class="r num">${usd(i.line_total_cents, 1)}</td><td class="r num muted">${usd(i.unit_cost_cents * i.qty)}</td></tr>`).join('')}
     </tbody></table></div>
     <h3>Money</h3>
@@ -332,7 +332,7 @@ let mQuery = '';
 async function members() {
   $('view').innerHTML = `<div class="head"><div><h1>Members</h1><p>Everyone who has ordered, with lifetime value and current plan.</p></div></div>
     <div class="tools"><input id="mQ" type="search" placeholder="Search name or email" value="${esc(mQuery)}" aria-label="Search members"></div>
-    <div class="tbl-wrap" id="mTbl"><div class="loading">Loading…</div></div>`;
+    <div class="tbl-wrap" tabindex="0" id="mTbl"><div class="loading">Loading…</div></div>`;
   $('mQ').oninput = () => { mQuery = $('mQ').value; clearTimeout(members.t); members.t = setTimeout(loadMembers, 250); };
   await loadMembers();
 }
@@ -355,7 +355,7 @@ async function openMember(id) {
     <h3>Private notes</h3><textarea id="mNotes" rows="4" placeholder="Visible only to you">${esc(m.notes)}</textarea>
     <div class="actions"><button class="btn light" id="saveNotes" data-id="${m.id}" type="button">Save notes</button></div>
     <h3>Order history</h3>
-    <div class="tbl-wrap"><table><tbody>${orders.map((o) => `<tr class="click" data-order="${o.id}"><td><b style="font-weight:500">${o.number}</b><br><span class="muted" style="font-size:12px">${date(o.created_at)}</span></td><td style="font-size:13px">${esc(o.items)}</td><td>${st(o.status)}</td><td class="r num">${usd(o.total_cents, 1)}</td></tr>`).join('')}</tbody></table></div>`;
+    <div class="tbl-wrap" tabindex="0"><table><tbody>${orders.map((o) => `<tr class="click" data-order="${o.id}"><td><b style="font-weight:500">${o.number}</b><br><span class="muted" style="font-size:12px">${date(o.created_at)}</span></td><td style="font-size:13px">${esc(o.items)}</td><td>${st(o.status)}</td><td class="r num">${usd(o.total_cents, 1)}</td></tr>`).join('')}</tbody></table></div>`;
   $('saveNotes').onclick = async () => { await api('members/' + m.id, { method: 'PUT', body: JSON.stringify({ notes: $('mNotes').value }) }); toast('Notes saved'); };
 }
 
@@ -364,7 +364,7 @@ async function products() {
   const d = await api('products');
   $('view').innerHTML = `<div class="head"><div><h1>Products & pricing</h1><p>Edit your price and pharmacy cost. Markup and margin update as you type.</p></div></div>
     <div class="banner">Market ranges and costs are starting estimates for typical U.S. cash-pay telehealth programs. Replace costs with your pharmacy's actual quotes.</div>
-    <div class="tbl-wrap"><table><thead><tr><th>Program</th><th class="r">Your price</th><th class="r">Pharmacy cost</th><th class="r">Markup</th><th class="r">Margin</th><th>Market range</th><th class="r">Sold (30d)</th><th></th></tr></thead><tbody>
+    <div class="tbl-wrap" tabindex="0"><table><thead><tr><th>Program</th><th class="r">Your price</th><th class="r">Pharmacy cost</th><th class="r">Markup</th><th class="r">Margin</th><th>Market range</th><th class="r">Sold (30d)</th><th></th></tr></thead><tbody>
     ${d.products.map((p) => `<tr data-pid="${p.id}"><td><b style="font-weight:500">${esc(p.name)}</b><br><span class="muted" style="font-size:12px">${esc(p.kind)}</span></td>
       <td class="r"><input class="pin num" data-k="price" inputmode="decimal" value="${(p.price_cents / 100).toFixed(2)}" aria-label="${esc(p.name)} price"></td>
       <td class="r"><input class="pin num" data-k="cost" inputmode="decimal" value="${(p.cost_cents / 100).toFixed(2)}" aria-label="${esc(p.name)} cost"></td>

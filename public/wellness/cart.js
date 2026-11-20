@@ -97,11 +97,11 @@
 
   const wrap = document.createElement('div');
   wrap.innerHTML = `<div class="cart-scrim" id="cartScrim"></div>
-  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" tabindex="-1">
+  <div class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" tabindex="-1">
     <div class="cart-head"><h2 id="cartTitle">Your plan</h2><button class="cart-x" data-cart-close aria-label="Close">×</button></div>
     <div class="cart-body" id="cartBody"></div>
     <div class="cart-foot" id="cartFoot"></div>
-  </aside>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText"></span><button type="button" data-cart-open>View plan</button></div>`;
   document.body.appendChild(wrap);
   const $ = (id) => document.getElementById(id);

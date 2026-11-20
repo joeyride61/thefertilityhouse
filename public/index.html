@@ -35,7 +35,7 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 300 17px/1.65 var(--ui); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--ui); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; margin: 0; letter-spacing: -.015em; text-wrap: balance; }
@@ -87,6 +87,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; m
 .track span { font: italic 400 28px var(--display); padding: 0 28px; white-space: nowrap; display: flex; align-items: center; gap: 56px; }
 .track span::after { content: "✦"; font-style: normal; font-size: 14px; color: var(--rose); }
 @keyframes slide { to { transform: translateX(-50%); } }
+.marquee { position: relative; }
+.marquee.paused .track { animation-play-state: paused; }
+.mq-pause { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: #2a2321; color: #fff; font-size: 12px; cursor: pointer; }
 
 /* ---------- intro ---------- */
 .intro { padding: 150px 0 120px; }
@@ -138,7 +141,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; m
 .path li span { font-size: 15px; opacity: .75; }
 .path .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .path .price { font: 400 46px var(--display); }
-.path .price small { font: 300 14px var(--ui); opacity: .7; margin-left: 6px; }
+.path .price small { font: 400 14px var(--ui); opacity: .7; margin-left: 6px; }
 .path .contact-lines { font-size: 15px; opacity: .85; }
 .path .contact-lines a { text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.3); }
 
@@ -158,7 +161,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; m
 .doc .row { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); opacity: .28; transition: opacity .5s; }
 .doc .row.on { opacity: 1; }
 .doc .row .ck { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 12px; color: transparent; transition: all .4s; }
-.doc .row.on .ck { background: #5f8a5a; border-color: #5f8a5a; color: #fff; }
+.doc .row.on .ck { background: #3f6b3a; border-color: #3f6b3a; color: #fff; }
 .doc .row span { font-size: 14px; }
 .doc .row em { font-style: normal; font-size: 12px; color: var(--ink-2); }
 .doc .lines { margin-top: 18px; display: grid; gap: 8px; }
@@ -166,7 +169,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; m
 .doc .sig { display: flex; justify-content: space-between; align-items: end; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
 .doc .sig .name { font: 400 34px/1 var(--script); color: var(--rose-deep); }
 .doc .sig small { display: block; font-size: 11px; color: var(--ink-2); margin-top: 4px; }
-.doc .stamp { position: absolute; right: 26px; top: 108px; border: 2px solid #5f8a5a; color: #5f8a5a; border-radius: 6px; padding: 6px 12px; font: 600 13px var(--ui); letter-spacing: .14em; transform: rotate(-8deg) scale(.6); opacity: 0; transition: all .5s cubic-bezier(.3,1.6,.5,1); }
+.doc .stamp { position: absolute; right: 26px; top: 108px; border: 2px solid #3f6b3a; color: #3f6b3a; border-radius: 6px; padding: 6px 12px; font: 600 13px var(--ui); letter-spacing: .14em; transform: rotate(-8deg) scale(.6); opacity: 0; transition: all .5s cubic-bezier(.3,1.6,.5,1); }
 .doc .stamp.on { opacity: 1; transform: rotate(-8deg) scale(1); }
 
 /* ---------- two houses ---------- */
@@ -227,7 +230,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.04; m
 form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .full { grid-column: 1 / -1; }
 label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; letter-spacing: .02em; }
-input, textarea { width: 100%; font: 300 16px var(--ui); color: var(--ink); background: var(--paper); border: 1px solid transparent; border-bottom: 1px solid var(--line); border-radius: 4px; padding: 13px 14px; }
+input, textarea { width: 100%; font: 400 16px var(--ui); color: var(--ink); background: var(--paper); border: 1px solid transparent; border-bottom: 1px solid var(--line); border-radius: 4px; padding: 13px 14px; }
 input:focus, textarea:focus { outline: none; border-color: var(--rose); background: #fff; }
 textarea { min-height: 110px; resize: vertical; }
 form .btn { justify-content: center; }
@@ -239,7 +242,7 @@ footer { background: var(--ink); color: #cfc2bd; padding: 80px 0 40px; font-size
 .fgrid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; }
 footer .mark span { color: #fff; font-size: 40px; }
 footer .mark svg { color: #e7a998; }
-footer h5 { font: 500 11px var(--ui); letter-spacing: .2em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
+footer h5, footer .fh { font: 500 12px var(--ui); line-height: 1.4; letter-spacing: .2em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
 footer a { display: block; text-decoration: none; margin-bottom: 8px; }
 footer a:hover { color: #fff; }
 .fine { border-top: 1px solid rgba(255,255,255,.1); margin-top: 60px; padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #988b86; }
@@ -258,7 +261,7 @@ footer a:hover { color: #fff; }
 .mnav-x { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 22px; line-height: 1; cursor: pointer; color: var(--ink); }
 .mnav nav { display: grid; margin: 6px 0 24px; }
 .mnav nav a { font: 500 34px/1.1 var(--display); text-decoration: none; color: var(--ink); padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transform: translateY(14px); opacity: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s; }
-.mnav nav a::after { content: "→"; font: 300 20px var(--ui); color: var(--accent-deep); }
+.mnav nav a::after { content: "→"; font: 400 20px var(--ui); color: var(--accent-deep); }
 .mnav.on nav a { transform: none; opacity: 1; }
 .mnav.on nav a:nth-child(2) { transition-delay: .04s; } .mnav.on nav a:nth-child(3) { transition-delay: .08s; } .mnav.on nav a:nth-child(4) { transition-delay: .12s; } .mnav.on nav a:nth-child(5) { transition-delay: .16s; } .mnav.on nav a:nth-child(6) { transition-delay: .2s; } .mnav.on nav a:nth-child(7) { transition-delay: .24s; } .mnav.on nav a:nth-child(8) { transition-delay: .28s; }
 .other-site { display: flex; align-items: center; gap: 14px; text-decoration: none; border-radius: 18px; padding: 16px 18px; background: var(--other-bg); color: var(--other-fg); margin-bottom: 18px; }
@@ -271,6 +274,29 @@ footer a:hover { color: #fff; }
 .mnav .mbtn { margin-bottom: 14px; justify-content: center; width: 100%; }
 
 .mnav { --accent-deep: var(--rose-deep); --other-bg: #2b2523; --other-fg: #fbf7f4; }
+
+
+/* ===== Accessibility helpers ===== */
+.skip { position: absolute; left: 12px; top: -100px; z-index: 300; background: #2b2523; color: #fff; padding: 12px 18px; border-radius: 10px; font: 500 16px Jost, system-ui, sans-serif; text-decoration: none; }
+.skip:focus { top: 12px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ===== Readability on phones (WCAG 2.2 AA pass) ===== */
+@media (max-width: 620px) {
+  body { font-size: 18px !important; line-height: 1.6; }
+  p, li, dd, td, summary, label, cite, blockquote cite, .fact span, .stats span, .contact-lines, .direct, .direct a,
+  .path li span, .step p, .stage p, .card .desc, .bundle p, .how p, .faq p, .steps span, .pen-opt span, .gift,
+  .feat li, .calc > p, .sock-feats li, .socks p, .almost p, .almost .facts span, .review-copy li, .chart-foot, .compare td { font-size: 17px !important; }
+  small, .eyebrow, .kind, .tag, .when, .who, .label, .more, .badge, .save, .app-tag, .fine, .fine a, .fine span, th, dt,
+  .price small, .row em, .doc .row em, .doc-top small, .doc .sig small, .free-pill, .trial .tag, .card .kind, .bar-row span,
+  .fact small, .calc small, .field label, output, .stage .who, .path .tag, footer h5, footer .fh, .chips span { font-size: 14px !important; }
+  .eyebrow { letter-spacing: .14em !important; }
+  .btn, .btn span, button.btn, a.btn, .tabs button, .who-tabs button, .card .add, .cart-btn { font-size: 16px !important; }
+  .doc .row span, .row span { font-size: 16px; }
+  footer a, footer p { font-size: 16px !important; }
+  .demo-bar, .sample { font-size: 14px !important; }
+  input, textarea, select { font-size: 17px !important; }
+}
 
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
@@ -313,9 +339,10 @@ footer a:hover { color: #fff; }
 </style>
 </head>
 <body>
+<a class="skip" href="#main-content">Skip to main content</a>
 
 <header class="hdr" id="hdr">
-  <div class="demo-bar" role="note" style="background:#2b2523;color:#efe6e2;text-align:center;font:400 12px/1.4 Jost,system-ui,sans-serif;letter-spacing:.06em;padding:7px 16px;">This site is for demo purposes only.</div>
+  <div class="demo-bar" style="background:#2b2523;color:#efe6e2;text-align:center;font:400 12px/1.4 Jost,system-ui,sans-serif;letter-spacing:.06em;padding:7px 16px;">This site is for demo purposes only.</div>
   <div class="wrap">
     <a class="mark" href="#top" aria-label="The Fertility House home">
       <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86S29 72 29 58c0-7 5-12 11-12 4 0 8 2 10 6 2-4 6-6 10-6 6 0 11 5 11 12 0 14-21 28-21 28Z" fill="currentColor" stroke="none"/></svg>
@@ -350,6 +377,7 @@ footer a:hover { color: #fff; }
 
 
 <main id="top">
+  <span id="main-content" tabindex="-1"></span>
   <!-- Hero -->
   <section class="hero" aria-label="Introduction">
     <div class="hero-img"><img id="heroImg" src="images/hero-beach.webp" alt="A pregnant woman in a white hat standing on a sunlit beach, hands on her belly"></div>
@@ -365,7 +393,7 @@ footer a:hover { color: #fff; }
     <div class="scroll-cue" aria-hidden="true">Scroll<i></i></div>
   </section>
 
-  <div class="marquee" aria-hidden="true"><div class="track">
+  <div class="marquee"><button class="mq-pause" type="button" aria-pressed="false" aria-label="Pause scrolling banner">❚❚</button><div class="track" aria-hidden="true">
     <span>9+ years in reproductive endocrinology</span><span>Hundreds of third-party cases</span><span>1–2 week turnaround</span><span>Free for gestational carriers</span><span>Board-certified FNP</span>
     <span>9+ years in reproductive endocrinology</span><span>Hundreds of third-party cases</span><span>1–2 week turnaround</span><span>Free for gestational carriers</span><span>Board-certified FNP</span>
   </div></div>
@@ -547,10 +575,10 @@ footer a:hover { color: #fff; }
     <div class="fgrid">
       <div><a class="mark" href="#top"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86S29 72 29 58c0-7 5-12 11-12 4 0 8 2 10 6 2-4 6-6 10-6 6 0 11 5 11 12 0 14-21 28-21 28Z" fill="currentColor" stroke="none"/></svg><span>The Fertility House</span></a>
         <p style="max-width:26em;margin-top:14px">A nursing corporation providing third-party medical record reviews for surrogacy. One embryo, one baby at a time.</p></div>
-      <div><h5>Explore</h5><a href="#story">Jamie's story</a><a href="#services">Services</a><a href="#review">The review</a><a href="#two-houses">Two houses</a></div>
-      <div><h5>Connect</h5><a href="tel:5624818946">(562) 481-8946</a><a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a><a href="http://www.linkedin.com/in/jmhfnp">LinkedIn</a><a href="/wellness/">The Wellness House</a></div>
+      <div><h2 class="fh">Explore</h2><a href="#story">Jamie's story</a><a href="#services">Services</a><a href="#review">The review</a><a href="#two-houses">Two houses</a></div>
+      <div><h2 class="fh">Connect</h2><a href="tel:5624818946">(562) 481-8946</a><a href="mailto:jamie@thefertilityhouse.com">jamie@thefertilityhouse.com</a><a href="http://www.linkedin.com/in/jmhfnp">LinkedIn</a><a href="/wellness/">The Wellness House</a></div>
     </div>
-    <div class="fine"><span>© 2026 The Fertility House. All rights reserved.</span><a href="disclaimer.html" style="display:inline;margin:0">Legal disclaimer</a></div>
+    <div class="fine"><span>© 2026 The Fertility House. All rights reserved.</span><span><a href="accessibility.html" style="display:inline;margin:0 16px 0 0">Accessibility</a><a href="disclaimer.html" style="display:inline;margin:0">Legal disclaimer</a></span></div>
   </div>
 </footer>
 
@@ -567,6 +595,9 @@ footer a:hover { color: #fff; }
   m.addEventListener('click', (e) => { if (e.target.closest('.mnav-x') || e.target.closest('a') || e.target.closest('[data-contact]')) set(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && m.classList.contains('on')) set(false); });
 })();
+
+/* pause the scrolling banner */
+document.querySelector('.mq-pause').addEventListener('click', (e) => { const m = e.currentTarget.closest('.marquee'); const on = m.classList.toggle('paused'); e.currentTarget.setAttribute('aria-pressed', on); e.currentTarget.setAttribute('aria-label', on ? 'Play scrolling banner' : 'Pause scrolling banner'); e.currentTarget.textContent = on ? '▶' : '❚❚'; });
 
 /* header */
 const hdr = document.getElementById('hdr');

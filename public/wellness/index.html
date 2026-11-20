@@ -32,7 +32,7 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 300 17px/1.65 var(--ui); -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--ui); -webkit-font-smoothing: antialiased; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
@@ -83,7 +83,7 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; back
 .pin-progress i { width: 6px; height: 6px; border-radius: 50%; background: rgba(43,37,35,.25); transition: background .4s, transform .4s; }
 .pin-progress i.on { background: var(--coral-deep); transform: scale(1.5); }
 .chapter { min-height: 82vh; display: flex; flex-direction: column; justify-content: center; padding-block: 40px; }
-.chapter .num { font: italic 400 20px var(--display); color: var(--coral); margin-bottom: 14px; }
+.chapter .num { font: italic 400 20px var(--display); color: var(--coral-deep); margin-bottom: 14px; }
 .chapter h2 { font-size: clamp(36px, 4vw, 56px); margin-bottom: 22px; }
 .chapter p { color: var(--ink-2); margin: 0 0 16px; max-width: 32em; }
 .chapter .pull { font: italic 400 26px/1.35 var(--display); color: var(--ink); border-left: 2px solid var(--coral); padding-left: 20px; margin: 26px 0; }
@@ -91,7 +91,7 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; back
 .fact { background: var(--white); border: 1px solid var(--line); padding: 18px; border-radius: 4px; }
 .fact b { font: 500 30px/1 var(--display); display: block; margin-bottom: 6px; color: var(--coral-deep); }
 .fact span { font-size: 14px; color: var(--ink-2); }
-.fact small { display: block; margin-top: 8px; font-size: 11px; color: #8b807c; }
+.fact small { display: block; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
 
 /* programs */
 .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 44px; }
@@ -115,7 +115,7 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; back
 .card .desc { font-size: 14px; color: var(--ink-2); flex: 1; }
 .card .row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
 .card .price { font: 500 26px var(--display); }
-.card .price small { font: 300 13px var(--ui); color: var(--ink-2); }
+.card .price small { font: 400 13px var(--ui); color: var(--ink-2); }
 .card .more { font-size: 13px; color: var(--coral-deep); }
 .card-hit { all: unset; cursor: pointer; display: flex; flex-direction: column; flex: 1; }
 .card-hit:focus-visible { outline: 2px solid var(--coral); outline-offset: -2px; }
@@ -179,7 +179,7 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; back
 .bar.pl { background: #7d716d; }
 .bar-val { font: 500 24px var(--display); color: #fff; text-align: right; font-variant-numeric: tabular-nums; }
 .chart-foot { margin-top: 24px; font-size: 13px; color: #bfb3ae; border-top: 1px solid rgba(255,255,255,.1); padding-top: 16px; }
-.trial { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; padding-block: 30px; opacity: .35; transition: opacity .5s; }
+.trial { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; padding-block: 30px; opacity: .78; transition: opacity .5s; }
 .trial.on { opacity: 1; }
 .trial .tag { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #e3a89b; }
 .trial h3 { font-size: 40px; color: #fff; margin: 10px 0 14px; }
@@ -216,7 +216,7 @@ input[type=range] { width: 100%; accent-color: var(--coral-deep); }
 .result div { background: var(--blush); border-radius: 4px; padding: 14px 6px; }
 .result b { display: block; font: 500 30px/1.1 var(--display); font-variant-numeric: tabular-nums; }
 .result span { font-size: 12px; color: var(--ink-2); }
-.calc small { display: block; margin-top: 14px; font-size: 12px; color: #8b807c; }
+.calc small { display: block; margin-top: 14px; font-size: 13px; color: var(--ink-2); }
 
 /* bundles */
 .bundles { background: var(--blush); }
@@ -229,8 +229,8 @@ input[type=range] { width: 100%; accent-color: var(--coral-deep); }
 .bundle ul { margin: 4px 0; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
 .bundle .row { margin-top: auto; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .bundle .row b { font: 500 30px var(--display); }
-.bundle s { color: #9d918c; font-size: 14px; }
-.save { font: 500 11px var(--ui); letter-spacing: .12em; text-transform: uppercase; background: var(--sage); color: #fff; padding: 5px 10px; border-radius: 999px; align-self: flex-start; }
+.bundle s { color: #6f6360; font-size: 14px; }
+.save { font: 500 11px var(--ui); letter-spacing: .12em; text-transform: uppercase; background: #4f6e4b; color: #fff; padding: 5px 10px; border-radius: 999px; align-self: flex-start; }
 
 /* how + faq */
 .how { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
@@ -241,7 +241,7 @@ input[type=range] { width: 100%; accent-color: var(--coral-deep); }
 .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 60px; }
 .faq details { border-bottom: 1px solid var(--line); padding: 22px 0; }
 .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; font: 500 22px var(--display); }
-.faq summary::after { content: "+"; font: 300 24px var(--ui); color: var(--coral-deep); transition: transform .3s; }
+.faq summary::after { content: "+"; font: 400 24px var(--ui); color: var(--coral-deep); transition: transform .3s; }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .faq p { margin: 12px 0 0; color: var(--ink-2); font-size: 16px; }
 
@@ -251,7 +251,7 @@ input[type=range] { width: 100%; accent-color: var(--coral-deep); }
 .cta h2 em { font-family: var(--script); font-style: normal; color: var(--coral-deep); font-weight: 400; }
 footer { background: var(--ink); color: #cfc4bf; padding-block: 70px 40px; font-size: 14px; }
 .fcols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
-footer h5 { font: 500 11px var(--ui); letter-spacing: .18em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
+footer h5, footer .fh { font: 500 12px var(--ui); line-height: 1.4; letter-spacing: .18em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
 footer a { display: block; text-decoration: none; margin-bottom: 8px; color: #cfc4bf; }
 footer a:hover { color: #fff; }
 footer .logo span { color: #fff; }
@@ -271,7 +271,7 @@ footer .logo span { color: #fff; }
 .sheet form { padding: 30px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .sheet .full { grid-column: 1 / -1; }
 .sheet label { display: block; font-size: 12px; letter-spacing: .06em; color: var(--ink-2); margin-bottom: 6px; }
-.sheet input, .sheet select, .sheet textarea { width: 100%; font: 300 15px var(--ui); padding: 11px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--ink); }
+.sheet input, .sheet select, .sheet textarea { width: 100%; font: 400 15px var(--ui); padding: 11px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--ink); }
 .sheet textarea { min-height: 70px; resize: vertical; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chips label { margin: 0; }
@@ -365,7 +365,7 @@ footer .logo span { color: #fff; }
 .mnav-x { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 22px; line-height: 1; cursor: pointer; color: var(--ink); }
 .mnav nav { display: grid; margin: 6px 0 24px; }
 .mnav nav a { font: 500 34px/1.1 var(--display); text-decoration: none; color: var(--ink); padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transform: translateY(14px); opacity: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s; }
-.mnav nav a::after { content: "→"; font: 300 20px var(--ui); color: var(--accent-deep); }
+.mnav nav a::after { content: "→"; font: 400 20px var(--ui); color: var(--accent-deep); }
 .mnav.on nav a { transform: none; opacity: 1; }
 .mnav.on nav a:nth-child(2) { transition-delay: .04s; } .mnav.on nav a:nth-child(3) { transition-delay: .08s; } .mnav.on nav a:nth-child(4) { transition-delay: .12s; } .mnav.on nav a:nth-child(5) { transition-delay: .16s; } .mnav.on nav a:nth-child(6) { transition-delay: .2s; } .mnav.on nav a:nth-child(7) { transition-delay: .24s; } .mnav.on nav a:nth-child(8) { transition-delay: .28s; }
 .other-site { display: flex; align-items: center; gap: 14px; text-decoration: none; border-radius: 18px; padding: 16px 18px; background: var(--other-bg); color: var(--other-fg); margin-bottom: 18px; }
@@ -385,7 +385,30 @@ footer .logo span { color: #fff; }
 .nav-links a.sister:hover { border-color: var(--ink); }
 .nav .cart-btn, .nav > .btn { white-space: nowrap; flex: none; }
 @media (max-width: 1180px) { .nav-links { display: none; } .menu-btn { display: grid; } }
-@media (max-width: 620px) { .logo span { font-size: 19px; white-space: nowrap; } .logo svg { width: 24px; } }
+@media (max-width: 620px) { .logo span { font-size: 18px; white-space: nowrap; } .logo svg { width: 22px; } .nav { gap: 8px !important; } .nav .cart-btn { padding: 8px 12px; font-size: 15px !important; } .menu-btn { width: 44px; height: 44px; } }
+
+
+/* ===== Accessibility helpers ===== */
+.skip { position: absolute; left: 12px; top: -100px; z-index: 300; background: #2b2523; color: #fff; padding: 12px 18px; border-radius: 10px; font: 500 16px Jost, system-ui, sans-serif; text-decoration: none; }
+.skip:focus { top: 12px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ===== Readability on phones (WCAG 2.2 AA pass) ===== */
+@media (max-width: 620px) {
+  body { font-size: 18px !important; line-height: 1.6; }
+  p, li, dd, td, summary, label, cite, blockquote cite, .fact span, .stats span, .contact-lines, .direct, .direct a,
+  .path li span, .step p, .stage p, .card .desc, .bundle p, .how p, .faq p, .steps span, .pen-opt span, .gift,
+  .feat li, .calc > p, .sock-feats li, .socks p, .almost p, .almost .facts span, .review-copy li, .chart-foot, .compare td { font-size: 17px !important; }
+  small, .eyebrow, .kind, .tag, .when, .who, .label, .more, .badge, .save, .app-tag, .fine, .fine a, .fine span, th, dt,
+  .price small, .row em, .doc .row em, .doc-top small, .doc .sig small, .free-pill, .trial .tag, .card .kind, .bar-row span,
+  .fact small, .calc small, .field label, output, .stage .who, .path .tag, footer h5, footer .fh, .chips span { font-size: 14px !important; }
+  .eyebrow { letter-spacing: .14em !important; }
+  .btn, .btn span, button.btn, a.btn, .tabs button, .who-tabs button, .card .add, .cart-btn { font-size: 16px !important; }
+  .doc .row span, .row span { font-size: 16px; }
+  footer a, footer p { font-size: 16px !important; }
+  .demo-bar, .sample { font-size: 14px !important; }
+  input, textarea, select { font-size: 17px !important; }
+}
 
 /* reveal */
 .rv { transition: opacity .9s ease, transform .9s ease; }
@@ -400,11 +423,11 @@ footer .logo span { color: #fff; }
   .stats { grid-template-columns: 1fr 1fr; }
   .stats div:nth-child(2) { border-right: 0; }
   .stats div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-  .pin-media { top: 80px; height: 46vh; z-index: 1; }
-  .chapter { min-height: 70vh; background: linear-gradient(transparent, var(--paper) 18%); position: relative; z-index: 2; }
-  .chart-pin { top: 80px; z-index: 1; padding: 22px; }
+  .pin-media { top: 72px; height: 34vh; z-index: 3; box-shadow: 0 14px 24px -18px rgba(43,37,35,.5); }
+  .chapter { min-height: 60vh; position: relative; z-index: 1; }
+  .chart-pin { top: 72px; z-index: 3; padding: 18px 20px; box-shadow: 0 16px 28px -16px rgba(0,0,0,.7); }
   .chart-pin h3 { font-size: 24px; margin-bottom: 14px; }
-  .trial { min-height: 60vh; position: relative; z-index: 2; background: linear-gradient(transparent, var(--ink) 14%); }
+  .trial { min-height: 60vh; position: relative; z-index: 1; opacity: 1; }
   .honest { grid-template-columns: 1fr; }
   .calc { position: static; }
   .fcols { grid-template-columns: 1fr 1fr; }
@@ -432,8 +455,9 @@ footer .logo span { color: #fff; }
 </style>
 </head>
 <body>
+<a class="skip" href="#main-content">Skip to main content</a>
 
-<div class="sample" role="note">This site is for demo purposes only.</div>
+<aside class="sample" aria-label="Demo notice">This site is for demo purposes only.</aside>
 
 <header>
   <nav class="container nav" aria-label="Main">
@@ -472,6 +496,7 @@ footer .logo span { color: #fff; }
 
 
 <main id="top">
+  <span id="main-content" tabindex="-1"></span>
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
@@ -559,7 +584,7 @@ footer .logo span { color: #fff; }
           <div class="pen-opt"><div><b>Tirzepatide pens</b><br><span>2.5 · 5 · 7.5 · 10 · 12.5 · 15 mg</span></div><b>$479<span>/mo</span></b></div>
         </div>
         <table class="compare">
-          <thead><tr><th></th><th>Vial + syringes</th><th>Pre-filled pen</th></tr></thead>
+          <thead><tr><th><span class="sr-only">Feature</span></th><th>Vial + syringes</th><th>Pre-filled pen</th></tr></thead>
           <tbody>
             <tr><td>Prep</td><td>Mix once, draw each dose</td><td>Ready to use</td></tr>
             <tr><td>Dose changes</td><td>Adjust by syringe units</td><td>New pen strength</td></tr>
@@ -770,16 +795,16 @@ footer .logo span { color: #fff; }
   <div class="container">
     <div class="fcols">
       <div><a class="logo" href="#top"><span>The Wellness House</span></a><p style="max-width:26em">A practice of The Fertility House. Provider-led metabolic and wellness care by Jamie Hainlen, MSN, FNP-C.</p></div>
-      <div><h5>Programs</h5><a href="#programs">All programs</a><a href="#pens">Pens</a><a href="#bundles">Bundles</a></div>
-      <div><h5>Learn</h5><a href="#science">The science</a><a href="#mixing">Mixing guide</a><a href="#why">Our story</a></div>
-      <div><h5>Company</h5><a href="../">The Fertility House</a><a href="../disclaimer.html">Disclaimer</a><a href="#" data-contact>Contact</a></div>
+      <div><h2 class="fh">Programs</h2><a href="#programs">All programs</a><a href="#pens">Pens</a><a href="#bundles">Bundles</a></div>
+      <div><h2 class="fh">Learn</h2><a href="#science">The science</a><a href="#mixing">Mixing guide</a><a href="#why">Our story</a></div>
+      <div><h2 class="fh">Company</h2><a href="../">The Fertility House</a><a href="../accessibility.html">Accessibility</a><a href="../disclaimer.html">Disclaimer</a><a href="#" data-contact>Contact</a></div>
     </div>
     <div class="fine">© 2026 The Fertility House. Sample site. Compounded medications are not FDA-approved and have not been evaluated by the FDA for safety or effectiveness. Clinical results describe FDA-approved products in published trials; individual results vary. Prescription required.</div>
   </div>
 </footer>
 
 <div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dName" tabindex="-1"></aside>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Program details" tabindex="-1"></div>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="bg" data-close></div>
