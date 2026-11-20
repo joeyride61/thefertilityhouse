@@ -31,7 +31,7 @@ button { font: inherit; cursor: pointer; }
 label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
 input, select, textarea { font: 300 15px var(--ui); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; width: 100%; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); outline-offset: 1px; border-color: transparent; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 14px; }
+.btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 14px; }
 .btn:hover { background: var(--coral-deep); border-color: var(--coral-deep); }
 .btn.light { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn.light:hover { border-color: var(--ink); background: transparent; }
@@ -202,7 +202,7 @@ function showLogin() { $('app').hidden = true; $('login').hidden = false; $('pw'
 async function boot() {
   const me = await fetch('/api/admin/me').then((r) => r.json()).catch(() => ({}));
   if (!me.signedIn) return showLogin();
-  STRIPE = me.stripe; $('login').hidden = true; $('app').hidden = false; route();
+  STRIPE = me.stripe; document.querySelector(".side .foot").hidden = !me.login; $("login").hidden = true; $("app").hidden = false; route();
 }
 $('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault(); $('loginErr').textContent = '';

@@ -85,7 +85,7 @@
   .cart-empty{text-align:center;padding:50px 10px;color:var(--ink-2)}
   .cart-foot{border-top:1px solid var(--line);padding:18px 24px calc(env(safe-area-inset-bottom,0px) + 20px)}
   .sumrow{display:flex;justify-content:space-between;font-size:15px;margin-bottom:6px;font-variant-numeric:tabular-nums}
-  .sumrow.save{color:var(--sage)} .sumrow.total{font:500 26px var(--display);margin:10px 0 14px}
+  .sumrow.disc{color:var(--sage)} .sumrow.total{font:500 26px var(--display);margin:10px 0 14px}
   .cart-foot .btn{width:100%;justify-content:center}
   .cart-foot small{display:block;margin-top:10px;font-size:12px;color:var(--ink-2);text-align:center}
   .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);transform:translate(-50%,30px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:14px;z-index:120;transition:all .35s;display:flex;gap:14px;align-items:center;max-width:calc(100% - 32px)}
@@ -124,7 +124,7 @@
     }).join('') : `<div class="cart-empty">Your plan is empty.<br>Every program you add takes 10% more off everything, up to 30%.</div>`);
     $('cartFoot').innerHTML = t.lines.length ? `
       <div class="sumrow"><span>Subtotal</span><span>${money(t.subtotal)}</span></div>
-      ${t.pct ? `<div class="sumrow save"><span>Stacking discount (${t.pct}% off ${t.count} items)</span><span>−${money(t.discount)}</span></div>` : ''}
+      ${t.pct ? `<div class="sumrow disc"><span>Stacking discount (${t.pct}% off ${t.count} items)</span><span>−${money(t.discount)}</span></div>` : ''}
       <div class="sumrow"><span>Cold-chain shipping</span><span>Free</span></div>
       <div class="sumrow total"><span>Monthly total</span><span>${money(t.total)}</span></div>
       <a class="btn" href="/wellness/checkout.html">Continue to checkout</a>

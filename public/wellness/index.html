@@ -390,7 +390,7 @@ footer .logo span { color: #fff; }
       <a href="#science">Science</a>
       <a href="#mixing">Mixing guide</a>
       <a href="#bundles">Bundles</a>
-      <a href="#app">Free app</a>
+      <a href="#app">Stackr app</a>
       <a href="../">The Fertility House</a>
     </div>
     <button class="cart-btn" data-cart-open aria-label="Open your plan">Plan <span class="n" data-cart-count data-zero>0</span></button>
@@ -587,8 +587,8 @@ footer .logo span { color: #fff; }
     <div class="container app-grid">
       <div class="rv">
         <span class="free-pill">Free with any purchase</span>
-        <h2>Your doses, <em>in your pocket.</em></h2>
-        <p>Every Wellness House order comes with our tracker app at no extra cost. It knows your exact vial, so it does the math and the remembering for you.</p>
+        <h2>Meet Stackr. <em>Your doses, in your pocket.</em></h2>
+        <p>Every Wellness House order comes with Stackr, our tracker app, at no extra cost. It knows your exact vial, so it does the math and the remembering for you.</p>
         <ul class="feat">
           <li><div><b>Dose reminders</b><br>A nudge on injection day, with the units to draw already worked out.</div></li>
           <li><div><b>Calendar and log</b><br>See every dose, skipped day and injection site at a glance.</div></li>
@@ -596,7 +596,7 @@ footer .logo span { color: #fff; }
           <li><div><b>Progress</b><br>Track weight, energy and side effects, and share them with Jamie at check-ins.</div></li>
           <li><div><b>Works like an app</b><br>Add it to your phone's home screen. Your data stays private to your login.</div></li>
         </ul>
-        <button class="btn" data-contact>Start a consult</button>
+        <a class="btn" href="/stackr/">Try the Stackr demo</a>
       </div>
       <div class="phones rv" aria-hidden="true">
         <div class="phone a"><div class="scr">
@@ -803,7 +803,7 @@ function openDrawer(id) {
     <div class="eyebrow">${p.kind}</div><h2 id="dName">${p.name}</h2><p class="d-sub">${p.desc}</p>
     <div class="d-img"><img src="img/${p.img}.webp" alt="${p.name} vial"></div>
     <div class="d-price"><b>$${p.price}</b><span>per month · consult, medication, supplies and check-ins included</span></div>
-    <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Wellness House tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
+    <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Stackr tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
     <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-add="${p.id}">Add to plan</button><button class="btn light" data-contact data-interest="${p.name}">Ask Jamie a question</button></div>
     <h4>What it is</h4><p>${p.what}</p>
     <h4>Protocol</h4><dl class="spec">${p.spec.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
@@ -829,7 +829,7 @@ function renderBundles() { document.getElementById('bgrid').innerHTML = B.map(b 
   <div class="body"><span class="save">${pct}% off every item</span><h3>${b.name}</h3><p style="margin:0;font-size:15px;color:var(--ink-2)">${b.blurb}</p>
   <ul>${b.items.map(i => `<li>${byId[i].name}</li>`).join('')}</ul>
   <div class="row"><b>${WHCart.money(price)}</b><span>/mo</span><s>$${full}</s></div>
-  <span class="app-tag">+ Free tracker app included</span>
+  <span class="app-tag">+ Free Stackr app included</span>
   <button class="btn" data-add-bundle="${b.items.join(',')}" data-label="${b.name}" style="margin-top:12px;justify-content:center">Add bundle to plan</button></div></article>`; }).join(''); }
 renderBundles();
 WHCart.on(() => { const active = tabs.querySelector('[aria-selected="true"]'); if (active) showTab(active.dataset.c); });

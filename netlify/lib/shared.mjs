@@ -67,7 +67,11 @@ export function makeSession() {
 export function sessionCookie(value, maxAgeSec) {
   return `${COOKIE}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAgeSec}`;
 }
+/* Demo mode: the admin is open to anyone with the link until ADMIN_LOGIN is set to "on" in Netlify. */
+export const loginRequired = () => Netlify.env.get("ADMIN_LOGIN") === "on";
+
 export function isAdmin(req) {
+  if (!loginRequired()) return true;
   const raw = (req.headers.get("cookie") || "").split(/;\s*/).find((c) => c.startsWith(COOKIE + "="));
   if (!raw) return false;
   const [payload, sig] = raw.slice(COOKIE.length + 1).split(".");

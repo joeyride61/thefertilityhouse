@@ -1,5 +1,6 @@
 import Stripe from "stripe";
-import { db, json, handle, HttpError, requireAdmin, isAdmin, makeSession, sessionCookie, checkPassword, stripeKeys } from "../lib/shared.mjs";
+import { ensureWill } from "../lib/stackr.mjs";
+import { db, json, handle, HttpError, requireAdmin, isAdmin, loginRequired, makeSession, sessionCookie, checkPassword, stripeKeys } from "../lib/shared.mjs";
 
 const NEXT = {
   approve: { from: ["pending_review"], to: "approved", stamp: "approved_at" },
@@ -23,9 +24,10 @@ export default handle(async (req, context) => {
     return json({ ok: true }, 200, { "set-cookie": sessionCookie(makeSession(), 12 * 3600) });
   }
   if (parts[0] === "logout" && req.method === "POST") return json({ ok: true }, 200, { "set-cookie": sessionCookie("", 0) });
-  if (parts[0] === "me") return json({ signedIn: isAdmin(req), stripe: !!stripeKeys().secret });
+  if (parts[0] === "me") return json({ signedIn: isAdmin(req), login: loginRequired(), stripe: !!stripeKeys().secret });
 
   requireAdmin(req);
+  await ensureWill(sql);
 
   if (parts[0] === "dashboard") {
     const [k] = await sql`

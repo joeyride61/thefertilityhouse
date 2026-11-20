@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stackr</title>
+<meta name="description" content="Stackr: your peptide dose tracker. Free with every Wellness House order.">
+<meta name="theme-color" content="#2b2523">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stackr">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f2ef; --card: #ffffff; --ink: #2b2523; --ink-2: #6f6360; --line: rgba(43,37,35,.09);
+  --coral: #c9796a; --coral-deep: #8c4b40; --sage: #5f8a5a; --amber: #b7862f; --red: #b2433a; --blush: #f4e4de;
+  --display: "Cormorant Garamond", Georgia, serif; --ui: "Jost", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--ui); -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; }
+h1, h2, h3 { margin: 0; font-weight: 500; line-height: 1.15; }
+.num { font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
+
+/* ---------- desktop presentation ---------- */
+.stage { min-height: 100%; }
+.intro { display: none; }
+.device { position: relative; height: 100dvh; display: grid; grid-template-rows: auto auto 1fr auto; background: var(--bg); overflow: hidden; }
+@media (min-width: 900px) {
+  body { background: radial-gradient(circle at 20% 10%, #f4e4de, #efe7e3 55%, #e9e0dc); }
+  .stage { display: grid; grid-template-columns: minmax(300px, 460px) 400px; gap: 70px; justify-content: center; align-items: center; padding: 40px 24px; min-height: 100vh; }
+  .intro { display: block; }
+  .device { height: 820px; border-radius: 52px; border: 12px solid #171312; box-shadow: 0 50px 90px -40px rgba(43,37,35,.55); }
+  .device::before { content: ""; position: absolute; top: 10px; left: 50%; width: 110px; height: 30px; margin-left: -55px; border-radius: 999px; background: #171312; z-index: 30; }
+}
+.intro .logo { display: flex; align-items: center; gap: 12px; font: 600 30px var(--ui); letter-spacing: -.02em; }
+.intro h1 { font: 500 52px/1.05 var(--display); margin: 22px 0 14px; letter-spacing: -.01em; }
+.intro p { color: var(--ink-2); font-size: 16px; font-weight: 300; }
+.intro ol { padding: 0; list-style: none; margin: 26px 0; display: grid; gap: 14px; counter-reset: s; }
+.intro li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; font-size: 15px; font-weight: 300; }
+.intro li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 13px; }
+.intro li b { font-weight: 500; }
+.intro .links { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill-link { display: inline-flex; padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(43,37,35,.2); text-decoration: none; color: var(--ink); font-size: 14px; }
+.pill-link:hover { border-color: var(--ink); }
+
+/* ---------- app chrome ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: calc(env(safe-area-inset-top, 0px) + 12px) 18px 10px; }
+@media (min-width: 900px) { .topbar { padding-top: 48px; } }
+.brand { display: flex; align-items: center; gap: 8px; font: 600 22px var(--ui); letter-spacing: -.02em; }
+.brand svg { width: 26px; height: 26px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 500; border: 0; }
+.demo { margin: 0 14px 6px; background: #fff7e8; border: 1px solid #f0dcb1; color: #6b5420; border-radius: 12px; padding: 7px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.demo button { background: none; border: 0; padding: 0; text-decoration: underline; color: inherit; font-size: 12px; }
+.scroll { overflow-y: auto; overscroll-behavior: contain; padding: 4px 14px 24px; -webkit-overflow-scrolling: touch; }
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-top: 1px solid var(--line); padding: 6px 6px calc(env(safe-area-inset-bottom, 0px) + 6px); }
+@media (min-width: 900px) { .tabs { padding-bottom: 22px; } }
+.tabs button { background: none; border: 0; display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--ink-2); padding: 6px 0; border-radius: 12px; position: relative; }
+.tabs button svg { width: 24px; height: 24px; }
+.tabs button[aria-current="page"] { color: var(--ink); font-weight: 500; }
+.tabs .dot { position: absolute; top: 4px; right: calc(50% - 18px); width: 8px; height: 8px; border-radius: 50%; background: var(--red); border: 2px solid #fff; }
+
+/* ---------- shared ---------- */
+.hello { padding: 8px 4px 14px; }
+.hello small { color: var(--ink-2); font-size: 13px; }
+.hello h1 { font: 500 34px var(--display); margin-top: 2px; }
+.sec { display: flex; justify-content: space-between; align-items: baseline; margin: 20px 4px 10px; }
+.sec h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); font-weight: 500; }
+.sec button { background: none; border: 0; color: var(--coral-deep); font-size: 13px; padding: 0; }
+.card { background: var(--card); border-radius: 20px; padding: 16px; box-shadow: 0 1px 0 var(--line), 0 10px 30px -22px rgba(43,37,35,.35); }
+.stack { display: grid; gap: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; background: var(--ink); color: #fff; border-radius: 999px; padding: 12px 18px; font-size: 15px; font-weight: 500; }
+.btn.light { background: #f1ebe8; color: var(--ink); }
+.btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+.btn.coral { background: var(--coral-deep); }
+.btn.block { width: 100%; }
+.btn.sm { padding: 8px 14px; font-size: 13px; }
+.btn[disabled] { opacity: .5; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 9px; border-radius: 999px; background: #f1ebe8; color: var(--ink-2); white-space: nowrap; }
+.chip.wh { background: #f4e4de; color: var(--coral-deep); }
+.swatch { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+/* alerts */
+.alert { border-radius: 20px; padding: 14px 16px; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+.alert.urgent { background: var(--ink); color: #fff; }
+.alert.info { background: #fff; border: 1px solid var(--line); }
+.alert.good { background: #eef5ed; }
+.alert .ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.14); font-size: 16px; }
+.alert.info .ic { background: var(--blush); }
+.alert.good .ic { background: #d9ead6; }
+.alert b { font-weight: 500; display: block; margin-bottom: 2px; }
+.alert p { margin: 0 0 10px; font-size: 13px; opacity: .85; }
+.alert .btn { padding: 9px 14px; font-size: 13px; }
+.alert.urgent .btn { background: #fff; color: var(--ink); }
+
+/* dose card */
+.dose { display: grid; grid-template-columns: 6px 1fr; gap: 14px; }
+.dose .bar { border-radius: 4px; }
+.dose h3 { font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.dose .meta { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+.draw { display: flex; align-items: baseline; gap: 6px; margin: 10px 0 4px; }
+.draw b { font: 500 40px/1 var(--display); }
+.draw span { color: var(--ink-2); font-size: 13px; }
+.syr { height: 10px; background: #f1ebe8; border-radius: 6px; overflow: hidden; margin: 6px 0 12px; position: relative; }
+.syr i { position: absolute; inset: 0 auto 0 0; border-radius: 6px; }
+.syr-ticks { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-2); margin-top: -8px; margin-bottom: 10px; }
+.row-btns { display: flex; gap: 8px; }
+.row-btns .btn { flex: 1; }
+.logged { display: flex; justify-content: space-between; align-items: center; background: #eef5ed; color: var(--sage); border-radius: 14px; padding: 10px 12px; font-size: 14px; }
+.logged.skip { background: #f4f0ee; color: var(--ink-2); }
+.logged button { background: none; border: 0; color: inherit; text-decoration: underline; font-size: 13px; }
+.site { font-size: 12px; color: var(--ink-2); margin-bottom: 10px; }
+
+/* week strip */
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.wd { text-align: center; padding: 8px 0 10px; border-radius: 14px; }
+.wd.today { background: var(--ink); color: #fff; }
+.wd small { display: block; font-size: 11px; opacity: .7; }
+.wd b { font-weight: 500; font-size: 16px; display: block; margin: 2px 0 6px; }
+.dots { display: flex; gap: 3px; justify-content: center; min-height: 8px; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid currentColor; }
+.dots i.full { background: currentColor; }
+.dots i.skip { opacity: .35; }
+
+/* supply */
+.supply h3 { font-size: 16px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.meter { height: 8px; border-radius: 4px; background: #f1ebe8; overflow: hidden; margin: 10px 0 8px; }
+.meter i { display: block; height: 100%; border-radius: 4px; }
+.supply p { margin: 0; font-size: 13px; color: var(--ink-2); }
+.supply p b { color: var(--ink); font-weight: 500; }
+.low { color: var(--red) !important; font-weight: 500; }
+
+/* calendar */
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin: 4px 4px 12px; }
+.cal-head h1 { font: 500 30px var(--display); }
+.cal-head button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: #fff; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal .h { text-align: center; font-size: 11px; color: var(--ink-2); padding: 4px 0; }
+.cal button { aspect-ratio: 1 / 1.15; border: 0; background: #fff; border-radius: 12px; display: grid; align-content: start; justify-items: center; padding: 6px 0 0; font-size: 13px; position: relative; }
+.cal button.out { background: transparent; color: #c2b8b4; }
+.cal button.today { outline: 2px solid var(--ink); }
+.cal button.sel { background: var(--ink); color: #fff; }
+.cal button .dots { margin-top: 5px; flex-wrap: wrap; padding: 0 3px; }
+.cal button .dots i { width: 6px; height: 6px; border-width: 1.5px; }
+.cal button .dots i.miss { border-color: var(--red) !important; }
+.cal .flag { position: absolute; top: 3px; right: 4px; font-size: 9px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-2); margin: 12px 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink-2); display: inline-block; }
+.day-list .it { display: grid; grid-template-columns: 6px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.day-list .it:last-child { border-bottom: 0; }
+.day-list .bar { height: 34px; border-radius: 3px; }
+.day-list small { color: var(--ink-2); display: block; font-size: 12px; }
+
+/* stack */
+.item h3 { font-size: 19px; font-weight: 500; }
+.item .top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+.days7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 12px 0; }
+.days7 span { text-align: center; font-size: 12px; padding: 7px 0; border-radius: 10px; background: #f6f1ef; color: #b0a6a2; }
+.days7 span.on { color: #fff; font-weight: 500; }
+.kv { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px 0; }
+.kv div { background: #f8f4f2; border-radius: 12px; padding: 9px 10px; }
+.kv small { display: block; font-size: 11px; color: var(--ink-2); }
+.kv b { font-weight: 500; font-size: 15px; }
+.add-card { border: 1.5px dashed rgba(43,37,35,.2); background: transparent; border-radius: 20px; padding: 18px; width: 100%; font-weight: 500; color: var(--ink); }
+
+/* refills */
+.pick { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.pick:last-of-type { border-bottom: 0; }
+.pick input { width: 20px; height: 20px; accent-color: var(--coral-deep); }
+.pick small { display: block; color: var(--ink-2); font-size: 12px; }
+.pick s { color: #a99d99; font-size: 12px; display: block; text-align: right; }
+.disc { background: var(--blush); border-radius: 14px; padding: 10px 12px; font-size: 13px; margin: 12px 0; }
+.disc b { color: var(--coral-deep); }
+.order h3 { font-size: 16px; font-weight: 500; display: flex; justify-content: space-between; }
+.order small { color: var(--ink-2); font-size: 12px; }
+.track { display: grid; grid-template-columns: repeat(4, 1fr); margin: 14px 0 8px; position: relative; }
+.track::before { content: ""; position: absolute; left: 12.5%; right: 12.5%; top: 6px; height: 2px; background: #eee6e3; }
+.track .fill { position: absolute; left: 12.5%; top: 6px; height: 2px; background: var(--sage); }
+.track div { text-align: center; font-size: 11px; color: var(--ink-2); position: relative; }
+.track div i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #eee6e3; margin: 0 auto 6px; border: 3px solid #fff; box-sizing: content-box; }
+.track div.done i { background: var(--sage); }
+.track div.done { color: var(--ink); }
+.order .acts { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-top: 8px; }
+.linked { color: var(--sage); font-size: 13px; font-weight: 500; }
+.demo-link { background: none; border: 0; color: var(--amber); font-size: 12px; text-decoration: underline; padding: 0; }
+
+/* sheet */
+.sheet-wrap { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+.sheet-bg { position: absolute; inset: 0; background: rgba(43,37,35,.35); opacity: 0; transition: opacity .25s; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 90%; overflow-y: auto; background: var(--bg); border-radius: 26px 26px 0 0; padding: 10px 18px calc(env(safe-area-inset-bottom, 0px) + 24px); transform: translateY(100%); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.sheet-wrap.on { pointer-events: auto; }
+.sheet-wrap.on .sheet-bg { opacity: 1; }
+.sheet-wrap.on .sheet { transform: none; }
+.grab { width: 40px; height: 5px; border-radius: 3px; background: rgba(43,37,35,.18); margin: 0 auto 14px; }
+.sheet h2 { font: 500 28px var(--display); margin-bottom: 4px; }
+.sheet .sub { color: var(--ink-2); font-size: 13px; margin: 0 0 16px; }
+.f { margin-bottom: 14px; }
+.f label { display: block; font-size: 12px; color: var(--ink-2); margin-bottom: 6px; letter-spacing: .02em; }
+.f input, .f select { width: 100%; border: 1px solid var(--line); background: #fff; border-radius: 14px; padding: 12px; font: 400 16px var(--ui); color: var(--ink); }
+.f input:focus { outline: 2px solid var(--coral); border-color: transparent; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.daypick { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.daypick button { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 11px 0; font-weight: 500; font-size: 14px; }
+.daypick button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.presets button { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 5px 11px; font-size: 12px; color: var(--ink-2); }
+.colors { display: flex; gap: 10px; }
+.colors button { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px var(--line); }
+.colors button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink); }
+.preview { background: var(--ink); color: #fff; border-radius: 18px; padding: 14px 16px; margin: 4px 0 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.preview b { font: 500 30px var(--display); }
+.preview small { opacity: .75; font-size: 12px; display: block; }
+.sites { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.sites button { border: 1px solid var(--line); background: #fff; border-radius: 14px; padding: 12px; font-size: 14px; text-align: left; }
+.sites button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.sites button small { display: block; font-size: 11px; color: var(--sage); }
+.err { color: var(--red); font-size: 13px; min-height: 1em; margin: 0 0 10px; }
+.toast { position: absolute; left: 50%; bottom: 90px; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 13px; transition: all .3s; z-index: 50; white-space: nowrap; pointer-events: none; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.empty { text-align: center; color: var(--ink-2); padding: 30px 10px; }
+.loading { display: grid; place-items: center; height: 100%; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <section class="intro" aria-label="About Stackr">
+    <div class="logo"><svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Stackr</div>
+    <h1>Every dose, every refill, handled.</h1>
+    <p>Stackr is the free tracker that comes with every Wellness House order. This demo shows it through the eyes of Will Hainlen, a member on tirzepatide who also takes BPC-157 he bought elsewhere.</p>
+    <ol>
+      <li><span><b>His orders link automatically.</b> Will's Wellness House tirzepatide shows up in his stack with dose, units to draw and supply.</span></li>
+      <li><span><b>He adds anything else.</b> BPC-157 was added by hand, on the exact days he picked: Monday, Wednesday and Friday.</span></li>
+      <li><span><b>Stackr sees the run-out coming.</b> It knows he has one dose of tirzepatide left and tells him to reorder now, before there's a gap.</span></li>
+      <li><span><b>One tap reorders the next batch.</b> The order lands in Jamie's CRM for review. When it's delivered, Will adds it to his stack and the countdown resets.</span></li>
+    </ol>
+    <div class="links"><a class="pill-link" href="/admin/#members">See Will in the CRM ↗</a><a class="pill-link" href="/wellness/">The Wellness House ↗</a></div>
+    <p style="font-size:13px;margin-top:22px">On a phone, open this page and choose <b>Add to Home Screen</b> to install Stackr like an app.</p>
+  </section>
+
+  <div class="device" id="device">
+    <header class="topbar">
+      <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2b2523"/><rect x="10" y="9" width="20" height="5" rx="2.5" fill="#c9796a"/><rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="#e3a89b"/><rect x="10" y="26" width="20" height="5" rx="2.5" fill="#f4e4de"/></svg>Stackr</div>
+      <button class="avatar" type="button" aria-label="Will Hainlen">WH</button>
+    </header>
+    <div class="demo"><span>Demo · viewing as Will Hainlen</span><button type="button" id="reset">Reset demo</button></div>
+    <main class="scroll" id="view"><div class="loading">Loading your stack…</div></main>
+    <nav class="tabs" aria-label="Stackr">
+      <button type="button" data-tab="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Today</button>
+      <button type="button" data-tab="calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</button>
+      <button type="button" data-tab="stack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="4" width="14" height="4" rx="2"/><rect x="5" y="10" width="14" height="4" rx="2"/><rect x="5" y="16" width="14" height="4" rx="2"/></svg>My stack</button>
+      <button type="button" data-tab="refills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16l-1.5 11.5a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Refills</button>
+    </nav>
+    <div class="sheet-wrap" id="sheetWrap"><div class="sheet-bg" data-close-sheet></div><div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1"></div></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], D1 = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const SITES = ['Left abdomen', 'Right abdomen', 'Left thigh', 'Right thigh', 'Left arm', 'Right arm'];
+const COLORS = ['#8c4b40', '#c9796a', '#5f8a7a', '#b8955a', '#6f7fa6', '#c45b78', '#4f6650'];
+const LEAD_DAYS = 6; // review + pharmacy + overnight shipping, with a buffer
+const BUD_DAYS = 28; // mixed vials are good for 28 days
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const TODAY = parse(iso(new Date()));
+const fmt = (d, o = { weekday: 'short', month: 'short', day: 'numeric' }) => d.toLocaleDateString('en-US', o);
+const rel = (d) => { const n = Math.round((d - TODAY) / 864e5); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : n > 1 && n < 7 ? DAY[d.getDay()] : fmt(d); };
+const mg = (v) => v >= 1 ? `${+v.toFixed(2)} mg` : `${Math.round(v * 1000)} mcg`;
+const usd = (c) => '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
+
+let S = null, tab = 'today', calMonth = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1), calSel = iso(TODAY), picked = null;
+
+async function api(path, body, method) {
+  const r = await fetch('/api/stackr/' + path, body ? { method: method || 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) } : { method: method || 'GET' });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+  return data;
+}
+async function load() { S = await api('state'); S.items.forEach((it) => it.f = forecast(it)); render(); }
+function toast(m) { $('toast').textContent = m; $('toast').classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => $('toast').classList.remove('on'), 2400); }
+
+/* ---------- the math ---------- */
+const units = (it) => it.water_ml > 0 ? Math.round(it.dose_mg / (it.vial_mg / it.water_ml) * 100 * 10) / 10 : null;
+const doseOn = (it, day) => it.doses.find((d) => d.day === day);
+const scheduled = (it, d) => it.days.includes(d.getDay());
+function forecast(it) {
+  const active = it.batches.filter((b) => !b.finished);
+  const start = active.length ? active.map((b) => b.added_on).sort()[0] : iso(TODAY);
+  const total = active.reduce((s, b) => s + b.vials * b.mg_per_vial, 0);
+  const used = it.doses.filter((d) => d.status === 'taken' && d.day >= start).reduce((s, d) => s + d.dose_mg, 0);
+  const remaining = Math.max(0, total - used);
+  const left = Math.floor(remaining / it.dose_mg + 1e-9);
+  const upcoming = [];
+  for (let d = new Date(TODAY), g = 0; upcoming.length < left && g < 800; d = add(d, 1), g++) if (scheduled(it, d) && !doseOn(it, iso(d))) upcoming.push(new Date(d));
+  const lastDose = upcoming[upcoming.length - 1] || null;
+  let runout = null;
+  for (let d = lastDose ? add(lastDose, 1) : new Date(TODAY), g = 0; g < 30; d = add(d, 1), g++) if (scheduled(it, d) && !doseOn(it, iso(d))) { runout = d; break; }
+  const reorderBy = lastDose ? add(lastDose, -LEAD_DAYS) : TODAY;
+  const expiry = it.mixed_on && it.water_ml > 0 ? add(parse(it.mixed_on), BUD_DAYS) : null;
+  const afterExpiry = expiry ? upcoming.filter((d) => d > expiry).length : 0;
+  const inVial = remaining % it.vial_mg || (remaining ? it.vial_mg : 0);
+  const pending = S.orders.find((o) => ['pending_review', 'approved', 'shipped'].includes(o.status) && o.items.some((x) => x.product_id === it.product_id));
+  return { total, remaining, left, upcoming, lastDose, runout, reorderBy, expiry, afterExpiry, inVial, vials: remaining / it.vial_mg, pending };
+}
+function nextSite(it) {
+  const last = [...it.doses].reverse().find((d) => d.site);
+  const all = S.items.flatMap((x) => x.doses.filter((d) => d.site && d.day >= iso(add(TODAY, -6))).map((d) => d.site));
+  const i = last ? SITES.indexOf(last.site) : -1;
+  for (let k = 1; k <= SITES.length; k++) { const s = SITES[(i + k) % SITES.length]; if (!all.includes(s)) return s; }
+  return SITES[(i + 1) % SITES.length];
+}
+
+/* ---------- views ---------- */
+function render() {
+  document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
+  const needs = S.items.some((it) => it.product_id && !it.f.pending && it.f.reorderBy <= add(TODAY, 2)) || S.orders.some((o) => o.status === 'delivered' && !o.linked);
+  const rb = document.querySelector('[data-tab="refills"]'); rb.querySelector('.dot')?.remove(); if (needs) rb.insertAdjacentHTML('beforeend', '<span class="dot"></span>');
+  ({ today: viewToday, calendar: viewCalendar, stack: viewStack, refills: viewRefills })[tab]();
+}
+
+function alerts() {
+  const out = [];
+  S.orders.filter((o) => o.status === 'delivered' && !o.linked).forEach((o) => out.push(`<div class="alert good"><div class="ic">📦</div><div><b>Your refill ${o.number} arrived</b><p>${o.items.map((i) => esc(i.name)).join(', ')}. Add it to your stack so your countdown resets.</p><button class="btn sm" data-link="${o.id}">Add to my stack</button></div></div>`));
+  S.items.forEach((it) => {
+    const f = it.f;
+    if (it.product_id && !f.pending && f.reorderBy <= add(TODAY, 2)) {
+      out.push(`<div class="alert urgent"><div class="ic">⏳</div><div><b>${esc(it.name)}: ${f.left ? `${f.left} dose${f.left > 1 ? 's' : ''} left` : 'out of supply'}</b><p>${f.lastDose ? `Your last dose is ${rel(f.lastDose)}.` : ''} Reorder ${f.reorderBy <= TODAY ? 'today' : 'by ' + rel(f.reorderBy)} so your next batch arrives before ${f.runout ? rel(f.runout) : 'you run out'}.</p><button class="btn sm" data-go-refill="${it.id}">Reorder next batch</button></div></div>`);
+    } else if (!it.product_id && f.runout && f.reorderBy <= add(TODAY, 2)) {
+      out.push(`<div class="alert info"><div class="ic">⏳</div><div><b>${esc(it.name)} is running low</b><p>About ${f.left} doses left. You added this one yourself, so restock it from your own source.</p></div></div>`);
+    }
+    if (f.pending) out.push(`<div class="alert info"><div class="ic">🚚</div><div><b>${esc(it.name)} refill ${f.pending.number}</b><p>${{ pending_review: 'With Jamie for review.', approved: 'Approved and at the pharmacy.', shipped: 'Shipped. Arriving overnight, cold.' }[f.pending.status]}</p><button class="btn sm light" data-tab-go="refills">Track order</button></div></div>`);
+    if (f.expiry && f.afterExpiry > 0 && f.expiry <= add(TODAY, 14)) out.push(`<div class="alert info"><div class="ic">🧪</div><div><b>Mix a fresh ${esc(it.name)} vial ${rel(f.expiry)}</b><p>Your mixed vial is good for 28 days, until ${fmt(f.expiry)}. You'll still have about ${Math.min(f.afterExpiry, Math.floor(f.inVial / it.dose_mg))} doses' worth in it; start a new vial that day.</p></div></div>`);
+  });
+  return out.join('');
+}
+
+function doseCard(it, day) {
+  const d = doseOn(it, day), u = units(it), when = parse(day);
+  const head = `<h3><span class="swatch" style="background:${it.color}"></span>${esc(it.name)}</h3><div class="meta">${mg(it.dose_mg)} · ${it.dose_time.replace(/^0/, '')} · ${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</div>`;
+  if (d) return `<div class="card dose"><div class="bar" style="background:${it.color}"></div><div>${head}<div class="logged ${d.status === 'skipped' ? 'skip' : ''}" style="margin-top:12px"><span>${d.status === 'taken' ? `✓ Taken${d.site ? ' · ' + esc(d.site) : ''}` : 'Skipped'}</span><button type="button" data-undo="${it.id}" data-day="${day}">Undo</button></div></div></div>`;
+  const pct = u != null ? Math.min(100, u) : 0;
+  return `<div class="card dose"><div class="bar" style="background:${it.color}"></div><div>${head}
+    ${u != null ? `<div class="draw"><b class="num">${u}</b><span>units on a U-100 syringe</span></div><div class="syr"><i style="width:${pct}%;background:${it.color}"></i></div><div class="syr-ticks"><span>0</span><span>50</span><span>100</span></div>` : `<div class="draw"><b>${it.format === 'pen' ? '1 pen' : mg(it.dose_mg)}</b><span>${it.format === 'pen' ? 'single-dose' : ''}</span></div>`}
+    <div class="site">Suggested site: <b style="font-weight:500;color:var(--ink)">${nextSite(it)}</b></div>
+    <div class="row-btns"><button class="btn" type="button" data-take="${it.id}" data-day="${day}">${when < TODAY ? 'Log as taken' : 'Mark taken'}</button><button class="btn light" type="button" data-skip="${it.id}" data-day="${day}" style="flex:.5">Skip</button></div></div></div>`;
+}
+
+function weekStrip() {
+  const start = add(TODAY, -TODAY.getDay());
+  return `<div class="card"><div class="week">${[...Array(7)].map((_, i) => { const d = add(start, i), k = iso(d);
+    const dots = S.items.filter((it) => scheduled(it, d)).map((it) => { const x = doseOn(it, k); return `<i class="${x ? (x.status === 'taken' ? 'full' : 'skip') : ''}" style="color:${it.color}"></i>`; }).join('');
+    return `<button type="button" class="wd ${k === iso(TODAY) ? 'today' : ''}" data-cal-day="${k}" style="border:0;background:${k === iso(TODAY) ? 'var(--ink)' : 'transparent'};color:inherit"><small>${D1[d.getDay()]}</small><b>${d.getDate()}</b><div class="dots">${dots}</div></button>`; }).join('')}</div></div>`;
+}
+
+function supplyCard(it) {
+  const f = it.f, cap = Math.max(it.vial_mg, f.total || it.vial_mg), pct = cap ? Math.round(f.remaining / cap * 100) : 0;
+  const low = f.lastDose && f.reorderBy <= add(TODAY, 2);
+  return `<div class="card supply"><h3><span style="display:flex;gap:8px;align-items:center"><span class="swatch" style="background:${it.color}"></span>${esc(it.name)}</span><span class="chip ${it.source === 'wellness' ? 'wh' : ''}">${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</span></h3>
+    <div class="meter"><i style="width:${pct}%;background:${low ? 'var(--red)' : it.color}"></i></div>
+    <p><b>${mg(f.remaining)}</b> left · ${f.left} dose${f.left === 1 ? '' : 's'}${f.vials >= 1.05 ? ` · ${f.vials.toFixed(1)} vials` : ''}</p>
+    <p class="${low ? 'low' : ''}">${f.runout ? `Runs out ${rel(f.runout)}${f.runout > add(TODAY, 6) ? ` (${fmt(f.runout)})` : ''}` : 'Plenty on hand'}${it.product_id && !f.pending && f.lastDose ? ` · reorder by ${rel(f.reorderBy < TODAY ? TODAY : f.reorderBy)}` : ''}${f.pending ? ` · refill ${f.pending.number} on the way` : ''}</p></div>`;
+}
+
+function viewToday() {
+  const k = iso(TODAY), due = S.items.filter((it) => scheduled(it, TODAY) || doseOn(it, k));
+  const missed = S.items.flatMap((it) => [1, 2, 3].map((n) => add(TODAY, -n)).filter((d) => scheduled(it, d) && !doseOn(it, iso(d)) && (!it.mixed_on || iso(d) >= it.mixed_on)).map((d) => ({ it, d })));
+  let next = null;
+  if (!due.length) for (let d = add(TODAY, 1), g = 0; g < 14 && !next; d = add(d, 1), g++) { const its = S.items.filter((it) => scheduled(it, d)); if (its.length) next = { d, its }; }
+  $('view').innerHTML = `<div class="hello"><small>${fmt(TODAY, { weekday: 'long', month: 'long', day: 'numeric' })}</small><h1>Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, Will</h1></div>
+    <div class="stack">${alerts()}</div>
+    <div class="sec"><h2>Today</h2></div>
+    <div class="stack">${due.length ? due.map((it) => doseCard(it, k)).join('') : `<div class="card empty">Nothing due today.${next ? `<br><b style="font-weight:500;color:var(--ink)">${next.its.map((i) => esc(i.name)).join(' & ')}</b> ${rel(next.d)}.` : ''}</div>`}</div>
+    ${missed.length ? `<div class="sec"><h2>Not logged yet</h2></div><div class="stack">${missed.map(({ it, d }) => `<div class="card day-list"><div class="it"><div class="bar" style="background:${it.color}"></div><div><b style="font-weight:500">${esc(it.name)}</b><small>${fmt(d)} · ${mg(it.dose_mg)}</small></div><div style="display:flex;gap:6px"><button class="btn sm" data-take="${it.id}" data-day="${iso(d)}">Taken</button><button class="btn sm light" data-skip="${it.id}" data-day="${iso(d)}">Skipped</button></div></div></div>`).join('')}</div>` : ''}
+    <div class="sec"><h2>This week</h2><button type="button" data-tab-go="calendar">Calendar</button></div>${weekStrip()}
+    <div class="sec"><h2>Supply</h2><button type="button" data-tab-go="stack">My stack</button></div><div class="stack">${S.items.map(supplyCard).join('')}</div>`;
+}
+
+function viewCalendar() {
+  const y = calMonth.getFullYear(), m = calMonth.getMonth(), first = new Date(y, m, 1), start = add(first, -first.getDay());
+  let cells = '';
+  for (let i = 0; i < 42; i++) {
+    const d = add(start, i), k = iso(d), out = d.getMonth() !== m;
+    if (i >= 35 && out) break;
+    const dots = S.items.filter((it) => scheduled(it, d) || doseOn(it, k)).map((it) => { const x = doseOn(it, k); const past = d < TODAY;
+      const covered = !x && d >= TODAY && it.f.upcoming.some((u) => iso(u) === k);
+      const miss = !x && past && (!it.mixed_on || k >= it.mixed_on) && k >= (it.batches[0]?.added_on || k);
+      return `<i class="${x ? (x.status === 'taken' ? 'full' : 'skip') : miss ? 'miss' : ''}" style="color:${it.color};${!x && !past && !covered ? 'opacity:.3' : ''}"></i>`; }).join('');
+    const flag = S.items.some((it) => it.f.runout && iso(it.f.runout) === k) ? '<span class="flag" title="Runs out">⚠️</span>' : S.items.some((it) => it.f.expiry && iso(it.f.expiry) === k) ? '<span class="flag" title="Mixed vial expires">🧪</span>' : '';
+    cells += `<button type="button" class="${out ? 'out' : ''} ${k === iso(TODAY) ? 'today' : ''} ${k === calSel ? 'sel' : ''}" data-cal-day="${k}" aria-label="${fmt(d)}">${d.getDate()}${flag}<div class="dots">${dots}</div></button>`;
+  }
+  const sd = parse(calSel), items = S.items.filter((it) => scheduled(it, sd) || doseOn(it, calSel));
+  $('view').innerHTML = `<div class="cal-head"><button type="button" data-cal-nav="-1" aria-label="Previous month">‹</button><h1>${calMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h1><button type="button" data-cal-nav="1" aria-label="Next month">›</button></div>
+    <div class="card" style="padding:10px"><div class="cal">${D1.map((x) => `<div class="h">${x}</div>`).join('')}${cells}</div></div>
+    <div class="legend">${S.items.map((it) => `<span><i style="border-color:${it.color};background:${it.color}"></i>${esc(it.name)}</span>`).join('')}<span><i></i>Upcoming</span><span><i style="border-color:var(--red)"></i>Missed</span><span>⚠️ Runs out</span><span>🧪 Vial expires</span></div>
+    <div class="sec"><h2>${fmt(sd, { weekday: 'long', month: 'long', day: 'numeric' })}</h2></div>
+    <div class="card day-list">${items.length ? items.map((it) => { const x = doseOn(it, calSel), canLog = sd <= TODAY;
+      const noSupply = !x && sd >= TODAY && !it.f.upcoming.some((u) => iso(u) === calSel);
+      return `<div class="it"><div class="bar" style="background:${it.color}"></div><div><b style="font-weight:500">${esc(it.name)}</b><small>${mg(it.dose_mg)}${units(it) != null ? ` · ${units(it)} units` : ''} · ${it.dose_time}${noSupply ? ' · <span class="low">no supply yet</span>' : ''}</small></div>
+      <div>${x ? `<span class="chip" style="${x.status === 'taken' ? 'background:#eef5ed;color:var(--sage)' : ''}">${x.status === 'taken' ? '✓ ' + esc(x.site || 'Taken') : 'Skipped'}</span>` : canLog ? `<button class="btn sm" data-take="${it.id}" data-day="${calSel}">Log</button>` : '<span class="chip">Scheduled</span>'}</div></div>`; }).join('') : '<div class="empty" style="padding:14px">No doses scheduled.</div>'}</div>`;
+}
+
+function viewStack() {
+  $('view').innerHTML = `<div class="hello"><small>${S.items.length} peptides</small><h1>My stack</h1></div>
+    <div class="stack">${S.items.map((it) => { const f = it.f, u = units(it);
+      const linked = it.batches.filter((b) => b.order_number).map((b) => b.order_number);
+      return `<div class="card item"><div class="top"><div><h3><span class="swatch" style="background:${it.color};display:inline-block;margin-right:8px"></span>${esc(it.name)}</h3>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${it.source === 'wellness' ? 'wh' : ''}">${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</span>${linked.slice(-1).map((n) => `<span class="chip">Linked · ${n}</span>`).join('')}</div></div>
+        <button class="btn sm light" type="button" data-edit="${it.id}">Edit</button></div>
+        <div class="days7">${D1.map((x, i) => `<span class="${it.days.includes(i) ? 'on' : ''}" style="${it.days.includes(i) ? 'background:' + it.color : ''}">${x}</span>`).join('')}</div>
+        <div class="kv"><div><small>Dose</small><b>${mg(it.dose_mg)}</b></div><div><small>${u != null ? 'Draw' : 'Format'}</small><b>${u != null ? u + ' units' : it.format}</b></div><div><small>Time</small><b>${it.dose_time}</b></div></div>
+        <div class="kv"><div><small>Left</small><b>${mg(f.remaining)}</b></div><div><small>Doses</small><b>${f.left}</b></div><div><small>Runs out</small><b>${f.runout ? fmt(f.runout, { month: 'short', day: 'numeric' }) : '—'}</b></div></div>
+        ${it.water_ml > 0 ? `<p style="font-size:12px;color:var(--ink-2);margin:8px 2px">${it.vial_mg} mg vial + ${it.water_ml} mL water = ${+(it.vial_mg / it.water_ml).toFixed(3)} mg/mL${it.mixed_on ? ` · mixed ${fmt(parse(it.mixed_on), { month: 'short', day: 'numeric' })}, good until ${fmt(f.expiry, { month: 'short', day: 'numeric' })}` : ''}</p>
+        <button class="btn sm ghost" type="button" data-mix="${it.id}">I mixed a new vial today</button>` : ''}
+      </div>`; }).join('')}
+      <button class="add-card" type="button" data-edit="new">+ Add a peptide</button>
+      <p style="font-size:12px;color:var(--ink-2);text-align:center;margin:6px 10px">Track anything, including peptides you buy elsewhere. Only Wellness House programs can be reordered in the app.</p></div>`;
+}
+
+function viewRefills() {
+  const linkable = S.items.filter((it) => it.product_id);
+  if (picked === null) picked = new Set(linkable.filter((it) => !it.f.pending && it.f.reorderBy <= add(TODAY, 7)).map((it) => it.product_id));
+  const price = (pid) => (S.products.find((p) => p.id === pid) || {}).price_cents || 0;
+  const n = picked.size, pct = Math.min(Math.max(n - 1, 0) * 10, 30);
+  const sub = [...picked].reduce((s, p) => s + price(p), 0), total = Math.round(sub * (100 - pct) / 100);
+  const addable = S.products.filter((p) => !linkable.some((it) => it.product_id === p.id) && !p.id.startsWith('pen'));
+  const stage = { pending_review: 0, approved: 1, shipped: 2, delivered: 3, cancelled: -1 };
+  $('view').innerHTML = `<div class="hello"><small>Linked to The Wellness House</small><h1>Refills</h1></div>
+    <div class="card"><h3 style="font:500 22px var(--display)">Next batch</h3><p style="margin:2px 0 6px;font-size:13px;color:var(--ink-2)">Ships to 2140 E Ocean Blvd. Charged after Jamie approves.</p>
+      ${linkable.map((it) => `<label class="pick"><input type="checkbox" data-pick="${it.product_id}" ${picked.has(it.product_id) ? 'checked' : ''} ${it.f.pending ? 'disabled' : ''}><div><b style="font-weight:500">${esc(it.name)}</b><small>${it.f.pending ? `Refill ${it.f.pending.number} already on the way` : it.f.runout ? `Runs out ${rel(it.f.runout)} · ${it.f.left} dose${it.f.left === 1 ? '' : 's'} left` : 'Well stocked'}</small></div><div class="num" style="text-align:right">${usd(price(it.product_id))}</div></label>`).join('')}
+      ${addable.slice(0, 3).map((p) => `<label class="pick"><input type="checkbox" data-pick="${p.id}" ${picked.has(p.id) ? 'checked' : ''}><div><b style="font-weight:500">${esc(p.name)}</b><small>Add to your plan</small></div><div class="num">${usd(p.price_cents)}</div></label>`).join('')}
+      <div class="disc">${n ? (pct ? `<b>${pct}% off every item</b> with ${n} items.` : 'Add a second item to take <b>10% off</b> both.') + (pct < 30 ? ` One more makes it <b>${Math.min(pct + 10, 30)}%</b>.` : '') : 'Pick what you want in your next batch.'}</div>
+      <button class="btn block coral" type="button" id="reorder" ${n ? '' : 'disabled'}>${n ? `Reorder next batch · ${usd(total)}` : 'Select items'}</button>
+    </div>
+    <div class="sec"><h2>Orders</h2></div>
+    <div class="stack">${S.orders.map((o) => { const s = stage[o.status];
+      return `<div class="card order"><h3><span>${o.number}</span><span class="num">${usd(o.total_cents)}</span></h3><small>${new Date(o.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · ${o.items.map((i) => esc(i.name)).join(', ')}${o.discount_pct ? ` · ${o.discount_pct}% off` : ''}</small>
+        ${s >= 0 ? `<div class="track"><span class="fill" style="width:${s * 25}%"></span>${['Review', 'Approved', 'Shipped', 'Delivered'].map((t, i) => `<div class="${i <= s ? 'done' : ''}"><i></i>${t}</div>`).join('')}</div>` : '<p style="font-size:13px;color:var(--ink-2)">Cancelled</p>'}
+        <div class="acts">${o.linked ? '<span class="linked">✓ In your stack</span>' : (s === 3 || s === 2) ? `<button class="btn sm" data-link="${o.id}">Add to my stack</button>` : s >= 0 ? '<span style="font-size:13px;color:var(--ink-2)">We\'ll let you know when it ships.</span>' : ''}
+        ${s >= 0 && s < 3 ? `<button class="demo-link" type="button" data-advance="${o.id}">Demo: ${['approve', 'ship', 'deliver'][s]} →</button>` : ''}</div></div>`; }).join('')}</div>
+    <p style="font-size:12px;color:var(--ink-2);text-align:center;margin:14px 10px">In real life Jamie approves orders in her CRM. The demo button lets you skip ahead.</p>`;
+}
+
+/* ---------- sheets ---------- */
+function openSheet(html) { $('sheet').innerHTML = '<div class="grab"></div>' + html; $('sheetWrap').classList.add('on'); $('sheet').focus(); }
+function closeSheet() { $('sheetWrap').classList.remove('on'); }
+
+function takeSheet(it, day) {
+  let site = nextSite(it);
+  openSheet(`<h2>Log ${esc(it.name)}</h2><p class="sub">${fmt(parse(day), { weekday: 'long', month: 'long', day: 'numeric' })} · ${mg(it.dose_mg)}${units(it) != null ? ` · ${units(it)} units` : ''}</p>
+    <div class="f"><label>Injection site</label><div class="sites">${SITES.map((s) => `<button type="button" data-site="${s}" aria-pressed="${s === site}">${s}${s === nextSite(it) ? '<small>Suggested</small>' : ''}</button>`).join('')}</div></div>
+    <button class="btn block" type="button" id="confirmTake">Mark taken</button>`);
+  $('sheet').onclick = (e) => { const b = e.target.closest('[data-site]'); if (b) { site = b.dataset.site; $('sheet').querySelectorAll('[data-site]').forEach((x) => x.setAttribute('aria-pressed', x === b)); } };
+  $('confirmTake').onclick = async () => { await api('doses', { item_id: it.id, day, status: 'taken', site }); closeSheet(); toast(`${it.name} logged`); load(); };
+}
+
+function editSheet(it) {
+  const isNew = !it;
+  const v = it ? { ...it } : { name: '', color: COLORS[2], vial_mg: 5, water_ml: 2, dose_mg: 0.25, days: [1, 3, 5], dose_time: '08:00', mixed_on: iso(TODAY), vials: 1 };
+  openSheet(`<h2>${isNew ? 'Add a peptide' : 'Edit ' + esc(it.name)}</h2><p class="sub">${isNew ? 'Track anything in your stack, including peptides from other sources.' : it.source === 'wellness' ? 'Linked to your Wellness House orders.' : 'Added by you.'}</p>
+    <div class="f"><label for="eName">Name</label><input id="eName" list="pepList" value="${esc(v.name)}" placeholder="e.g. BPC-157" ${it && it.source === 'wellness' ? 'readonly' : ''}>
+      <datalist id="pepList">${['BPC-157', 'TB-500', 'Ipamorelin', 'CJC-1295', 'GHK-Cu', 'MOTS-c', 'NAD+', 'Semaglutide', 'Tirzepatide', 'Sermorelin', 'Tesamorelin', 'PT-141', 'Glutathione', 'AOD-9604', 'Epitalon', 'Selank', 'Kisspeptin'].map((x) => `<option value="${x}">`).join('')}</datalist></div>
+    <div class="f"><label>Color</label><div class="colors">${COLORS.map((c) => `<button type="button" data-color="${c}" aria-label="Color ${c}" aria-pressed="${c === v.color}" style="background:${c}"></button>`).join('')}</div></div>
+    <div class="g3"><div class="f"><label for="eVial">Vial (mg)</label><input id="eVial" type="number" inputmode="decimal" step="any" min="0" value="${v.vial_mg}"></div>
+      <div class="f"><label for="eWater">Water (mL)</label><input id="eWater" type="number" inputmode="decimal" step="any" min="0" value="${v.water_ml}"></div>
+      <div class="f"><label for="eDose">Dose (mg)</label><input id="eDose" type="number" inputmode="decimal" step="any" min="0" value="${v.dose_mg}"></div></div>
+    <div class="preview" id="ePrev"></div>
+    <div class="f"><label>Injection days</label><div class="daypick" id="eDays">${D1.map((x, i) => `<button type="button" data-day-i="${i}" aria-pressed="${v.days.includes(i)}" aria-label="${DAY[i]}">${x}</button>`).join('')}</div>
+      <div class="presets">${[['Daily', [0, 1, 2, 3, 4, 5, 6]], ['Weekdays', [1, 2, 3, 4, 5]], ['Mon · Wed · Fri', [1, 3, 5]], ['Tue · Thu', [2, 4]], ['Mon · Thu', [1, 4]], ['Weekly', [TODAY.getDay()]]].map(([t, d]) => `<button type="button" data-preset="${d.join(',')}">${t}</button>`).join('')}</div></div>
+    <div class="g2"><div class="f"><label for="eTime">Reminder time</label><input id="eTime" type="time" value="${v.dose_time}"></div>
+      <div class="f"><label for="eMixed">Vial mixed on</label><input id="eMixed" type="date" value="${v.mixed_on || ''}"></div></div>
+    ${isNew ? `<div class="f"><label for="eVials">Vials on hand (including the one you're using)</label><input id="eVials" type="number" inputmode="numeric" min="1" max="20" value="1"></div>` : ''}
+    <p class="err" id="eErr" role="alert"></p>
+    <button class="btn block" type="button" id="eSave">${isNew ? 'Add to my stack' : 'Save changes'}</button>
+    ${!isNew && it.source !== 'wellness' ? '<button class="btn block ghost" type="button" id="eDel" style="margin-top:8px;color:var(--red)">Remove from stack</button>' : ''}`);
+  const days = new Set(v.days); let color = v.color;
+  const prev = () => { const vial = +$('eVial').value, w = +$('eWater').value, d = +$('eDose').value;
+    const u = w > 0 && vial > 0 ? Math.round(d / (vial / w) * 1000) / 10 : null, n = vial > 0 && d > 0 ? Math.floor(vial / d + 1e-9) : 0;
+    $('ePrev').innerHTML = `<div><small>Draw each dose</small><b>${u != null ? u + ' units' : mg(d || 0)}</b></div><div style="text-align:right"><small>${days.size ? [...days].sort().map((i) => DAY[i]).join(' · ') : 'Pick days'}</small><small>${n} doses per vial${days.size && n ? ` · lasts ~${Math.round(n / days.size * 7)} days` : ''}</small></div>`; };
+  ['eVial', 'eWater', 'eDose'].forEach((id) => $(id).addEventListener('input', prev)); prev();
+  $('sheet').onclick = (e) => {
+    const di = e.target.closest('[data-day-i]'); if (di) { const i = +di.dataset.dayI; days.has(i) ? days.delete(i) : days.add(i); di.setAttribute('aria-pressed', days.has(i)); prev(); }
+    const p = e.target.closest('[data-preset]'); if (p) { days.clear(); p.dataset.preset.split(',').forEach((x) => days.add(+x)); $('eDays').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', days.has(+b.dataset.dayI))); prev(); }
+    const c = e.target.closest('[data-color]'); if (c) { color = c.dataset.color; $('sheet').querySelectorAll('[data-color]').forEach((b) => b.setAttribute('aria-pressed', b === c)); }
+  };
+  $('eSave').onclick = async () => {
+    try { await api('items', { id: it?.id, name: $('eName').value, color, vial_mg: $('eVial').value, water_ml: $('eWater').value || 0, dose_mg: $('eDose').value, days: [...days], dose_time: $('eTime').value, mixed_on: $('eMixed').value || null, vials: $('eVials')?.value });
+      closeSheet(); toast(isNew ? 'Added to your stack' : 'Saved'); load(); } catch (ex) { $('eErr').textContent = ex.message; }
+  };
+  if ($('eDel')) $('eDel').onclick = async () => { const b = $('eDel'); if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Tap again to remove'; return; } await api('items/' + it.id, {}, 'DELETE'); closeSheet(); toast('Removed'); load(); };
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('button, label'); if (!t) return;
+  const ds = t.dataset;
+  try {
+    if (ds.tab) { tab = ds.tab; if (tab !== 'refills') picked = null; render(); $('view').scrollTop = 0; }
+    else if (ds.tabGo) { tab = ds.tabGo; render(); $('view').scrollTop = 0; }
+    else if (ds.goRefill) { tab = 'refills'; picked = null; render(); $('view').scrollTop = 0; }
+    else if (ds.take) takeSheet(S.items.find((i) => i.id == ds.take), ds.day);
+    else if (ds.skip) { await api('doses', { item_id: +ds.skip, day: ds.day, status: 'skipped' }); toast('Marked as skipped'); load(); }
+    else if (ds.undo) { await api('doses', { item_id: +ds.undo, day: ds.day, status: 'clear' }); load(); }
+    else if (ds.edit) editSheet(ds.edit === 'new' ? null : S.items.find((i) => i.id == ds.edit));
+    else if (ds.mix) { await api('mix', { item_id: +ds.mix }); toast('New vial started. 28-day clock reset.'); load(); }
+    else if (ds.calDay) { calSel = ds.calDay; const d = parse(calSel); calMonth = new Date(d.getFullYear(), d.getMonth(), 1); tab = 'calendar'; render(); }
+    else if (ds.calNav) { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + +ds.calNav, 1); render(); }
+    else if (ds.link) { await api('link', { order_id: +ds.link }); toast('Added to your stack. Countdown updated.'); await load(); }
+    else if (ds.advance) { const r = await api('demo/advance', { order_id: +ds.advance }); toast(`Order ${r.status.replace('_', ' ')}`); await load(); }
+    else if (ds.closeSheet !== undefined) closeSheet();
+    else if (t.id === 'reorder') { t.disabled = true; const r = await api('reorder', { product_ids: [...picked] }); picked = null; toast(`${r.number} sent to Jamie for review`); await load(); }
+    else if (t.id === 'reset') { await api('demo/reset', {}); picked = null; tab = 'today'; toast('Demo reset'); await load(); }
+  } catch (ex) { toast(ex.message); }
+});
+document.addEventListener('change', (e) => { const p = e.target.dataset?.pick; if (!p) return; e.target.checked ? picked.add(p) : picked.delete(p); render(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+$('sheetWrap').addEventListener('click', (e) => { if (e.target.hasAttribute('data-close-sheet')) closeSheet(); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+load().catch((e) => { $('view').innerHTML = `<div class="empty">${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>
