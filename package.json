@@ -1,0 +1,9 @@
+{
+  "name": "thefertilityhouse",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@netlify/database": "^2.0.3",
+    "stripe": "^17.7.0"
+  }
+}

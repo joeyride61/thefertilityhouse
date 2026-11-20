@@ -114,6 +114,15 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; back
 .card .price { font: 500 26px var(--display); }
 .card .price small { font: 300 13px var(--ui); color: var(--ink-2); }
 .card .more { font-size: 13px; color: var(--coral-deep); }
+.card-hit { all: unset; cursor: pointer; display: flex; flex-direction: column; flex: 1; }
+.card-hit:focus-visible { outline: 2px solid var(--coral); outline-offset: -2px; }
+.card .add { margin: 0 20px 20px; justify-content: center; padding: 11px 18px; font-size: 14px; }
+.card .add.in { background: var(--sage); border-color: var(--sage); }
+.tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 34px; }
+.tiers div { background: var(--paper); border-radius: 4px; padding: 18px; text-align: center; }
+.tiers b { display: block; font: 500 34px/1 var(--display); color: var(--coral-deep); margin-bottom: 6px; }
+.tiers span { font-size: 13px; color: var(--ink-2); }
+@media (max-width: 620px) { .tiers { grid-template-columns: 1fr 1fr; } .card .add { margin: 0 14px 14px; } .cart-btn { padding: 8px 12px; } .nav > .btn { display: none; } }
 
 /* drawer */
 .scrim { position: fixed; inset: 0; background: rgba(43,37,35,.4); opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 80; }
@@ -384,6 +393,7 @@ footer .logo span { color: #fff; }
       <a href="#app">Free app</a>
       <a href="../">The Fertility House</a>
     </div>
+    <button class="cart-btn" data-cart-open aria-label="Open your plan">Plan <span class="n" data-cart-count data-zero>0</span></button>
     <button class="btn" data-contact>Start a consult</button>
   </nav>
 </header>
@@ -481,7 +491,7 @@ footer .logo span { color: #fff; }
             <tr><td>Best for</td><td>Lowest cost, flexible dosing</td><td>Convenience, travel</td></tr>
           </tbody>
         </table>
-        <button class="btn" data-contact data-interest="GLP-1 pens">Ask about pens</button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-add="pen-sema">Add semaglutide pens</button><button class="btn light" data-add="pen-tirz">Add tirzepatide pens</button></div>
       </div>
     </div>
   </section>
@@ -616,9 +626,10 @@ footer .logo span { color: #fff; }
   <section id="bundles" class="bundles">
     <div class="container">
       <div class="sec-head rv">
-        <div><div class="eyebrow">Bundles</div><h2>Better together, for less</h2></div>
-        <p>Programs Jamie most often prescribes together, priced as one monthly plan.</p>
+        <div><div class="eyebrow">Build your plan</div><h2>The more you add, the more you save</h2></div>
+        <p>Every program you add takes another 10% off everything in your plan, up to 30%. Start with one of Jamie's favorite pairings, or mix your own.</p>
       </div>
+      <div class="tiers rv"><div><b>0%</b><span>1 program</span></div><div><b>10%</b><span>off each with 2</span></div><div><b>20%</b><span>off each with 3</span></div><div><b>30%</b><span>off each with 4 or more</span></div></div>
       <div class="bgrid" id="bgrid"></div>
     </div>
   </section>
@@ -708,6 +719,7 @@ footer .logo span { color: #fff; }
   </div>
 </div>
 
+<script src="cart.js"></script>
 <script>
 document.documentElement.classList.add('js');
 const P = [
@@ -751,6 +763,16 @@ const P = [
     spec:[['Vial','10 mg lyophilized'],['Reconstitute','2 mL bacteriostatic water → 5 mg/mL'],['Frequency','As needed, 45 min before'],['Typical dose','1.75 mg; max 8 doses/month']],
     side:['Nausea (often first dose)','Flushing','Temporary blood-pressure rise'],
     evText:'RECONNECT: two 24-week phase 3 trials showed improved desire and reduced distress vs placebo.', cite:'Kingsberg et al., Obstet Gynecol 2019' },
+  { id:'pen-sema', cat:'pens', name:'Semaglutide pen', kind:'GLP-1 · pre-filled pen', img:'pen-sema', price:329, ev:'Strong', desc:'Single-dose weekly pens. No mixing, no syringes.',
+    what:'The same semaglutide program in a single-dose, pre-filled pen. Each month ships the strength for that step of your titration.',
+    spec:[['Format','4 single-dose pens per month'],['Strengths','0.25, 0.5, 1, 1.7, 2.4 mg'],['Frequency','Once weekly, subcutaneous'],['Storage','Refrigerate; 21 days at room temp']],
+    side:['Nausea, especially when increasing dose','Constipation or diarrhea','Fatigue in the first weeks'],
+    evText:'STEP 1: −14.9% mean body weight at 68 weeks vs −2.4% placebo.', cite:'Wilding et al., NEJM 2021' },
+  { id:'pen-tirz', cat:'pens', name:'Tirzepatide pen', kind:'GLP-1 / GIP · pre-filled pen', img:'pen-tirz', price:479, ev:'Strong', desc:'Our strongest program in an easy weekly pen.',
+    what:'The tirzepatide program in single-dose, pre-filled pens, stepping up in strength each month as you titrate.',
+    spec:[['Format','4 single-dose pens per month'],['Strengths','2.5, 5, 7.5, 10, 12.5, 15 mg'],['Frequency','Once weekly, subcutaneous'],['Storage','Refrigerate; 21 days at room temp']],
+    side:['Nausea and decreased appetite','Diarrhea or constipation','Injection-site redness'],
+    evText:'SURMOUNT-1: up to −20.9% mean body weight at 72 weeks vs −3.1% placebo.', cite:'Jastreboff et al., NEJM 2022' },
 ];
 const B = [
   { name:'Metabolic Reset', img:'b-metabolic', items:['tirz','lipo','nad'], price:549, blurb:'Our complete weight-loss plan: tirzepatide plus energy and cellular support.' },
@@ -759,14 +781,15 @@ const B = [
   { name:'Her Vitality', img:'b-her', items:['serm','pt141'], price:269, blurb:'Sleep, recovery and intimacy support, designed for women.' },
 ];
 const byId = Object.fromEntries(P.map(p => [p.id, p]));
-const TABS = [['all','All programs'],['weight','Weight loss'],['longevity','Longevity & recovery'],['women',"Women's health"]];
+const TABS = [['all','All programs'],['weight','Weight loss'],['pens','Pens'],['longevity','Longevity & recovery'],['women',"Women's health"]];
 
 /* programs */
 const grid = document.getElementById('grid'), tabs = document.getElementById('tabs');
-const card = p => `<button class="card" data-p="${p.id}" aria-label="${p.name} details">
-  <div class="ph"><img src="img/${p.img}.webp" alt="${p.name} vial" loading="lazy"><span class="badge ev">${p.ev} evidence</span></div>
+const card = p => `<article class="card"><button class="card-hit" data-p="${p.id}" aria-label="${p.name} details">
+  <div class="ph"><img src="img/${p.img}.webp" alt="${p.name}" loading="lazy"><span class="badge ev">${p.ev} evidence</span></div>
   <div class="body"><div class="kind">${p.kind}</div><h3>${p.name}</h3><div class="desc">${p.desc}</div>
-  <div class="row"><span class="price">$${p.price}<small> /mo</small></span><span class="more">Details →</span></div></div></button>`;
+  <div class="row"><span class="price">$${p.price}<small> /mo</small></span><span class="more">Details →</span></div></div></button>
+  <button class="btn add${WHCart.has(p.id) ? ' in' : ''}" data-add="${p.id}">${WHCart.has(p.id) ? 'In your plan ✓' : 'Add to plan'}</button></article>`;
 tabs.innerHTML = TABS.map(([k,t]) => `<button role="tab" data-c="${k}">${t}</button>`).join('');
 function showTab(c) { [...tabs.children].forEach(b => b.setAttribute('aria-selected', b.dataset.c === c)); grid.innerHTML = P.filter(p => c === 'all' || p.cat === c).map(card).join(''); }
 tabs.onclick = e => e.target.dataset.c && showTab(e.target.dataset.c); showTab('all');
@@ -781,7 +804,7 @@ function openDrawer(id) {
     <div class="d-img"><img src="img/${p.img}.webp" alt="${p.name} vial"></div>
     <div class="d-price"><b>$${p.price}</b><span>per month · consult, medication, supplies and check-ins included</span></div>
     <p style="margin:-8px 0 18px;font-size:14px;color:var(--coral-deep)">+ Free Wellness House tracker app with your order. <a href="#app" data-closeto>See the app</a></p>
-    <button class="btn" data-contact data-interest="${p.name}">Start a consult for ${p.name}</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-add="${p.id}">Add to plan</button><button class="btn light" data-contact data-interest="${p.name}">Ask Jamie a question</button></div>
     <h4>What it is</h4><p>${p.what}</p>
     <h4>Protocol</h4><dl class="spec">${p.spec.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
     <h4>Clinical evidence</h4><div class="evidence"><span class="lvl">${p.ev} evidence</span><div>${p.evText}</div><cite>${p.cite}</cite></div>
@@ -800,13 +823,16 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); closeModal(); } });
 
 /* bundles */
-document.getElementById('bgrid').innerHTML = B.map(b => { const full = b.items.reduce((s, i) => s + byId[i].price, 0);
-  return `<article class="bundle rv"><div class="ph"><img src="img/${b.img}.webp" alt="${b.name} bundle" loading="lazy"></div>
-  <div class="body"><span class="save">Save $${full - b.price}/mo</span><h3>${b.name}</h3><p style="margin:0;font-size:15px;color:var(--ink-2)">${b.blurb}</p>
+function renderBundles() { document.getElementById('bgrid').innerHTML = B.map(b => { const full = b.items.reduce((s, i) => s + byId[i].price, 0);
+  const pct = WHCart.pctFor(b.items.length), price = Math.round(full * (100 - pct)) / 100;
+  return `<article class="bundle"><div class="ph"><img src="img/${b.img}.webp" alt="${b.name} bundle" loading="lazy"></div>
+  <div class="body"><span class="save">${pct}% off every item</span><h3>${b.name}</h3><p style="margin:0;font-size:15px;color:var(--ink-2)">${b.blurb}</p>
   <ul>${b.items.map(i => `<li>${byId[i].name}</li>`).join('')}</ul>
-  <div class="row"><b>$${b.price}</b><span>/mo</span><s>$${full}</s></div>
+  <div class="row"><b>${WHCart.money(price)}</b><span>/mo</span><s>$${full}</s></div>
   <span class="app-tag">+ Free tracker app included</span>
-  <button class="btn" data-contact data-interest="${b.name}" style="margin-top:12px;justify-content:center">Start with this bundle</button></div></article>`; }).join('');
+  <button class="btn" data-add-bundle="${b.items.join(',')}" data-label="${b.name}" style="margin-top:12px;justify-content:center">Add bundle to plan</button></div></article>`; }).join(''); }
+renderBundles();
+WHCart.on(() => { const active = tabs.querySelector('[aria-selected="true"]'); if (active) showTab(active.dataset.c); });
 
 /* modal */
 const modal = document.getElementById('modal'), form = document.getElementById('cform');

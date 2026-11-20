@@ -1,3 +1,11 @@
 [build]
-  publish = "."
-  command = ""
+  publish = "public"
+  command = "echo 'static site + functions'"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

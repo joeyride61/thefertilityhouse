@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checkout · The Wellness House</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #fbf7f4; --blush: #f4e4de; --blush-2: #ecd3cb; --ink: #2b2523; --ink-2: #5f5450; --line: rgba(43,37,35,.12);
+  --coral: #c9796a; --coral-deep: #8c4b40; --sage: #7c9a78; --white: #fff; --danger: #a8322a;
+  --display: "Cormorant Garamond", Georgia, serif; --ui: "Jost", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 16px/1.6 var(--ui); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1.1; }
+a { color: inherit; }
+.top { border-bottom: 1px solid var(--line); background: var(--paper); }
+.top .in { max-width: 1160px; margin: 0 auto; padding: 16px max(20px, env(safe-area-inset-right,0px)) 16px max(20px, env(safe-area-inset-left,0px)); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: flex; gap: 10px; align-items: center; text-decoration: none; font: 500 22px var(--display); }
+.logo svg { width: 26px; color: var(--coral-deep); }
+.secure { font-size: 13px; color: var(--ink-2); display: flex; gap: 8px; align-items: center; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 40px max(20px, env(safe-area-inset-right,0px)) 80px max(20px, env(safe-area-inset-left,0px)); display: grid; grid-template-columns: 1.35fr 1fr; gap: 50px; align-items: start; }
+.wrap > * { min-width: 0; }
+h1 { font-size: 48px; margin-bottom: 6px; }
+.lede { color: var(--ink-2); margin: 0 0 30px; }
+fieldset { border: 0; padding: 0; margin: 0 0 34px; }
+legend { display: flex; align-items: center; gap: 12px; font: 500 26px var(--display); margin-bottom: 16px; padding: 0; }
+legend i { font: italic 400 18px var(--display); color: var(--coral); }
+.g { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: 1.4fr 1fr .8fr; gap: 14px; }
+.full { grid-column: 1 / -1; }
+label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; letter-spacing: .02em; }
+input, select, textarea { width: 100%; font: 300 16px var(--ui); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 12px 13px; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); outline-offset: 1px; border-color: transparent; }
+textarea { min-height: 80px; resize: vertical; }
+.checks { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 6px 16px; }
+.check { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--ink); margin: 0; cursor: pointer; }
+.check:last-child { border-bottom: 0; }
+.check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--coral-deep); flex: none; }
+.note { font-size: 13px; color: var(--ink-2); margin-top: 10px; }
+.pay { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+.demo-card { border: 1px dashed var(--coral); border-radius: 8px; padding: 16px; background: #fffaf8; }
+.demo-card b { color: var(--coral-deep); font-weight: 500; }
+.demo-fields { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-top: 12px; }
+.demo-fields div { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 11px 12px; font-size: 15px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.hold { display: flex; gap: 12px; margin-top: 16px; background: var(--blush); border-radius: 8px; padding: 14px 16px; font-size: 14px; }
+.hold svg { flex: none; width: 22px; color: var(--coral-deep); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 400 16px var(--ui); letter-spacing: .03em; padding: 16px 28px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); text-decoration: none; cursor: pointer; width: 100%; transition: background .2s; }
+.btn:hover { background: var(--coral-deep); border-color: var(--coral-deep); }
+.btn[disabled] { opacity: .6; cursor: wait; }
+.btn.light { background: transparent; color: var(--ink); width: auto; }
+.err { color: var(--danger); font-size: 14px; margin: 12px 0 0; min-height: 1em; }
+/* summary */
+.sum { position: sticky; top: 24px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.sum-head { padding: 22px 24px 4px; display: flex; justify-content: space-between; align-items: baseline; }
+.sum-head h2 { font-size: 30px; }
+.sum-head a { font-size: 13px; color: var(--coral-deep); }
+.lines { padding: 4px 24px; }
+.ln { display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.ln img { width: 56px; height: 66px; object-fit: cover; border-radius: 6px; background: var(--blush); }
+.ln h4 { margin: 0; font: 500 19px var(--display); }
+.ln small { color: var(--ink-2); font-size: 12px; }
+.ln .pr { text-align: right; font-variant-numeric: tabular-nums; }
+.ln .pr s { display: block; font-size: 12px; color: #9d918c; }
+.tierbar { margin: 14px 24px 0; background: var(--blush); border-radius: 8px; padding: 12px 14px; font-size: 14px; }
+.tierbar b { color: var(--coral-deep); font-weight: 600; }
+.tierbar button { background: none; border: 0; padding: 0; font: inherit; color: var(--coral-deep); text-decoration: underline; cursor: pointer; }
+.upsell { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.upsell button { font: 400 13px var(--ui); background: var(--white); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; text-decoration: none; color: var(--ink); }
+.upsell button:hover { border-color: var(--ink); }
+.totals { padding: 16px 24px 22px; }
+.row { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.row.save { color: var(--sage); }
+.row.total { font: 500 30px var(--display); margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
+.perks { list-style: none; margin: 0; padding: 16px 24px 20px; background: var(--paper); border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-2); display: grid; gap: 6px; }
+.perks li::before { content: "✓  "; color: var(--sage); font-weight: 600; }
+.empty { text-align: center; padding: 80px 20px; grid-column: 1 / -1; }
+.empty h1 { margin-bottom: 12px; }
+/* success */
+.done { grid-column: 1 / -1; max-width: 720px; margin: 0 auto; text-align: center; }
+.done .badge { display: inline-block; background: var(--sage); color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.done h1 { font-size: 56px; margin: 18px 0 10px; }
+.timeline { text-align: left; margin: 36px 0; display: grid; gap: 0; }
+.timeline div { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.timeline b { font: italic 400 24px var(--display); color: var(--coral); }
+.timeline strong { font-weight: 500; display: block; }
+.timeline span { color: var(--ink-2); font-size: 15px; }
+.appcta { background: var(--ink); color: #efe6e2; border-radius: 10px; padding: 26px; text-align: left; display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.appcta h3 { color: #fff; font-size: 30px; }
+.appcta .btn { width: auto; background: #fff; color: var(--ink); border-color: #fff; }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; padding-top: 24px; }
+  .sum { position: static; order: -1; }
+  h1 { font-size: 38px; }
+}
+@media (max-width: 560px) { .g, .g3, .demo-fields { grid-template-columns: 1fr; } .secure span { display: none; } }
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <a class="logo" href="/wellness/"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86C30 74 28 54 50 40c22 14 20 34 0 46Z" fill="currentColor" stroke="none"/></svg>The Wellness House</a>
+  <div class="secure"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1" y="7" width="12" height="8" rx="2"/><path d="M4 7V5a3 3 0 0 1 6 0v2"/></svg><span>Secure checkout · payments by Stripe</span></div>
+</div></div>
+
+<main class="wrap" id="main">
+  <form id="co" novalidate>
+    <h1>Checkout</h1>
+    <p class="lede">Your card is only authorized today. You're charged after Jamie reviews your intake and approves your prescription.</p>
+
+    <fieldset>
+      <legend><i>01</i> About you</legend>
+      <div class="g">
+        <div><label for="fn">First name</label><input id="fn" name="first_name" autocomplete="given-name" required></div>
+        <div><label for="ln">Last name</label><input id="ln" name="last_name" autocomplete="family-name" required></div>
+        <div><label for="em">Email</label><input id="em" name="email" type="email" autocomplete="email" required></div>
+        <div><label for="ph">Mobile</label><input id="ph" name="phone" type="tel" autocomplete="tel"></div>
+        <div><label for="dob">Date of birth</label><input id="dob" name="dob" type="date"></div>
+        <div><label for="src">How did you hear about us?</label><select id="src" name="source"><option value="">Select</option><option>Instagram</option><option>Friend or family</option><option>The Fertility House</option><option>Google</option><option>Other</option></select></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><i>02</i> Shipping</legend>
+      <div class="g">
+        <div class="full"><label for="a1">Street address</label><input id="a1" name="line1" autocomplete="address-line1" required></div>
+        <div class="full"><label for="a2">Apartment, suite (optional)</label><input id="a2" name="line2" autocomplete="address-line2"></div>
+      </div>
+      <div class="g3" style="margin-top:14px">
+        <div><label for="city">City</label><input id="city" name="city" autocomplete="address-level2" required></div>
+        <div><label for="st">State</label><select id="st" name="state" autocomplete="address-level1" required><option value="">Select</option><option>California</option><option>Arizona</option><option>Nevada</option><option>Texas</option></select></div>
+        <div><label for="zip">ZIP</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" required></div>
+      </div>
+      <p class="note">We ship insulated and cold, overnight, to the states where Jamie is licensed.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend><i>03</i> Health check</legend>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="ttc"> I'm pregnant, breastfeeding, or trying to conceive in the next 3 months</label>
+        <label class="check"><input type="checkbox" name="thyroid"> I or a family member have had medullary thyroid cancer or MEN 2</label>
+        <label class="check"><input type="checkbox" name="pancreatitis"> I've had pancreatitis or gallbladder disease</label>
+      </div>
+      <div style="margin-top:14px"><label for="meds">Current medications and anything Jamie should know</label><textarea id="meds" name="medications" placeholder="e.g. levothyroxine 50 mcg, seasonal allergies"></textarea></div>
+      <p class="note">Checking a box doesn't block your order. Jamie will call to talk it through before approving.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend><i>04</i> Payment</legend>
+      <div class="pay">
+        <div id="payment-element"></div>
+        <div id="demo" class="demo-card" hidden>
+          <b>Test mode.</b> Stripe isn't connected yet, so no card is needed. Orders placed here go straight to the CRM as demo orders.
+          <div class="demo-fields" aria-hidden="true"><div>4242 4242 4242 4242</div><div>12 / 34</div><div>123</div></div>
+        </div>
+        <div class="hold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div>Authorization only. Your card is charged when Jamie approves your prescription, usually within one business day. If she doesn't approve, the hold is released.</div></div>
+      </div>
+      <label class="check" style="margin-top:16px;border:0"><input type="checkbox" name="consent" required> I agree to the <a href="/disclaimer.html" target="_blank" rel="noopener">terms</a> and to a telehealth review. I understand this is a prescription program.</label>
+    </fieldset>
+
+    <button class="btn" id="submit" type="submit">Authorize <span id="btnTotal"></span></button>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+
+  <aside class="sum" aria-labelledby="sumTitle">
+    <div class="sum-head"><h2 id="sumTitle">Your plan</h2><a href="/wellness/#programs">Edit</a></div>
+    <div id="tier"></div>
+    <div class="lines" id="lines"></div>
+    <div class="totals" id="totals"></div>
+    <ul class="perks"><li>Consult and provider review included</li><li>Free cold-chain shipping</li><li>Free Stackr dose-tracker app</li><li>Pause or cancel anytime</li></ul>
+  </aside>
+</main>
+
+<script src="cart.js"></script>
+<script>
+const C = WHCart, $ = (id) => document.getElementById(id);
+let stripe = null, elements = null;
+
+function renderSummary(t) {
+  if (!t.count) {
+    $('main').innerHTML = `<div class="empty"><h1>Your plan is empty</h1><p class="lede">Add a program to get started. Every program you add takes 10% more off everything, up to 30%.</p><a class="btn light" href="/wellness/#programs">Browse programs</a></div>`;
+    return;
+  }
+  const suggest = C.catalog.filter((p) => !C.has(p.id) && ['lipo', 'nad', 'gsh'].includes(p.id)).slice(0, 3);
+  $('tier').innerHTML = `<div class="tierbar">${t.pct ? `<b>${t.pct}% off every item</b> with ${t.count} items.` : 'Add a second program to take <b>10% off</b> both.'}
+    ${t.pct < C.MAX ? ` Add one more for <b>${t.nextPct}% off</b> everything.` : ''}
+    ${t.pct < C.MAX && suggest.length ? `<div class="upsell">${suggest.map((p) => `<button type="button" data-add="${p.id}">+ ${p.name} · ${C.money(p.price)}</button>`).join('')}</div>` : ''}</div>`;
+  $('lines').innerHTML = t.lines.map((l) => `<div class="ln"><img src="/wellness/img/${l.img}.webp" alt=""><div><h4>${l.name}${l.qty > 1 ? ` × ${l.qty}` : ''}</h4><small>${l.kind}</small></div>
+    <div class="pr">${t.pct ? `<s>${C.money(l.gross)}</s>` : ''}${C.money(l.gross * (1 - t.pct / 100))}</div></div>`).join('');
+  $('totals').innerHTML = `<div class="row"><span>Subtotal</span><span>${C.money(t.subtotal)}</span></div>
+    ${t.pct ? `<div class="row save"><span>Stacking discount · ${t.pct}%</span><span>−${C.money(t.discount)}</span></div>` : ''}
+    <div class="row"><span>Shipping</span><span>Free</span></div>
+    <div class="row total"><span>Today's authorization</span><span>${C.money(t.total)}</span></div>`;
+  $('btnTotal').textContent = C.money(t.total);
+  if (elements) elements.update({ amount: Math.round(t.total * 100) });
+}
+
+async function setupPayment() {
+  const data = await C.refreshPrices();
+  const key = data && data.stripePublishableKey;
+  if (!key) { $('demo').hidden = false; return; }
+  await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://js.stripe.com/v3/'; s.onload = res; s.onerror = rej; document.head.appendChild(s); })
+    .catch(() => { $('demo').hidden = false; $('demo').innerHTML = '<b>Payments are unavailable right now.</b> Please refresh, or contact us to complete your order.'; });
+  if (!window.Stripe) return;
+  stripe = Stripe(key);
+  elements = stripe.elements({
+    mode: 'payment', currency: 'usd', captureMethod: 'manual', amount: Math.max(50, Math.round(C.totals().total * 100)),
+    fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap' }],
+    appearance: {
+      theme: 'flat',
+      variables: { fontFamily: 'Jost, system-ui, sans-serif', fontWeightNormal: '300', colorPrimary: '#8c4b40', colorText: '#2b2523', colorTextSecondary: '#5f5450', colorBackground: '#ffffff', colorDanger: '#a8322a', borderRadius: '6px', spacingUnit: '4px', fontSizeBase: '16px' },
+      rules: {
+        '.Input': { border: '1px solid rgba(43,37,35,.12)', boxShadow: 'none', padding: '12px 13px' },
+        '.Input:focus': { border: '1px solid #c9796a', boxShadow: '0 0 0 2px rgba(201,121,106,.25)' },
+        '.Label': { fontSize: '13px', color: '#5f5450', letterSpacing: '.02em' },
+        '.Tab': { border: '1px solid rgba(43,37,35,.12)', boxShadow: 'none' },
+        '.Tab--selected': { borderColor: '#2b2523', boxShadow: '0 0 0 1px #2b2523' },
+      },
+    },
+  });
+  elements.create('payment', { layout: { type: 'tabs' } }).mount('#payment-element');
+}
+
+$('co').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target, err = $('err'); err.textContent = '';
+  const need = [['fn', 'first name'], ['ln', 'last name'], ['em', 'email'], ['a1', 'street address'], ['city', 'city'], ['st', 'state'], ['zip', 'ZIP code']];
+  const miss = need.find(([id]) => !$(id).value.trim());
+  if (miss) { err.textContent = `Please add your ${miss[1]}.`; $(miss[0]).focus(); return; }
+  if (!f.consent.checked) { err.textContent = 'Please agree to the terms to continue.'; return; }
+  const btn = $('submit'); btn.disabled = true; btn.firstChild.textContent = 'Placing order… ';
+  try {
+    if (elements) { const { error } = await elements.submit(); if (error) throw new Error(error.message); }
+    const body = {
+      items: C.items(),
+      customer: { first_name: f.first_name.value, last_name: f.last_name.value, email: f.email.value, phone: f.phone.value, dob: f.dob.value, source: f.source.value },
+      address: { line1: f.line1.value, line2: f.line2.value, city: f.city.value, state: f.state.value, zip: f.zip.value },
+      safety: { ttc: f.ttc.checked, thyroid: f.thyroid.checked, pancreatitis: f.pancreatitis.checked, medications: f.medications.value },
+      consent: true,
+    };
+    const r = await fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || 'We could not place your order. Please try again.');
+    if (data.clientSecret && stripe) {
+      const { error } = await stripe.confirmPayment({ elements, clientSecret: data.clientSecret, confirmParams: { return_url: location.origin + '/wellness/checkout.html?placed=' + encodeURIComponent(data.orderNumber) }, redirect: 'if_required' });
+      if (error) throw new Error(error.message);
+    }
+    success(data.orderNumber, f.first_name.value, data.demo);
+  } catch (ex) {
+    err.textContent = ex.message; btn.disabled = false; btn.firstChild.textContent = 'Authorize ';
+  }
+});
+
+function success(num, name, demo) {
+  C.clear();
+  const safe = (s) => String(s || '').replace(/[<>&"]/g, '');
+  $('main').innerHTML = `<section class="done" aria-live="polite">
+    <span class="badge">${demo ? 'Demo order placed' : 'Order placed'}</span>
+    <h1>Thank you${name ? ', ' + safe(name) : ''}.</h1>
+    <p class="lede">Order <strong>${safe(num)}</strong> is with Jamie for review. ${demo ? 'This was a test-mode order, so no card was authorized.' : 'Your card is authorized, not charged.'}</p>
+    <div class="timeline">
+      <div><b>1</b><p style="margin:0"><strong>Provider review</strong><span>Jamie reads your intake, usually within one business day, and calls if anything needs a conversation.</span></p></div>
+      <div><b>2</b><p style="margin:0"><strong>Approval and charge</strong><span>Once approved, your card is charged and your prescription goes to the pharmacy.</span></p></div>
+      <div><b>3</b><p style="margin:0"><strong>Cold to your door</strong><span>Insulated overnight shipping with tracking by text.</span></p></div>
+    </div>
+    <div class="appcta"><div><h3>Set up Stackr</h3><span>Your free tracker. Doses, reminders, and refill alerts before you run out.</span></div><a class="btn" href="/stackr/">Open Stackr</a></div>
+  </section>`;
+  scrollTo(0, 0);
+}
+
+const placed = new URLSearchParams(location.search).get('placed');
+if (placed) success(placed, '', false);
+else { C.on(renderSummary); setupPayment(); }
+</script>
+</body>
+</html>

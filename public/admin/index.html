@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wellness House Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #fbf7f4; --panel: #ffffff; --blush: #f4e4de; --ink: #2b2523; --ink-2: #6a5e5a; --line: rgba(43,37,35,.1);
+  --coral: #c9796a; --coral-deep: #8c4b40; --sage: #5f8a5a; --amber: #b7862f; --blue: #4f6a9a; --red: #a8322a;
+  --display: "Cormorant Garamond", Georgia, serif; --ui: "Jost", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 15px/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1.1; }
+button { font: inherit; cursor: pointer; }
+.num { font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
+
+/* login */
+.login { min-height: 100%; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 30% 20%, #f4e4de, #fbf7f4 60%); }
+.login form { width: min(400px, 100%); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 36px 32px; box-shadow: 0 30px 60px -40px rgba(43,37,35,.4); }
+.login h1 { font-size: 38px; margin: 14px 0 6px; }
+.login p { color: var(--ink-2); margin: 0 0 24px; }
+label { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
+input, select, textarea { font: 300 15px var(--ui); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; width: 100%; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); outline-offset: 1px; border-color: transparent; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 14px; }
+.btn:hover { background: var(--coral-deep); border-color: var(--coral-deep); }
+.btn.light { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.light:hover { border-color: var(--ink); background: transparent; }
+.btn.danger { background: transparent; color: var(--red); border-color: rgba(168,50,42,.3); }
+.btn.go { background: var(--sage); border-color: var(--sage); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.err { color: var(--red); font-size: 14px; min-height: 1.2em; margin: 10px 0 0; }
+.mark { display: flex; align-items: center; gap: 10px; font: 500 20px var(--display); }
+.mark svg { width: 24px; color: var(--coral-deep); }
+
+/* shell */
+.app { display: grid; grid-template-columns: 230px 1fr; min-height: 100%; }
+.side { background: var(--ink); color: #d9cfcb; padding: 22px 14px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 4px; }
+.side .mark { color: #fff; padding: 0 8px 22px; }
+.side .mark small { display: block; font: 400 11px var(--ui); letter-spacing: .16em; text-transform: uppercase; color: #a3958f; }
+.side a { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 8px; text-decoration: none; color: #d9cfcb; font-size: 14px; }
+.side a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.side a.on { background: rgba(255,255,255,.1); color: #fff; }
+.side a .pill { background: var(--coral); color: #fff; border-radius: 999px; font-size: 11px; padding: 1px 8px; }
+.side .grow { flex: 1; }
+.side .foot { font-size: 12px; color: #a3958f; padding: 8px 12px; }
+.side .foot button { background: none; border: 0; color: #d9cfcb; padding: 0; text-decoration: underline; }
+.main { padding: 28px max(28px, env(safe-area-inset-right,0px)) 60px 32px; min-width: 0; }
+.head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.head h1 { font-size: 40px; }
+.head p { margin: 4px 0 0; color: var(--ink-2); }
+.banner { background: #fff7e8; border: 1px solid #f0dcb1; color: #6b5420; border-radius: 10px; padding: 12px 16px; font-size: 14px; margin-bottom: 20px; }
+
+/* kpis */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+.kpi span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.kpi b { display: block; font: 500 34px/1.1 var(--display); margin: 8px 0 2px; }
+.kpi small { color: var(--ink-2); font-size: 13px; }
+.kpi.alert { border-color: rgba(201,121,106,.5); background: #fff8f6; }
+.grid2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; min-width: 0; }
+.card h2 { font-size: 24px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: baseline; }
+.card h2 small { font: 400 13px var(--ui); color: var(--ink-2); }
+.legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-2); margin-bottom: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.chart svg { width: 100%; height: auto; display: block; }
+.queue-item { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.queue-item:last-child { border-bottom: 0; }
+.queue-item:hover b { color: var(--coral-deep); }
+.queue-item b { font-weight: 500; }
+.queue-item small { color: var(--ink-2); display: block; }
+.flag { color: var(--red); font-size: 12px; }
+
+/* tables */
+.tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.tools input { max-width: 300px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 14px; font-size: 13px; color: var(--ink-2); }
+.chips button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tbl-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-weight: 500; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: #fdfbfa; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover { background: #fdf6f3; }
+td.r, th.r { text-align: right; }
+.muted { color: var(--ink-2); }
+.st { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 10px; border-radius: 999px; white-space: nowrap; font-weight: 400; }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.st.pending_review { background: #fdf0ec; color: var(--coral-deep); }
+.st.approved { background: #eef2fa; color: var(--blue); }
+.st.shipped { background: #fbf4e6; color: var(--amber); }
+.st.delivered { background: #eef5ed; color: var(--sage); }
+.st.cancelled { background: #f3f1f0; color: #8b807c; }
+.pay { font-size: 12px; color: var(--ink-2); }
+.margin-bar { display: inline-block; width: 60px; height: 6px; background: #eee6e3; border-radius: 3px; overflow: hidden; vertical-align: middle; margin-left: 8px; }
+.margin-bar i { display: block; height: 100%; background: var(--sage); }
+
+/* panel */
+.scrim { position: fixed; inset: 0; background: rgba(43,37,35,.35); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 40; }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: var(--paper); z-index: 50; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); overflow-y: auto; padding: calc(env(safe-area-inset-top,0px) + 24px) max(26px, env(safe-area-inset-right,0px)) 40px 26px; }
+.panel.on { transform: none; }
+.panel .x { float: right; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 18px; }
+.panel h2 { font-size: 34px; margin: 4px 0 6px; }
+.panel h3 { font: 500 12px var(--ui); letter-spacing: .14em; text-transform: uppercase; color: var(--coral-deep); margin: 26px 0 10px; }
+.kv { display: grid; grid-template-columns: 130px 1fr; gap: 6px 14px; font-size: 14px; }
+.kv dt { color: var(--ink-2); }
+.kv dd { margin: 0; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.money { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.money .row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+.money .row.total { font: 500 22px var(--display); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px; }
+.money .row.profit { color: var(--sage); font-weight: 500; }
+.alertbox { background: #fdf0ec; border: 1px solid rgba(201,121,106,.4); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--coral-deep); }
+
+/* products */
+.pin { width: 92px; text-align: right; padding: 8px 10px; }
+.range { position: relative; width: 140px; height: 8px; background: #eee6e3; border-radius: 4px; }
+.range i { position: absolute; top: -4px; width: 4px; height: 16px; background: var(--coral-deep); border-radius: 2px; }
+.save-row { opacity: 0; transition: opacity .2s; }
+tr.dirty .save-row { opacity: 1; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; transition: all .3s; z-index: 60; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.loading { padding: 40px; text-align: center; color: var(--ink-2); }
+
+@media (max-width: 1100px) { .kpis { grid-template-columns: repeat(2, 1fr); } .grid2 { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .side { position: sticky; top: 0; height: auto; flex-direction: row; align-items: center; overflow-x: auto; padding: 10px; z-index: 30; gap: 2px; }
+  .side .mark, .side .grow, .side .foot small { display: none; }
+  .side .foot { padding: 0 8px; white-space: nowrap; }
+  .side a { white-space: nowrap; }
+  .main { padding: 20px 16px 60px; }
+  .head h1 { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<section class="login" id="login" hidden>
+  <form id="loginForm">
+    <div class="mark"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86C30 74 28 54 50 40c22 14 20 34 0 46Z" fill="currentColor" stroke="none"/></svg>The Wellness House</div>
+    <h1>Practice admin</h1>
+    <p>Sign in to review orders, members and pricing.</p>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn" style="width:100%;margin-top:6px" type="submit">Sign in</button>
+  </form>
+</section>
+
+<div class="app" id="app" hidden>
+  <nav class="side" aria-label="Admin">
+    <div class="mark"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M6 46 50 6l44 40"/><path d="M16 38v58h68V38"/><path d="M50 86C30 74 28 54 50 40c22 14 20 34 0 46Z" fill="currentColor" stroke="none"/></svg><div>Wellness House<small>Admin</small></div></div>
+    <a href="#dashboard" data-v="dashboard">Dashboard</a>
+    <a href="#orders" data-v="orders">Orders <span class="pill" id="pendPill" hidden></span></a>
+    <a href="#members" data-v="members">Members</a>
+    <a href="#products" data-v="products">Products & pricing</a>
+    <div class="grow"></div>
+    <a href="/wellness/" target="_blank" rel="noopener">View shop ↗</a>
+    <div class="foot"><small>Signed in as Jamie · </small><button id="logout" type="button">Sign out</button></div>
+  </nav>
+  <main class="main" id="view"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" tabindex="-1"></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const usd = (c, dec) => '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: dec ? 2 : 0, maximumFractionDigits: dec ? 2 : 0 });
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const date = (d, withTime) => new Date(d).toLocaleDateString('en-US', withTime ? { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' } : { month: 'short', day: 'numeric', year: 'numeric' });
+const LABEL = { pending_review: 'Needs review', approved: 'Approved', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled' };
+const st = (s) => `<span class="st ${s}">${LABEL[s] || s}</span>`;
+let STRIPE = false;
+
+async function api(path, opts = {}) {
+  const r = await fetch('/api/admin/' + path, { headers: { 'content-type': 'application/json' }, credentials: 'same-origin', ...opts });
+  const data = await r.json().catch(() => ({}));
+  if (r.status === 401 && path !== 'login') { showLogin(); throw new Error('signed out'); }
+  if (!r.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+function toast(msg) { $('toast').textContent = msg; $('toast').classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => $('toast').classList.remove('on'), 2600); }
+
+/* ---------- auth ---------- */
+function showLogin() { $('app').hidden = true; $('login').hidden = false; $('pw').focus(); }
+async function boot() {
+  const me = await fetch('/api/admin/me').then((r) => r.json()).catch(() => ({}));
+  if (!me.signedIn) return showLogin();
+  STRIPE = me.stripe; $('login').hidden = true; $('app').hidden = false; route();
+}
+$('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault(); $('loginErr').textContent = '';
+  try { await api('login', { method: 'POST', body: JSON.stringify({ password: $('pw').value }) }); $('pw').value = ''; boot(); }
+  catch (ex) { $('loginErr').textContent = ex.message; }
+});
+$('logout').onclick = async () => { await api('logout', { method: 'POST' }).catch(() => {}); showLogin(); };
+
+/* ---------- routing ---------- */
+const VIEWS = { dashboard, orders, members, products };
+function route() {
+  const v = (location.hash || '#dashboard').slice(1);
+  const fn = VIEWS[v] || dashboard;
+  document.querySelectorAll('.side a[data-v]').forEach((a) => a.classList.toggle('on', a.dataset.v === (VIEWS[v] ? v : 'dashboard')));
+  $('view').innerHTML = '<div class="loading">Loading…</div>';
+  fn().catch((e) => { if (e.message !== 'signed out') $('view').innerHTML = `<div class="banner">${esc(e.message)}</div>`; });
+}
+addEventListener('hashchange', () => { closePanel(); route(); });
+
+/* ---------- dashboard ---------- */
+async function dashboard() {
+  const d = await api('dashboard'); const k = d.kpis;
+  $('pendPill').hidden = !k.pending; $('pendPill').textContent = k.pending;
+  const margin = k.revenue30 ? Math.round(k.profit30 / k.revenue30 * 100) : 0;
+  $('view').innerHTML = `
+    <div class="head"><div><h1>Good ${new Date().getHours() < 12 ? 'morning' : 'afternoon'}, Jamie</h1><p>Last 30 days at The Wellness House.</p></div>
+      <a class="btn" href="#orders">Review queue (${k.pending})</a></div>
+    ${STRIPE ? '' : '<div class="banner"><b>Stripe is in test mode.</b> Orders are saved, but no cards are charged until you add your Stripe keys in Netlify.</div>'}
+    <div class="kpis">
+      <div class="kpi"><span>Revenue</span><b class="num">${usd(k.revenue30)}</b><small>${k.orders30} orders</small></div>
+      <div class="kpi"><span>Gross profit</span><b class="num">${usd(k.profit30)}</b><small>${margin}% margin after product cost</small></div>
+      <div class="kpi"><span>Active members</span><b class="num">${k.active_members}</b><small>${k.members} total members</small></div>
+      <div class="kpi ${k.pending ? 'alert' : ''}"><span>Needs review</span><b class="num">${k.pending}</b><small>${k.to_ship} approved, ready to ship</small></div>
+    </div>
+    <div class="grid2">
+      <div class="card chart"><h2>Weekly revenue <small>12 weeks</small></h2>
+        <div class="legend"><span><i style="background:#ecd3cb"></i>Revenue</span><span><i style="background:var(--coral-deep)"></i>Gross profit</span></div>
+        ${barChart(d.weekly)}</div>
+      <div class="card"><h2>Review queue <small>${d.queue.length} open</small></h2>
+        ${d.queue.length ? d.queue.map((o) => `<div class="queue-item" data-order="${o.id}"><div><b>${esc(o.first_name)} ${esc(o.last_name)}</b> <span class="muted">· ${o.number}</span><small>${date(o.created_at, true)} · ${usd(o.total_cents)}</small>${o.notes ? `<span class="flag">⚑ ${esc(o.notes)}</span>` : ''}</div><div>${st(o.status)}</div></div>`).join('') : '<p class="muted">All caught up.</p>'}
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>Top programs <small>last 30 days</small></h2>
+      <div class="tbl-wrap" style="border:0"><table><thead><tr><th>Program</th><th class="r">Units</th><th class="r">Revenue</th><th class="r">Gross profit</th><th class="r">Margin</th></tr></thead><tbody>
+      ${d.top.map((t) => { const m = t.revenue ? Math.round(t.profit / t.revenue * 100) : 0; return `<tr><td>${esc(t.name)}</td><td class="r num">${t.units}</td><td class="r num">${usd(t.revenue)}</td><td class="r num">${usd(t.profit)}</td><td class="r num">${m}%<span class="margin-bar"><i style="width:${m}%"></i></span></td></tr>`; }).join('')}
+      </tbody></table></div></div>`;
+}
+function barChart(rows) {
+  const W = 640, H = 240, P = { l: 52, r: 8, t: 10, b: 28 };
+  const max = Math.max(1, ...rows.map((r) => r.revenue));
+  const nice = Math.ceil(max / 100000) * 100000 || 100000;
+  const bw = (W - P.l - P.r) / Math.max(rows.length, 1);
+  const y = (v) => P.t + (H - P.t - P.b) * (1 - v / nice);
+  let g = '';
+  for (let i = 0; i <= 4; i++) { const v = nice * i / 4; g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(43,37,35,.08)"/><text x="${P.l - 8}" y="${y(v) + 4}" font-size="11" text-anchor="end" fill="#6a5e5a" font-family="Jost">${usd(v)}</text>`; }
+  rows.forEach((r, i) => {
+    const x = P.l + i * bw + bw * .18, w = bw * .64;
+    g += `<rect x="${x}" y="${y(r.revenue)}" width="${w}" height="${y(0) - y(r.revenue)}" rx="3" fill="#ecd3cb"><title>${r.week}: ${usd(r.revenue)} revenue, ${r.orders} orders</title></rect>`;
+    g += `<rect x="${x + w * .25}" y="${y(r.profit)}" width="${w * .5}" height="${y(0) - y(r.profit)}" rx="2" fill="#8c4b40"><title>${r.week}: ${usd(r.profit)} profit</title></rect>`;
+    if (i % 2 === 0 || rows.length < 8) g += `<text x="${x + w / 2}" y="${H - 8}" font-size="11" text-anchor="middle" fill="#6a5e5a" font-family="Jost">${r.week}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly revenue and gross profit">${g}</svg>`;
+}
+
+/* ---------- orders ---------- */
+let oFilter = 'pending_review', oQuery = '';
+async function orders() {
+  $('view').innerHTML = `<div class="head"><div><h1>Orders</h1><p>Approve to capture payment and send to the pharmacy.</p></div></div>
+    <div class="tools"><div class="chips" id="oChips">${[['pending_review', 'Needs review'], ['approved', 'Ready to ship'], ['shipped', 'Shipped'], ['delivered', 'Delivered'], ['cancelled', 'Cancelled'], ['', 'All']].map(([v, t]) => `<button type="button" data-f="${v}" class="${v === oFilter ? 'on' : ''}">${t}</button>`).join('')}</div>
+    <input id="oQ" type="search" placeholder="Search name, email, order #" value="${esc(oQuery)}" aria-label="Search orders"></div>
+    <div class="tbl-wrap" id="oTbl"><div class="loading">Loading…</div></div>`;
+  $('oChips').onclick = (e) => { if (e.target.dataset.f === undefined) return; oFilter = e.target.dataset.f; [...$('oChips').children].forEach((b) => b.classList.toggle('on', b === e.target)); loadOrders(); };
+  $('oQ').oninput = () => { oQuery = $('oQ').value; clearTimeout(orders.t); orders.t = setTimeout(loadOrders, 250); };
+  await loadOrders();
+}
+async function loadOrders() {
+  const d = await api(`orders?status=${encodeURIComponent(oFilter)}&q=${encodeURIComponent(oQuery)}`);
+  $('oTbl').innerHTML = d.orders.length ? `<table><thead><tr><th>Order</th><th>Member</th><th>Programs</th><th>Status</th><th class="r">Discount</th><th class="r">Total</th><th class="r">Profit</th><th>Placed</th></tr></thead><tbody>
+    ${d.orders.map((o) => `<tr class="click" data-order="${o.id}"><td><b style="font-weight:500">${o.number}</b></td><td>${esc(o.first_name)} ${esc(o.last_name)}<br><span class="muted" style="font-size:12px">${esc(o.state)}</span></td>
+      <td style="max-width:240px">${esc(o.items)}</td><td>${st(o.status)}<br><span class="pay">${o.payment_status}</span></td><td class="r num">${o.discount_pct ? o.discount_pct + '%' : '—'}</td>
+      <td class="r num">${usd(o.total_cents, 1)}</td><td class="r num" style="color:var(--sage)">${usd(o.total_cents - o.cost_cents)}</td><td class="muted">${date(o.created_at, true)}</td></tr>`).join('')}</tbody></table>`
+    : '<div class="loading">No orders here.</div>';
+}
+async function openOrder(id) {
+  openPanel('<div class="loading">Loading…</div>');
+  const { order: o, items } = await api('orders/' + id);
+  const profit = o.total_cents - o.cost_cents, a = o.ship_address || {}, s = o.safety || {};
+  const flags = [s.ttc && 'Pregnant, breastfeeding or trying to conceive', s.thyroid && 'MTC / MEN 2 history', s.pancreatitis && 'Pancreatitis or gallbladder history'].filter(Boolean);
+  const acts = {
+    pending_review: `<button class="btn go" data-act="approve">${STRIPE && o.stripe_payment_intent ? 'Approve & capture ' + usd(o.total_cents, 1) : 'Approve order'}</button><button class="btn danger" data-act="cancel">Decline & release hold</button>`,
+    approved: `<button class="btn" data-act="ship">Mark shipped</button><button class="btn danger" data-act="cancel">Cancel & refund</button>`,
+    shipped: `<button class="btn" data-act="deliver">Mark delivered</button>`,
+  }[o.status] || '';
+  $('panel').innerHTML = `<button class="x" data-close aria-label="Close">×</button>
+    <div class="muted">${o.number} · ${date(o.created_at, true)}</div><h2>${esc(o.first_name)} ${esc(o.last_name)}</h2>${st(o.status)} <span class="pay">· payment ${o.payment_status}</span>
+    ${flags.length ? `<div class="alertbox" style="margin-top:16px"><b>Safety screen flagged:</b> ${flags.join('; ')}. Call before approving.</div>` : ''}
+    <div class="actions" data-id="${o.id}">${acts}</div>
+    <h3>Items</h3>
+    <div class="tbl-wrap"><table><thead><tr><th>Program</th><th class="r">Price</th><th class="r">Disc.</th><th class="r">Net</th><th class="r">Cost</th></tr></thead><tbody>
+      ${items.map((i) => `<tr><td>${esc(i.name)}${i.qty > 1 ? ' × ' + i.qty : ''}</td><td class="r num">${usd(i.unit_price_cents * i.qty)}</td><td class="r num">−${usd(i.discount_cents, 1)}</td><td class="r num">${usd(i.line_total_cents, 1)}</td><td class="r num muted">${usd(i.unit_cost_cents * i.qty)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <h3>Money</h3>
+    <div class="money"><div class="row"><span>Subtotal</span><span class="num">${usd(o.subtotal_cents, 1)}</span></div>
+      <div class="row"><span>Stacking discount (${o.discount_pct}% on ${o.item_count} items)</span><span class="num">−${usd(o.discount_cents, 1)}</span></div>
+      <div class="row total"><span>Customer paid</span><span class="num">${usd(o.total_cents, 1)}</span></div>
+      <div class="row"><span>Product cost</span><span class="num">−${usd(o.cost_cents, 1)}</span></div>
+      <div class="row profit"><span>Gross profit (${o.total_cents ? Math.round(profit / o.total_cents * 100) : 0}%)</span><span class="num">${usd(profit, 1)}</span></div></div>
+    <h3>Member</h3>
+    <dl class="kv"><dt>Email</dt><dd>${esc(o.email)}</dd><dt>Phone</dt><dd>${esc(o.phone) || '—'}</dd><dt>Ship to</dt><dd>${esc(a.line1)}${a.line2 ? ', ' + esc(a.line2) : ''}<br>${esc(a.city)}, ${esc(a.state)} ${esc(a.zip)}</dd>
+      <dt>Medications</dt><dd>${esc(s.medications) || '—'}</dd><dt>Stripe</dt><dd>${o.stripe_payment_intent ? esc(o.stripe_payment_intent) : 'Not connected (demo order)'}</dd></dl>
+    <div class="actions"><button class="btn light" data-member="${o.member_id}">Open member profile</button></div>`;
+}
+async function act(id, action, btn) {
+  if (action === 'cancel' && !confirmInline(btn)) return;
+  btn.disabled = true;
+  try { const r = await api(`orders/${id}/${action}`, { method: 'POST' }); toast(`Order ${LABEL[r.status].toLowerCase()} · payment ${r.payment_status}`); await openOrder(id); if ($('oTbl')) loadOrders().catch(() => {}); else if ((location.hash || '#dashboard') === '#dashboard') dashboard(); }
+  catch (e) { toast(e.message); btn.disabled = false; }
+}
+function confirmInline(btn) { if (btn.dataset.sure) return true; btn.dataset.sure = 1; btn.textContent = 'Click again to confirm'; setTimeout(() => { delete btn.dataset.sure; }, 4000); return false; }
+
+/* ---------- members ---------- */
+let mQuery = '';
+async function members() {
+  $('view').innerHTML = `<div class="head"><div><h1>Members</h1><p>Everyone who has ordered, with lifetime value and current plan.</p></div></div>
+    <div class="tools"><input id="mQ" type="search" placeholder="Search name or email" value="${esc(mQuery)}" aria-label="Search members"></div>
+    <div class="tbl-wrap" id="mTbl"><div class="loading">Loading…</div></div>`;
+  $('mQ').oninput = () => { mQuery = $('mQ').value; clearTimeout(members.t); members.t = setTimeout(loadMembers, 250); };
+  await loadMembers();
+}
+async function loadMembers() {
+  const d = await api('members?q=' + encodeURIComponent(mQuery));
+  $('mTbl').innerHTML = `<table><thead><tr><th>Member</th><th>State</th><th>Current plan</th><th class="r">Orders</th><th class="r">Lifetime value</th><th class="r">Profit</th><th>Last order</th><th>Source</th></tr></thead><tbody>
+    ${d.members.map((m) => `<tr class="click" data-member="${m.id}"><td>${esc(m.first_name)} ${esc(m.last_name)}<br><span class="muted" style="font-size:12px">${esc(m.email)}</span></td><td>${esc(m.state)}</td>
+      <td style="max-width:240px">${m.current_plan ? esc(m.current_plan) : '<span class="muted">Lapsed</span>'}</td><td class="r num">${m.orders}</td><td class="r num">${usd(m.ltv)}</td><td class="r num" style="color:var(--sage)">${usd(m.profit)}</td>
+      <td class="muted">${m.last_order ? date(m.last_order) : '—'}</td><td class="muted">${esc(m.source) || '—'}</td></tr>`).join('')}</tbody></table>`;
+}
+async function openMember(id) {
+  openPanel('<div class="loading">Loading…</div>');
+  const { member: m, orders } = await api('members/' + id);
+  const ltv = orders.filter((o) => o.status !== 'cancelled').reduce((s, o) => s + o.total_cents, 0);
+  const profit = orders.filter((o) => o.status !== 'cancelled').reduce((s, o) => s + o.total_cents - o.cost_cents, 0);
+  $('panel').innerHTML = `<button class="x" data-close aria-label="Close">×</button>
+    <div class="muted">Member since ${date(m.created_at)}</div><h2>${esc(m.first_name)} ${esc(m.last_name)}</h2>
+    <div class="kpis" style="grid-template-columns:repeat(3,1fr);margin-top:16px"><div class="kpi"><span>Orders</span><b class="num">${orders.length}</b></div><div class="kpi"><span>Lifetime</span><b class="num">${usd(ltv)}</b></div><div class="kpi"><span>Profit</span><b class="num">${usd(profit)}</b></div></div>
+    <dl class="kv"><dt>Email</dt><dd>${esc(m.email)}</dd><dt>Phone</dt><dd>${esc(m.phone) || '—'}</dd><dt>State</dt><dd>${esc(m.state)}</dd><dt>Date of birth</dt><dd>${m.dob ? new Date(m.dob).toLocaleDateString('en-US', { timeZone: 'UTC' }) : '—'}</dd><dt>Source</dt><dd>${esc(m.source) || '—'}</dd></dl>
+    <h3>Private notes</h3><textarea id="mNotes" rows="4" placeholder="Visible only to you">${esc(m.notes)}</textarea>
+    <div class="actions"><button class="btn light" id="saveNotes" data-id="${m.id}" type="button">Save notes</button></div>
+    <h3>Order history</h3>
+    <div class="tbl-wrap"><table><tbody>${orders.map((o) => `<tr class="click" data-order="${o.id}"><td><b style="font-weight:500">${o.number}</b><br><span class="muted" style="font-size:12px">${date(o.created_at)}</span></td><td style="font-size:13px">${esc(o.items)}</td><td>${st(o.status)}</td><td class="r num">${usd(o.total_cents, 1)}</td></tr>`).join('')}</tbody></table></div>`;
+  $('saveNotes').onclick = async () => { await api('members/' + m.id, { method: 'PUT', body: JSON.stringify({ notes: $('mNotes').value }) }); toast('Notes saved'); };
+}
+
+/* ---------- products ---------- */
+async function products() {
+  const d = await api('products');
+  $('view').innerHTML = `<div class="head"><div><h1>Products & pricing</h1><p>Edit your price and pharmacy cost. Markup and margin update as you type.</p></div></div>
+    <div class="banner">Market ranges and costs are starting estimates for typical U.S. cash-pay telehealth programs. Replace costs with your pharmacy's actual quotes.</div>
+    <div class="tbl-wrap"><table><thead><tr><th>Program</th><th class="r">Your price</th><th class="r">Pharmacy cost</th><th class="r">Markup</th><th class="r">Margin</th><th>Market range</th><th class="r">Sold (30d)</th><th></th></tr></thead><tbody>
+    ${d.products.map((p) => `<tr data-pid="${p.id}"><td><b style="font-weight:500">${esc(p.name)}</b><br><span class="muted" style="font-size:12px">${esc(p.kind)}</span></td>
+      <td class="r"><input class="pin num" data-k="price" inputmode="decimal" value="${(p.price_cents / 100).toFixed(2)}" aria-label="${esc(p.name)} price"></td>
+      <td class="r"><input class="pin num" data-k="cost" inputmode="decimal" value="${(p.cost_cents / 100).toFixed(2)}" aria-label="${esc(p.name)} cost"></td>
+      <td class="r num" data-o="markup"></td><td class="r num" data-o="margin"></td>
+      <td><div class="range" title="${usd(p.market_low_cents)}–${usd(p.market_high_cents)}"><i data-o="pos"></i></div><span class="muted num" style="font-size:12px">${usd(p.market_low_cents)} – ${usd(p.market_high_cents)}</span></td>
+      <td class="r num">${p.units30} · ${usd(p.revenue30)}</td><td><button class="btn save-row" type="button" data-save="${p.id}">Save</button></td></tr>`).join('')}
+    </tbody></table></div>`;
+  const recalc = (tr) => {
+    const p = d.products.find((x) => x.id === tr.dataset.pid);
+    const price = parseFloat(tr.querySelector('[data-k=price]').value) || 0, cost = parseFloat(tr.querySelector('[data-k=cost]').value) || 0;
+    tr.querySelector('[data-o=markup]').textContent = cost ? Math.round((price - cost) / cost * 100) + '%' : '—';
+    const m = price ? Math.round((price - cost) / price * 100) : 0;
+    tr.querySelector('[data-o=margin]').innerHTML = `${m}%<span class="margin-bar"><i style="width:${Math.max(0, m)}%"></i></span>`;
+    const lo = p.market_low_cents / 100, hi = p.market_high_cents / 100;
+    tr.querySelector('[data-o=pos]').style.left = `calc(${Math.max(0, Math.min(1, (price - lo) / (hi - lo))) * 100}% - 2px)`;
+    tr.classList.toggle('dirty', Math.round(price * 100) !== p.price_cents || Math.round(cost * 100) !== p.cost_cents);
+  };
+  document.querySelectorAll('tr[data-pid]').forEach((tr) => { recalc(tr); tr.addEventListener('input', () => recalc(tr)); });
+  $('view').onclick = async (e) => {
+    const b = e.target.closest('[data-save]'); if (!b) return;
+    const tr = b.closest('tr'), p = d.products.find((x) => x.id === b.dataset.save);
+    try {
+      const r = await api('products/' + p.id, { method: 'PUT', body: JSON.stringify({ price_cents: Math.round(parseFloat(tr.querySelector('[data-k=price]').value) * 100), cost_cents: Math.round(parseFloat(tr.querySelector('[data-k=cost]').value) * 100) }) });
+      Object.assign(p, r.product); recalc(tr); toast(`${p.name} saved. New orders use this price.`);
+    } catch (ex) { toast(ex.message); }
+  };
+}
+
+/* ---------- panel ---------- */
+let lastFocus;
+function openPanel(html) { lastFocus = lastFocus || document.activeElement; $('panel').innerHTML = html; $('panel').classList.add('on'); $('scrim').classList.add('on'); $('panel').focus(); }
+function closePanel() { $('panel').classList.remove('on'); $('scrim').classList.remove('on'); if (lastFocus) { lastFocus.focus(); lastFocus = null; } }
+document.addEventListener('click', (e) => {
+  const o = e.target.closest('[data-order]'); if (o) { openOrder(o.dataset.order).catch((x) => toast(x.message)); return; }
+  const m = e.target.closest('[data-member]'); if (m) { openMember(m.dataset.member).catch((x) => toast(x.message)); return; }
+  const a = e.target.closest('[data-act]'); if (a) { act(a.closest('[data-id]').dataset.id, a.dataset.act, a); return; }
+  if (e.target.closest('[data-close]') || e.target === $('scrim')) closePanel();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(); });
+boot();
+</script>
+</body>
+</html>
