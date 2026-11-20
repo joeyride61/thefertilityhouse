@@ -278,7 +278,8 @@ const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Da
 const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const TODAY = parse(iso(new Date()));
 const fmt = (d, o = { weekday: 'short', month: 'short', day: 'numeric' }) => d.toLocaleDateString('en-US', o);
-const rel = (d) => { const n = Math.round((d - TODAY) / 864e5); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : n > 1 && n < 7 ? DAY[d.getDay()] : fmt(d); };
+const rel = (d) => { const n = Math.round((d - TODAY) / 864e5); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : fmt(d); };
+const tm = (t) => { const [h, m] = t.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
 const mg = (v) => v >= 1 ? `${+v.toFixed(2)} mg` : `${Math.round(v * 1000)} mcg`;
 const usd = (c) => '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
 
@@ -343,14 +344,14 @@ function alerts() {
       out.push(`<div class="alert info"><div class="ic">⏳</div><div><b>${esc(it.name)} is running low</b><p>About ${f.left} doses left. You added this one yourself, so restock it from your own source.</p></div></div>`);
     }
     if (f.pending) out.push(`<div class="alert info"><div class="ic">🚚</div><div><b>${esc(it.name)} refill ${f.pending.number}</b><p>${{ pending_review: 'With Jamie for review.', approved: 'Approved and at the pharmacy.', shipped: 'Shipped. Arriving overnight, cold.' }[f.pending.status]}</p><button class="btn sm light" data-tab-go="refills">Track order</button></div></div>`);
-    if (f.expiry && f.afterExpiry > 0 && f.expiry <= add(TODAY, 14)) out.push(`<div class="alert info"><div class="ic">🧪</div><div><b>Mix a fresh ${esc(it.name)} vial ${rel(f.expiry)}</b><p>Your mixed vial is good for 28 days, until ${fmt(f.expiry)}. You'll still have about ${Math.min(f.afterExpiry, Math.floor(f.inVial / it.dose_mg))} doses' worth in it; start a new vial that day.</p></div></div>`);
+    if (f.expiry && f.afterExpiry > 0 && f.expiry <= add(TODAY, 14)) out.push(`<div class="alert info"><div class="ic">🧪</div><div><b>Mix a fresh ${esc(it.name)} vial ${rel(f.expiry)}</b><p>Your mixed vial is good for 28 days, until ${fmt(f.expiry)}. ${(() => { const n = Math.min(f.afterExpiry, Math.floor(f.inVial / it.dose_mg)); return n ? `About ${n} dose${n === 1 ? '' : 's'} will still be in it, so start a new vial that day.` : 'Start a new vial that day.'; })()}</p></div></div>`);
   });
   return out.join('');
 }
 
 function doseCard(it, day) {
   const d = doseOn(it, day), u = units(it), when = parse(day);
-  const head = `<h3><span class="swatch" style="background:${it.color}"></span>${esc(it.name)}</h3><div class="meta">${mg(it.dose_mg)} · ${it.dose_time.replace(/^0/, '')} · ${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</div>`;
+  const head = `<h3><span class="swatch" style="background:${it.color}"></span>${esc(it.name)}</h3><div class="meta">${mg(it.dose_mg)} · ${tm(it.dose_time)} · ${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</div>`;
   if (d) return `<div class="card dose"><div class="bar" style="background:${it.color}"></div><div>${head}<div class="logged ${d.status === 'skipped' ? 'skip' : ''}" style="margin-top:12px"><span>${d.status === 'taken' ? `✓ Taken${d.site ? ' · ' + esc(d.site) : ''}` : 'Skipped'}</span><button type="button" data-undo="${it.id}" data-day="${day}">Undo</button></div></div></div>`;
   const pct = u != null ? Math.min(100, u) : 0;
   return `<div class="card dose"><div class="bar" style="background:${it.color}"></div><div>${head}
@@ -363,7 +364,7 @@ function weekStrip() {
   const start = add(TODAY, -TODAY.getDay());
   return `<div class="card"><div class="week">${[...Array(7)].map((_, i) => { const d = add(start, i), k = iso(d);
     const dots = S.items.filter((it) => scheduled(it, d)).map((it) => { const x = doseOn(it, k); return `<i class="${x ? (x.status === 'taken' ? 'full' : 'skip') : ''}" style="color:${it.color}"></i>`; }).join('');
-    return `<button type="button" class="wd ${k === iso(TODAY) ? 'today' : ''}" data-cal-day="${k}" style="border:0;background:${k === iso(TODAY) ? 'var(--ink)' : 'transparent'};color:inherit"><small>${D1[d.getDay()]}</small><b>${d.getDate()}</b><div class="dots">${dots}</div></button>`; }).join('')}</div></div>`;
+    return `<button type="button" class="wd ${k === iso(TODAY) ? 'today' : ''}" data-cal-day="${k}" style="border:0;background:${k === iso(TODAY) ? 'var(--ink)' : 'transparent'};color:${k === iso(TODAY) ? '#fff' : 'inherit'}"><small>${D1[d.getDay()]}</small><b>${d.getDate()}</b><div class="dots">${dots}</div></button>`; }).join('')}</div></div>`;
 }
 
 function supplyCard(it) {
@@ -372,7 +373,7 @@ function supplyCard(it) {
   return `<div class="card supply"><h3><span style="display:flex;gap:8px;align-items:center"><span class="swatch" style="background:${it.color}"></span>${esc(it.name)}</span><span class="chip ${it.source === 'wellness' ? 'wh' : ''}">${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</span></h3>
     <div class="meter"><i style="width:${pct}%;background:${low ? 'var(--red)' : it.color}"></i></div>
     <p><b>${mg(f.remaining)}</b> left · ${f.left} dose${f.left === 1 ? '' : 's'}${f.vials >= 1.05 ? ` · ${f.vials.toFixed(1)} vials` : ''}</p>
-    <p class="${low ? 'low' : ''}">${f.runout ? `Runs out ${rel(f.runout)}${f.runout > add(TODAY, 6) ? ` (${fmt(f.runout)})` : ''}` : 'Plenty on hand'}${it.product_id && !f.pending && f.lastDose ? ` · reorder by ${rel(f.reorderBy < TODAY ? TODAY : f.reorderBy)}` : ''}${f.pending ? ` · refill ${f.pending.number} on the way` : ''}</p></div>`;
+    <p class="${low ? 'low' : ''}">${f.runout ? `Runs out ${rel(f.runout)}` : 'Plenty on hand'}${it.product_id && !f.pending && f.lastDose ? ` · reorder by ${rel(f.reorderBy < TODAY ? TODAY : f.reorderBy)}` : ''}${f.pending ? ` · refill ${f.pending.number} on the way` : ''}</p></div>`;
 }
 
 function viewToday() {
@@ -409,7 +410,7 @@ function viewCalendar() {
     <div class="sec"><h2>${fmt(sd, { weekday: 'long', month: 'long', day: 'numeric' })}</h2></div>
     <div class="card day-list">${items.length ? items.map((it) => { const x = doseOn(it, calSel), canLog = sd <= TODAY;
       const noSupply = !x && sd >= TODAY && !it.f.upcoming.some((u) => iso(u) === calSel);
-      return `<div class="it"><div class="bar" style="background:${it.color}"></div><div><b style="font-weight:500">${esc(it.name)}</b><small>${mg(it.dose_mg)}${units(it) != null ? ` · ${units(it)} units` : ''} · ${it.dose_time}${noSupply ? ' · <span class="low">no supply yet</span>' : ''}</small></div>
+      return `<div class="it"><div class="bar" style="background:${it.color}"></div><div><b style="font-weight:500">${esc(it.name)}</b><small>${mg(it.dose_mg)}${units(it) != null ? ` · ${units(it)} units` : ''} · ${tm(it.dose_time)}${noSupply ? ' · <span class="low">no supply yet</span>' : ''}</small></div>
       <div>${x ? `<span class="chip" style="${x.status === 'taken' ? 'background:#eef5ed;color:var(--sage)' : ''}">${x.status === 'taken' ? '✓ ' + esc(x.site || 'Taken') : 'Skipped'}</span>` : canLog ? `<button class="btn sm" data-take="${it.id}" data-day="${calSel}">Log</button>` : '<span class="chip">Scheduled</span>'}</div></div>`; }).join('') : '<div class="empty" style="padding:14px">No doses scheduled.</div>'}</div>`;
 }
 
@@ -421,7 +422,7 @@ function viewStack() {
         <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${it.source === 'wellness' ? 'wh' : ''}">${it.source === 'wellness' ? 'Wellness House' : 'Added by you'}</span>${linked.slice(-1).map((n) => `<span class="chip">Linked · ${n}</span>`).join('')}</div></div>
         <button class="btn sm light" type="button" data-edit="${it.id}">Edit</button></div>
         <div class="days7">${D1.map((x, i) => `<span class="${it.days.includes(i) ? 'on' : ''}" style="${it.days.includes(i) ? 'background:' + it.color : ''}">${x}</span>`).join('')}</div>
-        <div class="kv"><div><small>Dose</small><b>${mg(it.dose_mg)}</b></div><div><small>${u != null ? 'Draw' : 'Format'}</small><b>${u != null ? u + ' units' : it.format}</b></div><div><small>Time</small><b>${it.dose_time}</b></div></div>
+        <div class="kv"><div><small>Dose</small><b>${mg(it.dose_mg)}</b></div><div><small>${u != null ? 'Draw' : 'Format'}</small><b>${u != null ? u + ' units' : it.format}</b></div><div><small>Time</small><b>${tm(it.dose_time)}</b></div></div>
         <div class="kv"><div><small>Left</small><b>${mg(f.remaining)}</b></div><div><small>Doses</small><b>${f.left}</b></div><div><small>Runs out</small><b>${f.runout ? fmt(f.runout, { month: 'short', day: 'numeric' }) : '—'}</b></div></div>
         ${it.water_ml > 0 ? `<p style="font-size:12px;color:var(--ink-2);margin:8px 2px">${it.vial_mg} mg vial + ${it.water_ml} mL water = ${+(it.vial_mg / it.water_ml).toFixed(3)} mg/mL${it.mixed_on ? ` · mixed ${fmt(parse(it.mixed_on), { month: 'short', day: 'numeric' })}, good until ${fmt(f.expiry, { month: 'short', day: 'numeric' })}` : ''}</p>
         <button class="btn sm ghost" type="button" data-mix="${it.id}">I mixed a new vial today</button>` : ''}
@@ -442,7 +443,7 @@ function viewRefills() {
     <div class="card"><h3 style="font:500 22px var(--display)">Next batch</h3><p style="margin:2px 0 6px;font-size:13px;color:var(--ink-2)">Ships to 2140 E Ocean Blvd. Charged after Jamie approves.</p>
       ${linkable.map((it) => `<label class="pick"><input type="checkbox" data-pick="${it.product_id}" ${picked.has(it.product_id) ? 'checked' : ''} ${it.f.pending ? 'disabled' : ''}><div><b style="font-weight:500">${esc(it.name)}</b><small>${it.f.pending ? `Refill ${it.f.pending.number} already on the way` : it.f.runout ? `Runs out ${rel(it.f.runout)} · ${it.f.left} dose${it.f.left === 1 ? '' : 's'} left` : 'Well stocked'}</small></div><div class="num" style="text-align:right">${usd(price(it.product_id))}</div></label>`).join('')}
       ${addable.slice(0, 3).map((p) => `<label class="pick"><input type="checkbox" data-pick="${p.id}" ${picked.has(p.id) ? 'checked' : ''}><div><b style="font-weight:500">${esc(p.name)}</b><small>Add to your plan</small></div><div class="num">${usd(p.price_cents)}</div></label>`).join('')}
-      <div class="disc">${n ? (pct ? `<b>${pct}% off every item</b> with ${n} items.` : 'Add a second item to take <b>10% off</b> both.') + (pct < 30 ? ` One more makes it <b>${Math.min(pct + 10, 30)}%</b>.` : '') : 'Pick what you want in your next batch.'}</div>
+      <div class="disc">${n ? (pct ? `<b>${pct}% off every item</b> with ${n} items.` : 'Add a second item to take <b>10% off</b> both.') + (pct && pct < 30 ? ` One more makes it <b>${pct + 10}%</b>.` : '') : 'Pick what you want in your next batch.'}</div>
       <button class="btn block coral" type="button" id="reorder" ${n ? '' : 'disabled'}>${n ? `Reorder next batch · ${usd(total)}` : 'Select items'}</button>
     </div>
     <div class="sec"><h2>Orders</h2></div>
