@@ -84,10 +84,17 @@ Product names, doses and label colors are in `PRODUCTS` / `PENS` in `render.html
 
 ## Still to do (Joe's queue)
 
-1. **Fertility House redesign:** modern, clean version with the same vibe and content (current page is a faithful Wix copy). Joe wants it "very cool," not a template.
-2. **Grip socks product:** pink, light compression, rubber grip dots shaped like sperm and eggs on the sole. Joe has AI images of them (shared in chat only; ask him to upload the files). Needs a product page and research into custom grip-sock manufacturers.
-3. **Pricing summary:** a one-page market-rate vs. pharmacy-cost table (estimates are already in the CRM products page).
-4. **Later:** real logins (admin + per-user Doseday accounts), real Stripe keys, HIPAA review before any real patient data.
+1. **Pricing summary:** a one-page market-rate vs. pharmacy-cost table (estimates are already in the CRM products page).
+2. **Netlify usage/deploy widget** for Joe's DWP playbook site (he'll say which data he wants).
+3. **Later:** real logins (admin + per-user Doseday accounts), real Stripe keys, a trademark search for "Doseday", HIPAA review before any real patient data.
+
+## Done in the latest round
+
+- Fertility House homepage fully redesigned (GSAP ScrollTrigger: pinned journey, self-checking review document, Two Houses line, parallax, word reveals). The old Wix-style copy is gone.
+- **Two Houses** story: before (Wellness gets carriers to BMI targets), during (record review), after (postpartum). On both sites.
+- **Transfer Day Socks** are the practice's signature gift (free to carriers and new members), not a product for sale. Photos in `public/wellness/img/socks-*.webp`.
+- App renamed **Stackr → Doseday** (an app called Stacker already exists). `/stackr/*` redirects to `/doseday/`. Internal API path is still `/api/stackr/`.
+- One-page summary PDF: `docs/what-we-built.pdf`.
 
 ## Known leftovers
 
