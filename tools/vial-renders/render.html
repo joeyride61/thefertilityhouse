@@ -1,0 +1,245 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Cormorant; src: url(fonts/cormorant.woff2); font-weight: 300 700; }
+@font-face { font-family: Jost; src: url(fonts/jost.woff2); font-weight: 100 900; }
+body { margin: 0; background: #222; }
+</style>
+<script type="importmap">{ "imports": { "three": "./node_modules/three/build/three.module.js", "three/addons/": "./node_modules/three/examples/jsm/" } }</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const PRODUCTS = {
+  sema:  { name: 'Semaglutide', chem: 'SEMAGLUTIDE', dose: '5 mg', unit: 'per vial', form: 'powder', color: '#c9796a', cap: '#d98b7c', ndc: '71824-0105' },
+  tirz:  { name: 'Tirzepatide', chem: 'TIRZEPATIDE', dose: '30 mg', unit: 'per vial', form: 'powder', color: '#8c4b40', cap: '#93503f', ndc: '71824-0130' },
+  lipo:  { name: 'Lipo-MIC + B12', chem: 'METHIONINE · INOSITOL · CHOLINE · CYANOCOBALAMIN', dose: '30 mL', unit: 'multi-dose', form: 'liquid', color: '#7c9a78', cap: '#7f9b7a', ndc: '71824-0230' },
+  nad:   { name: 'NAD+', chem: 'NICOTINAMIDE ADENINE DINUCLEOTIDE', dose: '500 mg', unit: 'per vial', form: 'powder', color: '#b8955a', cap: '#c9a465', ndc: '71824-0350' },
+  gsh:   { name: 'Glutathione', chem: 'L-GLUTATHIONE (REDUCED)', dose: '1,000 mg', unit: 'per vial', form: 'powder', color: '#b98aa0', cap: '#d3a9bb', ndc: '71824-0410' },
+  serm:  { name: 'Sermorelin', chem: 'SERMORELIN ACETATE', dose: '9 mg', unit: 'per vial', form: 'powder', color: '#6f7fa6', cap: '#7a8bb3', ndc: '71824-0509' },
+  tesa:  { name: 'Tesamorelin', chem: 'TESAMORELIN ACETATE', dose: '2 mg', unit: 'per vial', form: 'powder', color: '#4f6650', cap: '#5a735a', ndc: '71824-0602' },
+  pt141: { name: 'PT-141', chem: 'BREMELANOTIDE ACETATE', dose: '10 mg', unit: 'per vial', form: 'powder', color: '#c45b78', cap: '#d36b88', ndc: '71824-0710' },
+};
+
+function houseMark(ctx, x, y, s, color) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s / 100, s / 100);
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 6; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(6, 46); ctx.lineTo(50, 6); ctx.lineTo(94, 46); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(16, 38); ctx.lineTo(16, 96); ctx.lineTo(84, 96); ctx.lineTo(84, 38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(50, 86); ctx.bezierCurveTo(30, 74, 28, 54, 50, 40); ctx.bezierCurveTo(72, 54, 70, 74, 50, 86); ctx.fill();
+  ctx.restore();
+}
+
+function label(p, lot) {
+  const W = 2300, H = 1000, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  // paper
+  x.fillStyle = '#fbf8f5'; x.fillRect(0, 0, W, H);
+  // subtle paper grain
+  for (let i = 0; i < 14000; i++) { x.fillStyle = `rgba(120,90,80,${Math.random() * 0.025})`; x.fillRect(Math.random() * W, Math.random() * H, 2, 2); }
+  const cx = W / 2, L = 760, R = 1540;
+  // top band
+  x.fillStyle = p.color; x.fillRect(0, 0, W, 128);
+  x.fillStyle = p.color; x.fillRect(0, H - 34, W, 34);
+  // brand in band
+  houseMark(x, cx - 250, 26, 76, '#ffffff');
+  x.fillStyle = '#fff'; x.font = '500 46px Jost'; x.textBaseline = 'middle'; x.letterSpacing = '9px';
+  x.textAlign = 'left'; x.fillText('THE WELLNESS HOUSE', cx - 155, 66);
+  // name
+  x.letterSpacing = '0px'; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  x.fillStyle = '#2b2523';
+  let fs = 190; x.font = `600 ${fs}px Cormorant`;
+  while (x.measureText(p.name).width > (R - L) - 40) { fs -= 6; x.font = `600 ${fs}px Cormorant`; }
+  x.fillText(p.name, cx, 350);
+  // chem name
+  x.font = '400 30px Jost'; x.letterSpacing = '5px'; x.fillStyle = '#6b5f5a';
+  let chem = p.chem; let cfs = 30;
+  while (x.measureText(chem).width > (R - L) - 40) { cfs -= 1; x.font = `400 ${cfs}px Jost`; }
+  x.fillText(chem, cx, 418);
+  // rule
+  x.fillStyle = p.color; x.fillRect(cx - 260, 462, 520, 4);
+  // dose
+  x.letterSpacing = '0px'; x.font = '500 120px Jost'; x.fillStyle = '#2b2523'; x.fillText(p.dose, cx, 600);
+  x.font = '400 38px Jost'; x.letterSpacing = '6px'; x.fillStyle = '#6b5f5a';
+  x.fillText(p.unit.toUpperCase() + (p.form === 'powder' ? ' · LYOPHILIZED' : ' · SOLUTION'), cx, 672);
+  // route box
+  x.strokeStyle = '#2b2523'; x.lineWidth = 3; x.strokeRect(cx - 330, 718, 660, 74);
+  x.font = '500 34px Jost'; x.letterSpacing = '5px'; x.fillStyle = '#2b2523'; x.fillText('FOR SUBCUTANEOUS USE ONLY', cx, 768);
+  x.font = '600 40px Jost'; x.letterSpacing = '6px'; x.fillStyle = p.color;
+  x.fillText('Rx ONLY  ·  STERILE', cx, 880);
+  // left panel: directions
+  x.textAlign = 'left'; x.letterSpacing = '1px'; x.fillStyle = '#4a403c';
+  const dl = ['DIRECTIONS', 'Reconstitute with bacteriostatic water', 'as directed by your provider. Rotate', 'injection sites. Do not shake.', '', 'STORAGE', 'Store refrigerated 2°–8°C (36°–46°F).', 'Protect from light. Discard 28 days', 'after first puncture.', '', 'Keep out of reach of children.'];
+  dl.forEach((t, i) => { x.font = (t === 'DIRECTIONS' || t === 'STORAGE') ? '600 30px Jost' : '400 28px Jost'; x.fillText(t, 150, 220 + i * 50); });
+  // right panel: pharmacy + barcode
+  x.font = '600 30px Jost'; x.fillText('DISPENSED BY', 1640, 220);
+  x.font = '400 28px Jost';
+  ['The Wellness House Pharmacy', 'Licensed 503A · California', `NDC ${p.ndc}`, `LOT  ${lot}`, 'EXP  11/2027'].forEach((t, i) => x.fillText(t, 1640, 270 + i * 46));
+  // barcode
+  let bx = 1640; x.fillStyle = '#2b2523';
+  let seed = p.ndc.split('').reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7);
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  while (bx < 2160) { const w = 3 + Math.floor(rnd() * 4) * 3; x.fillRect(bx, 540, w, 170); bx += w + 3 + Math.floor(rnd() * 3) * 3; }
+  x.font = '400 26px Jost'; x.letterSpacing = '8px'; x.fillText('3 ' + p.ndc.replace('-', ' ') + ' 4', 1650, 748);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 16;
+  return t;
+}
+
+// --- geometry (mm) ---
+const glassProfile = new THREE.Path().moveTo(0, 0).lineTo(10.7, 0).quadraticCurveTo(12.2, 0, 12.2, 1.5).lineTo(12.2, 37.5)
+  .quadraticCurveTo(12.2, 42, 8.6, 43.3).quadraticCurveTo(7.1, 43.8, 7.1, 45.2).lineTo(7.1, 47.4).quadraticCurveTo(7.1, 48.05, 8.1, 48.1)
+  .quadraticCurveTo(8.8, 48.2, 8.8, 49.5).quadraticCurveTo(8.8, 51, 8, 51).lineTo(6.2, 51).lineTo(5.6, 50.4).lineTo(5.6, 45.5)
+  .quadraticCurveTo(5.6, 43.6, 8, 42.6).quadraticCurveTo(11.25, 41.2, 11.25, 37.5).lineTo(11.25, 2.8).quadraticCurveTo(11.25, 1.6, 10, 1.6).lineTo(0, 1.6).getPoints(18);
+const crimpProfile = new THREE.Path().moveTo(7.25, 44.9).quadraticCurveTo(8.95, 45.1, 8.95, 46.2).lineTo(8.95, 51.5).quadraticCurveTo(8.95, 52.2, 8.3, 52.2).lineTo(4.6, 52.2).lineTo(4.6, 51.9).lineTo(8.55, 51.9).lineTo(8.6, 46.2).lineTo(7.25, 45.2).getPoints(12);
+const capProfile = new THREE.Path().moveTo(0, 52.25).lineTo(9.4, 52.25).quadraticCurveTo(9.75, 52.25, 9.75, 52.6).lineTo(9.75, 54.6).quadraticCurveTo(9.75, 55.5, 8.7, 55.55).lineTo(0, 55.6).getPoints(12);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+const pmrem = new THREE.PMREMGenerator(renderer);
+function studio() {
+  const sc = new THREE.Scene();
+  sc.add(new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), new THREE.MeshBasicMaterial({ color: new THREE.Color('#b9a39c'), side: THREE.BackSide })));
+  const box = (w, h, pos, k, col = '#ffffff') => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(col).multiplyScalar(k), side: THREE.DoubleSide })); m.position.set(...pos); m.lookAt(0, 0, 0); sc.add(m); };
+  box(260, 420, [-330, 160, 220], 9);      // key softbox, front-left
+  box(120, 420, [360, 140, 120], 5);       // strip, right
+  box(500, 300, [0, 480, 60], 4);          // overhead
+  box(200, 300, [120, 120, -400], 3, '#ffe9e0'); // back kicker
+  box(90, 600, [-120, 100, 420], 0.02, '#000000');  // black flags for dark glass edges
+  box(90, 600, [200, 100, 400], 0.02, '#000000');
+  box(600, 200, [0, -200, 100], 1.2, '#f2d7cf'); // floor bounce
+  return sc;
+}
+const envTex = pmrem.fromScene(studio(), 0.02, 1, 2000).texture;
+
+function aoTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+  const g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, 'rgba(60,30,25,0.55)'); g.addColorStop(0.45, 'rgba(60,30,25,0.25)'); g.addColorStop(1, 'rgba(60,30,25,0)');
+  x.fillStyle = g; x.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c);
+}
+const AO = aoTexture();
+
+function bgTexture(top, bottom, w, h) {
+  const c = document.createElement('canvas'); c.width = 8; c.height = 512; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, 512); g.addColorStop(0, top); g.addColorStop(1, bottom);
+  x.fillStyle = g; x.fillRect(0, 0, 8, 512); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+function makeVial(id, lotN) {
+  const p = PRODUCTS[id], g = new THREE.Group();
+  const glass = new THREE.Mesh(new THREE.LatheGeometry(glassProfile, 160), new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, metalness: 0, roughness: 0.0, transmission: 1, thickness: 2.2, ior: 1.52,
+    specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.0, attenuationColor: new THREE.Color('#dfeee8'), attenuationDistance: 25,
+  }));
+  g.add(glass);
+  if (p.form === 'powder') {
+    const cg = new THREE.CylinderGeometry(10.85, 10.95, 7.2, 160, 12);
+    const pos = cg.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i), xx = pos.getX(i), zz = pos.getZ(i);
+      if (y > 3.5) { const r = Math.hypot(xx, zz); pos.setY(i, y + 0.6 * Math.sin(xx * 0.9) * Math.cos(zz * 0.8) * (r / 11) - 0.5 * (1 - r / 11)); }
+      else if (y > -3.5) { const a = Math.atan2(zz, xx); const k = 1 + 0.012 * Math.sin(a * 7 + y); pos.setX(i, xx * k); pos.setZ(i, zz * k); }
+    }
+    cg.computeVertexNormals();
+    const cake = new THREE.Mesh(cg, new THREE.MeshStandardMaterial({ color: 0xfbf9f6, roughness: 1 }));
+    cake.position.y = 1.7 + 3.6; cake.castShadow = true; g.add(cake);
+  } else {
+    const liq = new THREE.Mesh(new THREE.CylinderGeometry(11.15, 11.15, 30, 160), new THREE.MeshPhysicalMaterial({
+      color: '#a0142a', roughness: 0.05, clearcoat: 1, sheen: 0.4, sheenColor: new THREE.Color('#ff6070'), emissive: '#3a0008', emissiveIntensity: 0.4 }));
+    liq.position.y = 1.7 + 15; g.add(liq);
+  }
+  const crimp = new THREE.Mesh(new THREE.LatheGeometry(crimpProfile, 160), new THREE.MeshPhysicalMaterial({ color: 0xdcdcdc, metalness: 1, roughness: 0.22, envMapIntensity: 1.2 }));
+  crimp.castShadow = true; g.add(crimp);
+  const stopper = new THREE.Mesh(new THREE.CylinderGeometry(6.3, 6.3, 4, 64), new THREE.MeshStandardMaterial({ color: 0x5b5d60, roughness: 0.8 }));
+  stopper.position.y = 50.6; g.add(stopper);
+  const cap = new THREE.Mesh(new THREE.LatheGeometry(capProfile, 160), new THREE.MeshPhysicalMaterial({ color: p.cap, roughness: 0.42, clearcoat: 0.5, clearcoatRoughness: 0.35, sheen: 0.3 }));
+  cap.castShadow = true; g.add(cap);
+  const tl = Math.PI * 2 * 0.9;
+  const lab = new THREE.Mesh(new THREE.CylinderGeometry(12.27, 12.27, 28, 200, 1, true, -tl / 2, tl), new THREE.MeshPhysicalMaterial({
+    map: label(p, 'WH' + (24110 + lotN)), roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.25, side: THREE.FrontSide }));
+  lab.position.y = 5.2 + 14; lab.castShadow = true; g.add(lab);
+  const ao = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshBasicMaterial({ map: AO, transparent: true, depthWrite: false }));
+  ao.rotation.x = -Math.PI / 2; ao.position.y = 0.05; g.add(ao);
+  return g;
+}
+
+
+const PENS = {
+  'pen-sema': { name: 'Semaglutide', dose: '1 mg', vol: '0.5 mL', color: '#c9796a', cap: '#d98b7c', ndc: '71824-1101' },
+  'pen-tirz': { name: 'Tirzepatide', dose: '5 mg', vol: '0.5 mL', color: '#8c4b40', cap: '#93503f', ndc: '71824-1205' },
+  'pen-sema-start': { name: 'Semaglutide', dose: '0.25 mg', vol: '0.5 mL', color: '#d9a79b', cap: '#e6b9ae', ndc: '71824-1100' },
+  'pen-tirz-start': { name: 'Tirzepatide', dose: '2.5 mg', vol: '0.5 mL', color: '#b98074', cap: '#c18a7d', ndc: '71824-1202' },
+};
+function penLabel(p, lot) {
+  const W = 1100, H = 1500, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  x.fillStyle = '#fbf8f5'; x.fillRect(0, 0, W, H);
+  x.fillStyle = p.color; x.fillRect(0, 0, W, 170); x.fillRect(0, H - 40, W, 40);
+  const cx = W / 2; x.textAlign = 'center';
+  houseMark(x, cx - 45, 22, 90, '#fff');
+  x.fillStyle = '#fff'; x.font = '500 30px Jost'; x.letterSpacing = '7px'; x.fillText('THE WELLNESS HOUSE', cx, 150);
+  x.save(); x.translate(cx, 0);
+  x.fillStyle = '#2b2523'; x.letterSpacing = '0px';
+  let fs = 150; x.font = `600 ${fs}px Cormorant`; while (x.measureText(p.name).width > 560) { fs -= 4; x.font = `600 ${fs}px Cormorant`; }
+  x.fillText(p.name, 0, 380);
+  x.font = '400 26px Jost'; x.letterSpacing = '5px'; x.fillStyle = '#6b5f5a'; x.fillText('INJECTION', 0, 432);
+  x.fillStyle = p.color; x.fillRect(-150, 470, 300, 4);
+  x.fillStyle = '#2b2523'; x.letterSpacing = '0px'; x.font = '500 130px Jost'; x.fillText(p.dose, 0, 640);
+  x.font = '400 40px Jost'; x.fillStyle = '#6b5f5a'; x.fillText('per ' + p.vol, 0, 706);
+  x.strokeStyle = '#2b2523'; x.lineWidth = 3; x.strokeRect(-250, 770, 500, 150);
+  x.fillStyle = '#2b2523'; x.font = '500 32px Jost'; x.letterSpacing = '4px'; x.fillText('SINGLE-DOSE PEN', 0, 832); x.fillText('ONCE WEEKLY', 0, 886);
+  x.font = '400 28px Jost'; x.letterSpacing = '3px'; x.fillStyle = '#6b5f5a';
+  ['For subcutaneous use only', 'Store refrigerated 2°–8°C', `NDC ${p.ndc}`, `LOT ${lot}   EXP 11/2027`].forEach((t, i) => x.fillText(t, 0, 1010 + i * 52));
+  x.font = '600 38px Jost'; x.letterSpacing = '6px'; x.fillStyle = p.color; x.fillText('Rx ONLY', 0, 1300);
+  x.restore();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 16; return t;
+}
+function makePen(id, lotN) {
+  const p = PENS[id], g = new THREE.Group();
+  const plastic = (color, r = 0.35) => new THREE.MeshPhysicalMaterial({ color, roughness: r, clearcoat: 0.6, clearcoatRoughness: 0.25 });
+  const lathe = (path, mat) => { const m = new THREE.Mesh(new THREE.LatheGeometry(path.getPoints(12), 128), mat); m.castShadow = true; g.add(m); return m; };
+  // base cap
+  lathe(new THREE.Path().moveTo(0, 0).lineTo(8.6, 0).quadraticCurveTo(9.4, 0, 9.4, 0.8).lineTo(9.2, 24).quadraticCurveTo(9.2, 25, 8.4, 25).lineTo(0, 25), plastic('#b9b4b0', 0.45));
+  // clear window section
+  lathe(new THREE.Path().moveTo(8.5, 25).lineTo(8.5, 50).lineTo(7.7, 50).lineTo(7.7, 25), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, roughness: 0, thickness: 1.5, ior: 1.5, clearcoat: 1 }));
+  const syr = new THREE.Mesh(new THREE.CylinderGeometry(4.6, 4.6, 24, 64), new THREE.MeshPhysicalMaterial({ color: '#f4f9f7', roughness: 0.05, transmission: 0.6, thickness: 4, ior: 1.4 })); syr.position.y = 37.5; g.add(syr);
+  const plg = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 4.5, 5, 64), new THREE.MeshStandardMaterial({ color: p.cap, roughness: 0.6 })); plg.position.y = 46.5; g.add(plg);
+  // body
+  lathe(new THREE.Path().moveTo(0, 50).lineTo(8.7, 50).lineTo(8.7, 126).quadraticCurveTo(8.7, 127, 7.9, 127).lineTo(0, 127), plastic('#faf8f6', 0.3));
+  // top button
+  lathe(new THREE.Path().moveTo(0, 127).lineTo(7.9, 127).lineTo(7.9, 137).quadraticCurveTo(7.9, 141, 4.5, 141.4).lineTo(0, 141.6), plastic(p.cap, 0.4));
+  // lock ring
+  lathe(new THREE.Path().moveTo(8.75, 118).lineTo(9.0, 118.4).lineTo(9.0, 125.6).lineTo(8.75, 126), plastic('#d9d4d0', 0.5));
+  const tl = Math.PI * 2 * 0.62;
+  const lab = new THREE.Mesh(new THREE.CylinderGeometry(8.78, 8.78, 62, 128, 1, true, -tl / 2, tl), new THREE.MeshPhysicalMaterial({ map: penLabel(p, 'WP' + (24200 + lotN)), roughness: 0.4, clearcoat: 0.35, clearcoatRoughness: 0.25 }));
+  lab.position.y = 85; g.add(lab);
+  const ao = new THREE.Mesh(new THREE.PlaneGeometry(32, 32), new THREE.MeshBasicMaterial({ map: AO, transparent: true, depthWrite: false })); ao.rotation.x = -Math.PI / 2; ao.position.y = 0.05; g.add(ao);
+  return g;
+}
+
+window.render = async ({ vials, w, h, cam, bg }) => {
+  await Promise.all(['600 100px Cormorant','400 30px Jost','500 30px Jost','600 30px Jost'].map(f => document.fonts.load(f))); await document.fonts.ready;
+  const scene = new THREE.Scene();
+  scene.environment = envTex;
+  scene.background = bgTexture(bg[0], bg[1]);
+  const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-60, 140, 90); key.castShadow = true;
+  key.shadow.mapSize.set(4096, 4096); key.shadow.radius = 30; key.shadow.blurSamples = 25; key.shadow.bias = -0.0004;
+  Object.assign(key.shadow.camera, { left: -150, right: 150, top: 150, bottom: -150, near: 1, far: 500 });
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xfff1ea, 0.5); rim.position.set(80, 60, -90); scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xe8cfc7, 0.25));
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.ShadowMaterial({ opacity: 0.11, color: 0x5a2a20 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  vials.forEach((v, i) => { const m = (v.id.startsWith('pen') ? makePen : makeVial)(v.id, i + (v.lot || 0)); m.position.set(v.x || 0, 0, v.z || 0); m.rotation.y = v.ry || 0; scene.add(m); });
+  const camera = new THREE.PerspectiveCamera(cam.fov, w / h, 1, 2000);
+  camera.position.set(...cam.pos); camera.lookAt(new THREE.Vector3(...cam.target));
+  renderer.setPixelRatio(2); renderer.setSize(w, h);
+  renderer.render(scene, camera); renderer.render(scene, camera);
+  return renderer.domElement.toDataURL('image/png');
+};
+window.ready = true;
+</script>
+</body></html>

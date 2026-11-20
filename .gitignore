@@ -1,3 +1,6 @@
 node_modules/
 .netlify/
 .env
+tools/vial-renders/out/
+tools/vial-renders/node_modules/
+tools/vial-renders/package*.json
